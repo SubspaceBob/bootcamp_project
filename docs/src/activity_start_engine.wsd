@@ -1,4 +1,14 @@
 @startuml
-actor "driver"
-
+start
+:Press Start Button;
+if (Check Engine Status) then (Engine On)
+    stop
+else (Engine Off)
+    if (Check Brake Pedal) then (Brake Pedal Released)
+        stop
+    else (Brake Pedal Pressed)
+        :Start Engine;
+    endif
+endif
+stop
 @enduml
