@@ -1,0 +1,18 @@
+Proposed Can Frames and messages
+
+In order of priority:
+Inputs:
+    Frame1: 
+        Message1: BrkPed 1 byte, int 0-F = 0-100%, init value = 0
+        Message2: GasPed 1 byte, int 0-F = 0-100%, init value = 0
+    Frame2:
+        Message1: GearStick 1 byte, enum P, R, N, D, init value P
+    Frame3:
+        Message1: StartBtn 1 byte, bool 0-1 = NotPrsd - Prsd, init value NotPrsd
+Outputs:
+    Frame1:
+        Message1: Speed 2 bytes, 0-255 km/h, init value = 0
+    Frame2:
+        Message1: Gear 1 byte, enum P, R, N, D, init value P
+        Message2: RPM 4 bytes, int 0-10000 rpm, init value = 0
+
