@@ -1,0 +1,8 @@
+@startuml
+Driver --> (Starts the Engine)
+Driver ---> (Stops the Engine)
+Driver --> (Accelerates the vehicle)
+Driver ---> (Decelerates the vehicle)
+Driver --> (ChangesGearstick between DNRP)
+Driver <- (Sees the Vehicle status)
+@enduml

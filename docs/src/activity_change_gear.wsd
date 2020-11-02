@@ -1,0 +1,10 @@
+@startuml
+start
+:Driver Changes Gearstick Value;
+if (Am I Allowed To Change Gears Whenever?) then (No)
+    stop
+else (Yes)
+    :Change Gear;
+endif
+stop
+@enduml

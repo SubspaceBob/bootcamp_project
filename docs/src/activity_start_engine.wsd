@@ -1,6 +1,6 @@
 @startuml
 start
-:Press Start Button;
+:Driver Presses Start Button;
 if (Check Engine Status) then (Engine On)
     stop
 else (Engine Off)
