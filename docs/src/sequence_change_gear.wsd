@@ -1,0 +1,16 @@
+@startuml
+title Change GearStickPosition
+participant Input
+participant EngineControl
+participant Engine
+participant Gearbox
+participant Vehicle
+participant Output
+Input -> EngineControl : ChangeGearStickPosition(PRND)
+EngineControl -> Vehicle : GetVehicleSpeed()
+EngineControl <- Vehicle : VehicleSpeed
+EngineControl -> Gearbox : SetGearStickPosition()
+
+
+
+@enduml
