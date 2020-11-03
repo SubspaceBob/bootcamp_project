@@ -1,8 +1,8 @@
 @startuml
+title Component Diagram
 package "Emulator"{
     [Read CAN]
     package "Process Information" {
-        [State Machine] 
         [Engine]
         [Gear]
     } 
@@ -16,12 +16,10 @@ cloud "Shared Memory"{
 [Input Handler] --> [Read CAN] : CAN
 [input] <.. [Read CAN]
 
-[input] ..> [State Machine]
 [input] ..> [Engine]
 [input] ..> [Gear]
 
-[State Machine] ..> [output]
-[Engine] ..> [output]
+[Engine]
 [Gear] ..> [output]
 
 [output] ..> [Send CAN]

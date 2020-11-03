@@ -1,6 +1,0 @@
-@startuml
-start
-Output Vehicle Status Without Delay;
-endif
-stop
-@enduml
