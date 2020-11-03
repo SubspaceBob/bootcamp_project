@@ -1,0 +1,31 @@
+@startuml
+package "Main"{
+    [Read CAN]
+    package "Process Information" {
+        [State Machine] 
+        [Engine]
+        [Gear]
+    } 
+    [Send CAN]    
+}
+cloud "Shared Memory"{
+    [input]
+    [output]
+}
+
+[Driver Input] --> [Read CAN] : CAN
+[input] <.. [Read CAN]
+
+[input] ..> [State Machine]
+[input] ..> [Engine]
+[input] ..> [Gear]
+
+[State Machine] ..> [output]
+[Engine] ..> [output]
+[Gear] ..> [output]
+
+[output] ..> [Send CAN]
+
+[Send CAN] --> Output : CAN
+
+@enduml
