@@ -1,0 +1,17 @@
+@startuml
+title Turn off engine
+participant Input
+participant EngineControl
+participant Engine
+participant Gearbox
+participant Vehicle
+participant Output
+Input -> EngineControl : StartButtonPressed()
+EngineControl -> Engine : IsEngineOn()
+EngineControl <- Engine : EngineState
+EngineControl -> Vehicle : GetVehicleSpeed()
+EngineControl <- Vehicle : VehicleSpeed
+EngineControl -> Gearbox : GetGearStickPosition()
+EngineControl <- Gearbox : GearStickPosition
+EngineControl <- EngineControl : Decelerate()
+@enduml
