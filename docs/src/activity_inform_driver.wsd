@@ -1,11 +1,6 @@
 @startuml
 start
-:Read Input Signals;
-if (Updated Signals Affects Subfunction) then (No)
-    stop
-else (Yes)
-    :Calculate New Values;
-    :Output New Values Without Delay;
+Output Vehicle Status Without Delay;
 endif
 stop
 @enduml

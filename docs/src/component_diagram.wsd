@@ -1,5 +1,5 @@
 @startuml
-package "Main"{
+package "Emulator"{
     [Read CAN]
     package "Process Information" {
         [State Machine] 
@@ -13,7 +13,7 @@ cloud "Shared Memory"{
     [output]
 }
 
-[Driver Input] --> [Read CAN] : CAN
+[Input Handler] --> [Read CAN] : CAN
 [input] <.. [Read CAN]
 
 [input] ..> [State Machine]

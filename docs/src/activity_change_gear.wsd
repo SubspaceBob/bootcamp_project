@@ -1,10 +1,10 @@
 @startuml
 start
-:Driver Changes Gearstick Value;
-if (Am I Allowed To Change Gears Whenever?) then (No)
+:Driver Changes GearStickRequest;
+if (Is vehicle standing still) then (No)
     stop
 else (Yes)
-    :Change Gear;
+    :Change GearStick;
 endif
 stop
 @enduml
