@@ -1,0 +1,6 @@
+@startuml
+title Activity Diagram Decelerate
+start
+:brakepedal pressed;
+    :decrease speed;                 
+@enduml
