@@ -9,6 +9,7 @@ struct canInput
         int8_t AccPdl;
         int8_t GearReq;
         int8_t StartBtn;
+        int8_t Ignition;
     };
 
 bool canReader(canInput &out) {
@@ -34,6 +35,7 @@ bool canReader(canInput &out) {
             } 
             else if(fr.id==003){
                 out.StartBtn=fr.data[0];
+                out.Ignition=fr.data[1];
                 return retval;
             }
         }
