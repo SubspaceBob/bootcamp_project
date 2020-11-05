@@ -32,38 +32,49 @@ XKeyEvent createKeyEvent(Display *display, Window &win,
 	return event;
 }
 
+int random_key_press(){
+    // random keypress between 0-9, some normal signs and A-Z
+    srand( (unsigned)time(NULL));
+    int rand_num = rand() % (0x5a-0x30) + 0x30;
+    return rand_num;
+} 
 
 int main(){
     std::cout << "Hello there!" << std::endl;
     KeyboardReader reader;// = KeyboardReader();
     std::cout << "starting!" << std::endl;
     reader.start();
-    
+    Window winRoot = XDefaultRootWindow(reader.display);
+    Display *d = reader.display;
     int key;
     // TODO: define proper QUIT and NoInput values
     while (key != 0x09)
-        key = reader.getKey(); 
-        // do something with value
-        
-        /*
+    { 
+        // for random inputs 
+        /*auto random_key = random_key_press();
         XKeyEvent event = createKeyEvent(reader.display,
                                         reader.window,
-                                        XDefaultRootWindow(reader.display),
-                                        true,
-                                        XK_Up,
-                                        0)
+                                        winRoot,
+                                        true,                   // press
+                                        random_key,
+                                        0);
         
         XSendEvent(event.display, event.window, True, KeyPressMask, (XEvent *)&event);
+        key = reader.getKey(); 
 
         event = createKeyEvent(reader.display,
                                         reader.window,
-                                        XDefaultRootWindow(reader.display),
-                                        false,
-                                        XK_Up,
-                                        0)
+                                        winRoot,
+                                        false,                  // release
+                                        random_key,
+                                        0);
         
         XSendEvent(event.display, event.window, True, KeyPressMask, (XEvent *)&event);
         */
+
+        key = reader.getKey(); 
+        // do something with value
+    } 
     reader.stop();
     std::cout << "Goodbye!" << std::endl;
     return 0;

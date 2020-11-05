@@ -2,6 +2,7 @@
 #include <X11/Xlib.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "KeyboardReader.h" 
 
 
@@ -16,12 +17,21 @@ void KeyboardReader::start(){
     s = DefaultScreen(display);
 
     /* create window */
-    window = XCreateSimpleWindow(display, RootWindow(display, s), 1, 200, 100, 2, 1,
+    window = XCreateSimpleWindow(display, RootWindow(display, s), 1, 200, 100, 200, 1,
                         BlackPixel(display, s), WhitePixel(display, s));
 
     /* select kind of events we are interested in */
     XSelectInput(display, window, KeyPressMask | KeyReleaseMask );
 
+    //tried to get a textbox with instructions in the window, still fails
+    Window w = XCreateSimpleWindow(display, window, 0, 0, 256, 256, 0, 0, 0xffffff);
+    GC gc = DefaultGC(display, 0);
+    XMapRaised(display, window);
+    //XSelectInput(display, w, ExposureMask);
+    const char *msg = "Enter = startbutton\nP = Park\nR = Reverse\nN = Neutral\nD = Drive"; 
+    //XNextEvent(display, &event);
+    XDrawString(display, window, gc, 16, 16, msg, (int) strlen(msg));
+    
     /* map (show) the window */
     XMapWindow(display, window);
     XAutoRepeatOff(display);
