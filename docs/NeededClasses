@@ -6,9 +6,11 @@ class Engine{
         getEngSts();
         getTorque();
 
+        setEngSts(EngSts engSts);
+        setEngTrq(uint16_t engTrq);
     private:
         engSts On/Off;
-        trq 0-300 rpm;
+        float engTrq 0-300 Nm;
 }
 
 class GearBox{
@@ -21,8 +23,8 @@ class GearBox{
         getGearStick();
         getGear();
     private:
-        spd 0-255km/h;
-        rpm 0-10000 rpm;
+        float spd 0-255 km/h; ToDO: Convert to m/s
+        float rpm 0-10000 rpm; todo: convert to rps
         gearStick N, P, R, D;
         gear 0-7;
 }

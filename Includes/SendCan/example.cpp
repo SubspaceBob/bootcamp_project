@@ -1,10 +1,15 @@
+// This file is an example executable that shows how
+// to output items on the CAN bus. This file is NOT
+// I repeat: NOT! intended for the complete SW.
+// use command make and make run to see it work and
+// make clean to remove the leftovers when you're done.
+
 #include <iostream>
 #include "../socketcan_cpp/socketcan_cpp.h"
 
 void frameToBus(uint8_t frameNo, uint8_t signalValue);
 void frameToBus(uint8_t frameNo, uint8_t signal1Value, uint8_t signal2Value);
 void frameToBus(uint8_t frameNo, uint8_t signal1Value, uint16_t signal2Value);
-
 
 int main(){
     //Frame 1 signals
