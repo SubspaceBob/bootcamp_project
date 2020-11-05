@@ -5,25 +5,20 @@ package "Emulator"{
     package "Process Information" {
         [Engine]
         [Gear]
-    } 
-    [Send CAN]    
+        [Send CAN] 
+    }    
 }
 cloud "Shared Memory"{
     [input]
-    [output]
 }
 
 [Input Handler] --> [Read CAN] : CAN
 [input] <.. [Read CAN]
 
 [input] ..> [Engine]
+[Engine] --> [Gear]
 [input] ..> [Gear]
-
-[Engine]
-[Gear] ..> [output]
-
-[output] ..> [Send CAN]
-
+[Gear] --> [Send CAN]
 [Send CAN] --> Output : CAN
 
 @enduml

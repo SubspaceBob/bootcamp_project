@@ -6,11 +6,10 @@ participant Engine
 participant Gearbox
 participant Vehicle
 participant Output
-Input -> EngineControl : ChangeGearStickPosition(PRND)
-EngineControl -> Vehicle : GetVehicleSpeed()
-EngineControl <- Vehicle : VehicleSpeed
-EngineControl -> Gearbox : SetGearStickPosition()
-
+Input -> Gearbox : ChangeGearStickPosition(PRND)
+Gearbox -> Vehicle : GetVehicleSpeed()
+Gearbox <- Vehicle : VehicleSpeed
+Gearbox -> Gearbox : SetGearStickPosition()
 
 
 @enduml

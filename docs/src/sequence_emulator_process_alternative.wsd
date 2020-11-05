@@ -1,0 +1,26 @@
+@startuml 
+title Emulator Main Process
+database Input
+participant MainProcess
+
+Input <- MainProcess : read input()
+Input -> MainProcess : input_data
+
+note right of MainProcess : if brkpdl pressed start activity decelerate
+MainProcess -> MainProcess : decrease_speed()
+
+note right of MainProcess : if start_condition start activity start_engine
+MainProcess -> MainProcess : start_engine()
+
+note right of MainProcess : if stop_condition start activity turn_off_engine
+MainProcess -> MainProcess : turn_off_engine()
+
+note right of MainProcess : if change_gear_condition start activity change_gearstick_position
+MainProcess -> MainProcess : change_gearstick()
+
+note right of MainProcess : if accelerate_condition start activity accelerate
+MainProcess -> MainProcess : increase_speed()
+
+MainProcess -> Engine : Run_simulation_step()
+MainProcess -> Gearbox : Run_simulation_step()
+@enduml

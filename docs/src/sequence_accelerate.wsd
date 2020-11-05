@@ -9,5 +9,7 @@ participant Output
 Input -> EngineControl : AcceleratorPedalPressed()
 EngineControl -> Engine : IsEngineOn()
 EngineControl <- Engine : EngineState()
+EngineControl <- EngineControl : Accelerate()
+
 
 @enduml

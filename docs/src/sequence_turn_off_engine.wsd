@@ -1,6 +1,6 @@
 @startuml
 title Turn off engine
-participant Input
+database Input
 participant EngineControl
 participant Engine
 participant Gearbox

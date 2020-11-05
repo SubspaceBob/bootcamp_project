@@ -1,0 +1,15 @@
+@startuml
+title Decelerate
+participant Input
+participant EngineControl
+participant Engine
+participant Gearbox
+participant Vehicle
+participant Output
+Input -> EngineControl : AcceleratorPedalPressed()
+Gearbox -> Engine : IsEngineOn()
+EngineControl <- Engine : EngineState()
+EngineControl <- EngineControl : Decelerate()
+
+
+@enduml
