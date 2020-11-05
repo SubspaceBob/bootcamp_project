@@ -1,0 +1,28 @@
+class Engine{
+    public: 
+        Engine(); //Define constructor to give engSts and trq init values 
+        ~Engine();
+
+        getEngSts();
+        getTorque();
+
+    private:
+        engSts On/Off;
+        trq 0-300 rpm;
+}
+
+class GearBox{
+    public:
+        GearBox(); //Define constructor to give spd,rpm, gearStick and gear init values 
+        ~GearBox();
+
+        getSpd();
+        getRPM();
+        getGearStick();
+        getGear();
+    private:
+        spd 0-255km/h;
+        rpm 0-10000 rpm;
+        gearStick N, P, R, D;
+        gear 0-7;
+}
