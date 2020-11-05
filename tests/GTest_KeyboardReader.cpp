@@ -1,7 +1,8 @@
 #include <gtest/gtest.h>
+#include <iostream>
 #include "KeyboardReader.h"
 
-TEST(KeyboardReaderRTests, NormalUsecase)
+TEST(KeyReaderTests, NormalUsecase)
 {
     // just a temp copy of the main method from cpp-file
 
@@ -18,7 +19,6 @@ TEST(KeyboardReaderRTests, NormalUsecase)
 
     reader.stop();
     std::cout << "Goodbye!" << std::endl;
-    return 0;
 }
 
 int main(int argc, char* argv[])

@@ -3,7 +3,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "KeyboardReader.h" 
-    
+
+
 void KeyboardReader::start(){  
     /* open connection with the server */
     display = XOpenDisplay(NULL);
@@ -45,21 +46,3 @@ void KeyboardReader::stop(){
     XCloseDisplay(display);
     std::cout << "stopped!" << std::endl;
 }
-
-
-int main(){
-    std::cout << "Hello there!" << std::endl;
-    KeyboardReader reader;// = KeyboardReader();
-    std::cout << "starting!" << std::endl;
-    reader.start();
-    
-    int key;
-    // TODO: define proper QUIT and NoInput values
-    while (key != 0x09)
-        key = reader.getKey(); 
-        // do something with value
-
-    reader.stop();
-    std::cout << "Goodbye!" << std::endl;
-    return 0;
-} 
