@@ -23,30 +23,42 @@ void KeyboardReader::start(){
     /* select kind of events we are interested in */
     XSelectInput(display, window, KeyPressMask | KeyReleaseMask );
 
-    //tried to get a textbox with instructions in the window, still fails
+    /* tried to get a textbox with instructions in the window, still fails
     Window w = XCreateSimpleWindow(display, window, 0, 0, 256, 256, 0, 0, 0xffffff);
     GC gc = DefaultGC(display, 0);
-    XMapRaised(display, window);
-    //XSelectInput(display, w, ExposureMask);
+    XMapRaised(display, w);
+    XSelectInput(display, w, ExposureMask);
     const char *msg = "Enter = startbutton\nP = Park\nR = Reverse\nN = Neutral\nD = Drive"; 
-    //XNextEvent(display, &event);
-    XDrawString(display, window, gc, 16, 16, msg, (int) strlen(msg));
-    
+    XNextEvent(display, &event);
+    XDrawString(display, w, gc, 16, 16, msg, (int) strlen(msg));
+    */
     /* map (show) the window */
     XMapWindow(display, window);
     XAutoRepeatOff(display);
 }
 
-int KeyboardReader::getKey()
+std::pair<int, int> KeyboardReader::getKey()
 {  
-    //std::cout << "Getting key!" << std::endl;
-    XNextEvent(display, &event);
+    int key = 0;
+    bool value = 0;
     /* keyboard events */
-    if (event.type == KeyPress)
+    //if(1) 
+    if(XCheckMaskEvent(display, KeyPressMask | KeyReleaseMask ,&event))
     {
-        printf( "KeyPress: %x\n", event.xkey.keycode );
-        return event.xkey.keycode;
-    }
+        //XNextEvent(display, &event);
+        if (event.type == KeyPress)
+        {
+            key = event.xkey.keycode;
+            value = 1;
+        }
+        else if (event.type == KeyRelease)
+        {
+            key = event.xkey.keycode;
+            value = 0;
+        }
+        
+    } 
+    return std::pair<int, int>(key, value); 
 }
 
 void KeyboardReader::stop(){ 

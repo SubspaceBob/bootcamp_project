@@ -15,7 +15,7 @@ public:
     Window window;
     XEvent event;
     int s;
-    int getKey();
+    std::pair<int, int> getKey();
     void start();
     void stop();
 
