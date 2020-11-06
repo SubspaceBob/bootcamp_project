@@ -13,7 +13,7 @@ int main(){
 
     // TODO: Initiate a memorypointer so that rdCAN & virtCar can operate on
     // same memory location
-    canInput *memPtr;
+    canInput new *memPtr;
 
     // Init two threads, one for running an eternal CANread thread,
     // another one for running an eternal virtCar thread. 
