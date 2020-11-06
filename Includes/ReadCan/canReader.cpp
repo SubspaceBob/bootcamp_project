@@ -1,16 +1,9 @@
 #include <iostream>
+#include "CanInput.h"
 
 #include "socketcan_cpp.h"
 // https://github.com/siposcsaba89/socketcan-cpp
 
-struct canInput
-    {
-        int8_t BrakePdl;
-        int8_t AccPdl;
-        int8_t GearReq;
-        int8_t StartBtn;
-        int8_t Ignition;
-    };
 
 bool canReader(canInput &out) {
     bool retval=false;
@@ -27,37 +20,19 @@ bool canReader(canInput &out) {
             if(fr.id==001){
                 out.BrakePdl=fr.data[0];
                 out.AccPdl=fr.data[1];
-                return retval;
             }  
             else if(fr.id==002){
                 out.GearReq=fr.data[0];
-                return retval;
             } 
             else if(fr.id==003){
                 out.StartBtn=fr.data[0];
                 out.Ignition=fr.data[1];
-                return retval;
             }
         }
+        if (out.Ignition==1)
+            {
+                break;
+            }
     }
-    
-}
-
-int main()
-{
-    canInput inputVal;
-    while(true)
-    {
-        if (canReader(inputVal))
-        {
-            printf("BrkPdl %d , AccPdl: %d, GearReq: %d, StartBtn: %d, \n", inputVal.BrakePdl, inputVal.AccPdl, inputVal.GearReq, inputVal.StartBtn);    
-        } 
-        else 
-        {
-            break;
-        }
-        
-    }
-    std::cout<<"Can network read error"<<std::endl;
-
+    return (retval);
 }
