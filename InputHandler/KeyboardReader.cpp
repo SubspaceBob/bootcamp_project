@@ -37,10 +37,11 @@ void KeyboardReader::start(){
     XAutoRepeatOff(display);
 }
 
-std::pair<int, int> KeyboardReader::getKey()
+KeyInput KeyboardReader::getKey()
 {  
-    int key = 0;
-    bool value = 0;
+    KeyInput key;
+    key.first = 0;
+    key.second = 0;
     /* keyboard events */
     //if(1) 
     if(XCheckMaskEvent(display, KeyPressMask | KeyReleaseMask ,&event))
@@ -48,17 +49,17 @@ std::pair<int, int> KeyboardReader::getKey()
         //XNextEvent(display, &event);
         if (event.type == KeyPress)
         {
-            key = event.xkey.keycode;
-            value = 1;
+            key.first = event.xkey.keycode;
+            key.second = 1;
         }
         else if (event.type == KeyRelease)
         {
-            key = event.xkey.keycode;
-            value = 0;
+            key.first = event.xkey.keycode;
+            key.second = 0;
         }
         
     } 
-    return std::pair<int, int>(key, value); 
+    return key; 
 }
 
 void KeyboardReader::stop(){ 

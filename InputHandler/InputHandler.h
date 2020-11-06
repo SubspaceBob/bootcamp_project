@@ -1,7 +1,10 @@
 #ifndef INPUTHANDLER_H
 #define INPUTHANDLER_H
-#include<iostream>
-#include<cmath>
+#include <iostream>
+#include <cmath>
+#include <utility>
+#include "KeyboardReader.h"
+
 
 struct user_input_signals{
     // Temp copy of SendCAN example
@@ -20,6 +23,18 @@ struct user_input_signals{
     //uint8_t GearStick = 1;
     //uint16_t RPM = 9000;
 };
+
+class InputHandler{
+public:
+    InputHandler();
+    ~InputHandler(){};
+    bool run();
+    void stop();
+    KeyboardReader reader;
+    user_input_signals data;
+    // create CANWriter object
+};
+
 
 
 

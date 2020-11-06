@@ -1,12 +1,14 @@
 #ifndef KEYBOARDREADER_H
 #define KEYBOARDREADER_H
-#include<iostream>
-#include<cmath>
+#include <iostream>
+#include <cmath>
 #include <X11/Xlib.h>
 #include <stdio.h>
 #include <stdlib.h>
 
-// void 
+using KeyInput = std::pair<int, int>;
+
+
 class KeyboardReader{
 public:
     KeyboardReader() = default;
@@ -15,7 +17,7 @@ public:
     Window window;
     XEvent event;
     int s;
-    std::pair<int, int> getKey();
+    KeyInput getKey();
     void start();
     void stop();
 
