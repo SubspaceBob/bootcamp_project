@@ -1,89 +1,70 @@
 #include "InputHandler.h"
-#include "socketcan_cpp.h"
-#include <X11/Xlib.h>
-#include <stdio.h>
-#include <stdlib.h>
+#include "KeyboardReader.h"
+#include <unistd.h>
+#include <chrono>
+#include <thread>
+/*void InterpretKey(int key){
 
-// https://github.com/siposcsaba89/socketcan-cpp
-
-
-void send_can(scpp::SocketCan *socket_can, int data){ 
-    scpp::CanFrame cf_to_write;
-            
-    cf_to_write.id = 123;
-    cf_to_write.len = 8;
-    for (int i = 0; i < 7; ++i)
-        cf_to_write.data[i] = std::rand() % 256;
-    std::cout << data << std::endl;
-    cf_to_write.data[8] = data;
-    auto write_sc_status = socket_can->write(cf_to_write);
-    if (write_sc_status != scpp::STATUS_OK)
-        printf("something went wrong on socket write, error code : %d \n", int32_t(write_sc_status));
-            
-}
-
-
+} */
 
 int main() {
-    std::cout << "Hello world" << std::endl;
-    scpp::SocketCan *sockat_can = new scpp::SocketCan;
-    if (sockat_can->open("vcan0") != scpp::STATUS_OK) {
-        std::cout << "Cannot open vcan0." << std::endl;
-        std::cout << "Check whether the vcan0 interface is up!" << std::endl;
-        exit (-1);
-    }
-    Display *display;
-    Window window;
-    XEvent event;
-    int s;
+    
+    // send greetings to user :)
+
+    user_input_signals data;
+    unsigned int sleep_us = 100000; // 10000 = 10 ms
+
+    std::cout << "Hello there!" << std::endl;
+
+    // create CANWriter object
+    // CANWriter.start()
+    
+    // create and start KeyboardReader
+    KeyboardReader reader;
+    reader.start();
+
+    // while
+    std::pair<int, int> key;
+    while (key.first != 0x09) // Escape is not Quit(graceful shutdown)
+    { 
+        /* Get user input and intepret */
+        key = reader.getKey();
+        
+        std::cout << "KeyPress: " << key.first << "  "<< key.second << std::endl;
  
-    /* open connection with the server */
-    display = XOpenDisplay(NULL);
-    if (display == NULL)
-    {
-        fprintf(stderr, "Cannot open display\n");
-        exit(1);
-    }
- 
-    s = DefaultScreen(display);
- 
-    /* create window */
-    window = XCreateSimpleWindow(display, RootWindow(display, s), 1, 1, 2, 2, 1,
-                           BlackPixel(display, s), WhitePixel(display, s));
- 
-    /* select kind of events we are interested in */
-    XSelectInput(display, window, KeyPressMask | KeyReleaseMask );
- 
-    /* map (show) the window */
-    XMapWindow(display, window);
- 
-    /* event loop */
-    while (1)
-    {
-        XNextEvent(display, &event);
- 
-        /* keyboard events */
-        if (event.type == KeyPress)
-        {
+        switch(key.first){ 
+            // toggle these on Press/Release
+            case 0x62   : data.AccPdl   = key.second;  break; // 0x62 = Up-button = Accelerate
+            case 0x68   : data.BrkPdl   = key.second;  break; // 0x68 = Down-button = Decelerate
+            case 0x24   : data.StartBtn = key.second;  break; // 0x24 = Enter = startbutton 
+            case 0x18   : data.Ignition = key.second;  break;// 0x18 = Q = quitbutton?
+        
+            // Change GearRequest when a new GearRequest button is pressed 
+            case 0x21   : data.GearReq = 1; break;// Request P = 1 ??
+            case 0x1b   : data.GearReq = 2; break;// Request R = 2 ??
+            case 0x39   : data.GearReq = 3; break;// Request N = 3 ??
+            case 0x28   : data.GearReq = 4; break;// Request D = 4 ??
+            //default     : data.GearReq = 0; // No request // 
             
-            printf( "KeyPress: %x\n", event.xkey.keycode );
-
-            /* exit on ESC key press */
-            if ( event.xkey.keycode == 0x09 )
-                break;
-        }
-        else if (event.type == KeyRelease)
-        {
-            if ( event.xkey.keycode == 0x68 ) // page down button
-            { 
-                printf( "KeyRelease: %x\n", event.xkey.keycode );
-                send_can(sockat_can, event.xkey.keycode);
-            } 
-        }
+        }       
+        
+        // STUBBED send on CAN
+        std::cout << "frameToBus(1, BrkPdl="   << (int)data.BrkPdl   << ", AccPdl="   << (int)data.AccPdl <<")"    << std::endl;
+        std::cout << "frameToBus(2, GearReq="  << (int)data.GearReq  <<")"                                   << std::endl;
+        std::cout << "frameToBus(3, StartBtn=" << (int)data.StartBtn << ", Ignition=" << (int)data.Ignition <<")"  << std::endl;
+    
+        // check if KeyInput is graceful shutdown
+        //      terminate()
+        //      break;
+        //sleep 10 ms
+        
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
+        
     }
-
-    /* close connection to server */
-    XCloseDisplay(display);
-    delete sockat_can;
+    //
+    reader.stop();
+    // CANWriter.stop();
+    // delete CANWriter;
     return 0;
+         
 }
