@@ -10,8 +10,8 @@ example.o : example.cpp
 frameToBus.o : frameToBus.cpp 
 	$(compiler) -c frameToBus.cpp -o frameToBus.o
 
-socketcan_cpp.o : ../socketcan_cpp/socketcan_cpp.cpp
-	$(compiler) -c ../socketcan_cpp/socketcan_cpp.cpp -I ../socketcan_cpp/ -o socketcan_cpp.o
+socketcan_cpp.o : ../Includes/socketcan_cpp/socketcan_cpp.cpp
+	$(compiler) -c ../Includes/socketcan_cpp/socketcan_cpp.cpp -I ../socketcan_cpp/ -o socketcan_cpp.o
 
 clean:
 	rm *.o

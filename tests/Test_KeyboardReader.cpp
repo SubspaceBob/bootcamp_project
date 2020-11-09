@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "KeyboardReader.h" 
+#include "InputHandler.h"
 #include <X11/keysym.h>
 
 // Function to create a keyboard event
@@ -46,9 +47,9 @@ int main(){
     reader.start();
     Window winRoot = XDefaultRootWindow(reader.display);
     Display *d = reader.display;
-    int key;
+    KeyInput key;
     // TODO: define proper QUIT and NoInput values
-    while (key != 0x09)
+    while (key.first != 0x09)
     { 
         // for random inputs 
         /*auto random_key = random_key_press();
@@ -72,7 +73,8 @@ int main(){
         XSendEvent(event.display, event.window, True, KeyPressMask, (XEvent *)&event);
         */
 
-        key = reader.getKey(); 
+        key = reader.getKey();
+        std::cout << key.first << " " << key.second << std::endl; 
         // do something with value
     } 
     reader.stop();

@@ -1,5 +1,4 @@
-#include <iostream>
-#include "../socketcan_cpp/socketcan_cpp.h"
+#include "frameToBus.h"
 
 struct bitfield{
     uint8_t rpmLSB;
@@ -46,9 +45,6 @@ void frameToBus(uint8_t frameNo, uint8_t signal1Value, uint8_t signal2Value) {
         exit (-1);
     }
 
-    RPM rpm;
-    rpm.rpmIn= signal2Value;
-
     scpp::CanFrame cf_to_write; 
     cf_to_write.id = frameNo;
     cf_to_write.len = 8;
@@ -79,7 +75,6 @@ void frameToBus(uint8_t frameNo, uint8_t signal1Value, uint16_t signal2Value) {
 
     RPM rpm;
     rpm.rpmIn= signal2Value;
-
     scpp::CanFrame cf_to_write; 
     cf_to_write.id = frameNo;
     cf_to_write.len = 8;
