@@ -4,45 +4,45 @@
  {
     this->speed=0;
     this->RPS=0;
-    this->ActiveGear=D;
-    this->GearInD=0;
+    this->GearStick=D;
+    this->EngagedGear=0;
  }
-int8_t Gear::getSpeed()
+float Gear::getSpeed()
 {
     return (this->speed);
 }
 
-int16_t Gear::getRPS()
+float Gear::getRPS()
 {
     return (this->RPS);
 }
 
-GearPattern Gear::getActiveGear()
+GearPattern Gear::getGearStick()
 {
-    return (this->ActiveGear);
+    return (this->GearStick);
 }
 
-int8_t Gear::getGearInD()
+int8_t Gear::getEngagedGear()
 {
-    return (this->GearInD);
+    return (this->EngagedGear);
 }
 
-void Gear::setSpeed()
+void Gear::setSpeed(float x)
 {
-    this->speed=0;
+    this->speed=x;
 }
 
-void Gear::setRPS()
+void Gear::setRPS(float x)
 {
-    this->RPS=0;
+    this->RPS=x;
 }
 
-void Gear::setActiveGear()
+void Gear::setGearStick(GearPattern x)
 {
-    this->ActiveGear=P;
+    this->GearStick=x;
 }
 
-void Gear::setGearInD()
+void Gear::setEngagedGear(int8_t x)
 {
-    this->GearInD=0;
+    this->EngagedGear=x;
 }
