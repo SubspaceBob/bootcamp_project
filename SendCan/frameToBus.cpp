@@ -32,8 +32,9 @@ void frameToBus(uint8_t frameNo, uint8_t signalValue) {
 
     if (write_sc_status != scpp::STATUS_OK)
         printf("something went wrong on socket write, error code : %d \n", int32_t(write_sc_status));
-    else
-        printf("Sent to bus using 1st overloaded function.\n");
+    /*else
+        printf("Sent to bus using 1st overloaded function.\n");*/
+    sockat_can.close();
 }
 
 // Frame with 2 uint8 signals...
@@ -59,10 +60,10 @@ void frameToBus(uint8_t frameNo, uint8_t signal1Value, uint8_t signal2Value) {
 
     if (write_sc_status != scpp::STATUS_OK)
         printf("something went wrong on socket write, error code : %d \n", int32_t(write_sc_status));
-    else
-        printf("Sent to bus using 2nd overloaded function.\n");
+    /*else
+        printf("Sent to bus using 2nd overloaded function.\n");*/
+    sockat_can.close();    
 }
-
 
 // Frame with 1 uint8 signal & 1 uint16 signal...
 void frameToBus(uint8_t frameNo, uint8_t signal1Value, uint16_t signal2Value) {
@@ -90,6 +91,7 @@ void frameToBus(uint8_t frameNo, uint8_t signal1Value, uint16_t signal2Value) {
 
     if (write_sc_status != scpp::STATUS_OK)
         printf("something went wrong on socket write, error code : %d \n", int32_t(write_sc_status));
-    else
-        printf("Sent to bus using 3rd overloaded function.\n");
+    /*else
+        printf("Sent to bus using 3rd overloaded function.\n");*/
+    sockat_can.close(); 
 }
