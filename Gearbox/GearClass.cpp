@@ -47,7 +47,7 @@ void Gearbox::setEngagedGear(int8_t x)
     this->EngagedGear=x;
 }
 
-void run(){
+void Gearbox::run(){
     std::cout << "running gearbox\n";
     // Read Trq from Engine
     // Read GearStickRequest, BrkPdl from CAN

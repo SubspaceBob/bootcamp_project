@@ -1,22 +1,24 @@
 #include <iostream>
-#include "ReadCan/CanInput.h"
-#include "Engine/engine.h"
-#include "Gearbox/GearClass.h"
-#include "SendCan/frameToBus.h"
-#include "Includes/socketcan_cpp/socketcan_cpp.h"
+#include "CanInput.h"
+#include "engine.h"
+#include "GearClass.h"
+#include "frameToBus.h"
 
 bool canReader(canInput &out); 
-void FramePacker(Engine &EngingeOut, Gear &GearboxOut);
+void FramePacker(Engine &EngingeOut, Gearbox &GearboxOut);
 
 int main()
 {
     canInput inputVal;
     Engine Engine;
-    Gear Gearbox;
+    Gearbox Gearbox;
     bool error=false;
+
     while(true)
     {
     error=canReader(inputVal);
+    Engine.run();
+    Gearbox.run();
     FramePacker(Engine, Gearbox);
     if (error==true)
         {break;}
