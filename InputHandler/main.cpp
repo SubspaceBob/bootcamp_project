@@ -1,5 +1,5 @@
 #include "InputHandler.h"
-#include "../SendCan/frameToBus.h"
+#include "frameToBus.h"
 
 int main() { 
     int cycleTime = 250; // Rough Can cycletime in ms
