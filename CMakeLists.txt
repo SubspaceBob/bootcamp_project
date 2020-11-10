@@ -27,3 +27,11 @@ add_executable(Test_InputHandler    tests/Test_InputHandler.cpp
                                     InputHandler/KeyboardReader.cpp
                                     InputHandler/InputHandler)
 target_link_libraries(Test_InputHandler PUBLIC X11 InputHandler)
+
+# Create executable for InputHandlerMain
+add_executable(InputHandler_Main   InputHandler/main.cpp
+                                InputHandler/InputHandler.cpp
+                                InputHandler/KeyboardReader.cpp
+                                SendCan/frameToBus.cpp
+                                Includes/socketcan_cpp/socketcan_cpp.cpp)
+target_link_libraries(InputHandler_Main X11) 
