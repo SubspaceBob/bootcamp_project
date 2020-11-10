@@ -1,48 +1,57 @@
 #include "GearClass.h"
 
- Gear::Gear()
+ Gearbox::Gearbox()
  {
-    this->speed=0;
-    this->RPS=0;
-    this->GearStick=D;
+    this->VehicleSpeed=0;
+    this->EngineRPS=0;
+    this->GearStickPosition=D;
     this->EngagedGear=0;
  }
-float Gear::getSpeed()
+float Gearbox::getSpeed()
 {
-    return (this->speed);
+    return (this->VehicleSpeed);
 }
 
-float Gear::getRPS()
+float Gearbox::getRPS()
 {
-    return (this->RPS);
+    return (this->EngineRPS);
 }
 
-GearPattern Gear::getGearStick()
+GearPattern Gearbox::getGearStick()
 {
-    return (this->GearStick);
+    return (this->GearStickPosition);
 }
 
-int8_t Gear::getEngagedGear()
+int8_t Gearbox::getEngagedGear()
 {
     return (this->EngagedGear);
 }
 
-void Gear::setSpeed(float x)
+void Gearbox::setSpeed(float x)
 {
-    this->speed=x;
+    this->VehicleSpeed=x;
 }
 
-void Gear::setRPS(float x)
+void Gearbox::setRPS(float x)
 {
-    this->RPS=x;
+    this->EngineRPS=x;
 }
 
-void Gear::setGearStick(GearPattern x)
+void Gearbox::setGearStick(GearPattern x)
 {
-    this->GearStick=x;
+    this->GearStickPosition=x;
 }
 
-void Gear::setEngagedGear(int8_t x)
+void Gearbox::setEngagedGear(int8_t x)
 {
     this->EngagedGear=x;
+}
+
+void run(){
+    std::cout << "running gearbox\n";
+    // Read Trq from Engine
+    // Read GearStickRequest, BrkPdl from CAN
+    // FUTURE: calculate new EngagedGear (ratio)
+    // Calculate new vehicle speed given the current VehicleSpeed, SimulationStepSize and CANInput(GearStuff and BrkPdl) and Engine.
+    // Calculate new EngineRPS given the the new VehicleSpeed, EngagedGear
 }

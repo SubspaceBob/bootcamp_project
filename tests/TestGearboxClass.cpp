@@ -4,7 +4,7 @@
 int main()
 {
     float y=19.259;
-    Gear x;
+    Gearbox x;
 
     x.setSpeed(119.258963);
     x.setRPS(12.3);
