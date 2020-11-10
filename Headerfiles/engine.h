@@ -8,7 +8,7 @@ class Engine{
     public:
         // TODO: Constructor values are stubbed to always on acc to 1st story of 
         // Start Engine Epic, change to proper init values once we have logics.
-        Engine() = default;
+        Engine();
         ~Engine()= default;
 
         // Setters
