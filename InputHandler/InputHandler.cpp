@@ -2,58 +2,67 @@
 #include <chrono>
 #include <thread>
 #include "InputHandler.h"
+#include "../SendCan/frameToBus.h"
 
 InputHandler::InputHandler(){
     std::cout << "Hello there!" << std::endl;
-    
-    // CANWriter.start()  
+    frameToBus(001, (uint8_t)data.BrkPdl, (uint8_t)data.AccPdl);
+    frameToBus(003, (uint8_t)data.StartBtn, (uint8_t)data.Ignition);
+    frameToBus(003, (uint8_t)data.StartBtn, (uint8_t)data.Ignition);
     reader.start();
 } 
 
-bool InputHandler::run(){
+bool InputHandler::run(int cycleTime){
+    bool exitLoop = false;
+
     KeyInput key = reader.getKey();
-        
     std::cout << "KeyPress: " << key.first << "  "<< key.second << std::endl;
 
+    //Ordered according to functionality/Frames
     switch(key.first){ 
-        // toggle these on Press/Release
-        case 0x62   : data.AccPdl   = key.second;  break; // 0x62 = Up-button = Accelerate
-        case 0x68   : data.BrkPdl   = key.second;  break; // 0x68 = Down-button = Decelerate
-        case 0x24   : data.StartBtn = key.second;  break; // 0x24 = Enter = startbutton 
-        case 0x18   : data.Ignition = key.second;  break;// 0x18 = Q = quitbutton?
-    
-        // Change GearRequest when a new GearRequest button is pressed 
-        case 0x21   : data.GearReq = 1; break;// Request P = 1 ??
-        case 0x1b   : data.GearReq = 2; break;// Request R = 2 ??
-        case 0x39   : data.GearReq = 3; break;// Request N = 3 ??
-        case 0x28   : data.GearReq = 4; break;// Request D = 4 ??
-        //default     : data.GearReq = 0; // No request // 
-        
-    }       
-    
-    if (key.first != 0x09)
-    {
-        // STUBBED send on CAN
-        std::cout << "frameToBus(1, BrkPdl="   << (int)data.BrkPdl   << ", AccPdl="   << (int)data.AccPdl <<")"    << std::endl;
-        std::cout << "frameToBus(2, GearReq="  << (int)data.GearReq  <<")"                                   << std::endl;
-        std::cout << "frameToBus(3, StartBtn=" << (int)data.StartBtn << ", Ignition=" << (int)data.Ignition <<")"  << std::endl;
-
-        // check if KeyInput is graceful shutdown
-        //      terminate()
-        //      break;
-        //sleep 10 ms
-    
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));           
-        return false;
-    }
-    else
-    {
-        return true;
+        case 0: break; // No buttons pressed = Do nothing     
+        case 9: // Escape = Exit program
+            // TODO: Implement a gracefull shutdown see also Q button
+            // Stop eternal main loop
+            exitLoop = true;
+            break;
+    // Frame1
+        case 116: // Down Arrow = Brake
+            // TODO: Implement logic for making this signal analog
+                if (key.second == 0) data.BrkPdl = 0;
+                else data.BrkPdl = 100;
+            break;
+        case 111: // Up Arrow = Accelerate
+            // TODO: Implement logic for making this signal analog
+                if (key.second == 0) data.AccPdl = 0;
+                else data.AccPdl = 100; 
+            break; 
+    // Frame 2 // Toggles depending on buttons P,R,N,D = GearStickRequest
+        case 33: data.GearReq = 0; break;
+        case 27: data.GearReq = 1; break;
+        case 57: data.GearReq = 2; break;
+        case 40: data.GearReq = 3; break;
+    // Frame 3 Enter = Start button
+        case 36: data.StartBtn = key.second; break;
+        case 24: //Q = quitbutton
+            data.Ignition = key.second; break;
+            // TODO: Possibly connected in gracefull shutdown see also escape button
+            break;
+    // Unused buttons
+        default: // Unexpected buttons ignored for now
+            /*std::cout << "The key.first switch case generated an unvalid scenario" << std::endl;
+            std::cout << "Value is: " << key.first << std::endl;
+            exit(EXIT_FAILURE);*/
+            break;  
     } 
+
+    //Output the frames
+    frameToBus(data.Frame1, data.BrkPdl, data.AccPdl);
+    frameToBus(data.Frame2, (uint8_t)data.GearReq);
+    frameToBus(data.Frame3, (uint8_t)data.StartBtn, (uint8_t)data.Ignition);
+    
+    // Wait CAN cycletime
+    std::this_thread::sleep_for(std::chrono::milliseconds(cycleTime));
+    
+    return exitLoop; 
 }
-
-void InputHandler::stop(){
-    reader.stop();
-    // CANWriter.stop();
-
-} 

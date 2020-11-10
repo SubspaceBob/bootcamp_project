@@ -10,9 +10,8 @@ int main() {
     bool stop = false;
     while (!stop)
     { 
-        stop = ih.run();
+        stop = ih.run(250);
     }
     //
-    ih.stop();
     return 0;
 }
