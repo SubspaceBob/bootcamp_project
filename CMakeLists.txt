@@ -1,10 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
 project(TeamA)
-include_directories(Engine)
-include_directories(Gearbox)
-include_directories(InputHandler)
-include_directories(Includes/socketcan_cpp)
-include_directories(SendCan)
+
+include_directories(Headerfiles)
 
 # Test KeyboardReader
 add_executable(Test_KeyReader   tests/Test_KeyboardReader.cpp

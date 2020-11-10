@@ -4,17 +4,18 @@ enum GearPattern :int8_t
     P, R, N, D
 };
 
-
-class Gear
+class Gearbox
 {
-    float speed; // 0-70,8 m/s 
-    float RPS; // 0-10000 rpm
-    GearPattern GearStick;  //Active gear (P,R,N,D)
+    int VehicleMass = 2000; 
+    float WheelRadius = 0.3;
+    float VehicleSpeed; // 0-70,8 m/s 
+    float EngineRPS; // 0-10000 rpm
+    GearPattern GearStickPosition;  //Active gear (P,R,N,D)
     int8_t EngagedGear;  //what gear we are in while in D 
 
     public:
-    Gear();
-    ~Gear()=default;
+    Gearbox();
+    ~Gearbox()=default;
     float getSpeed();
     float getRPS();
     GearPattern getGearStick();
@@ -23,4 +24,5 @@ class Gear
     void setRPS(float x);
     void setGearStick( GearPattern x);
     void setEngagedGear(int8_t x);
+    void run();
 };

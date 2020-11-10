@@ -8,7 +8,7 @@ class Engine{
     public:
         // TODO: Constructor values are stubbed to always on acc to 1st story of 
         // Start Engine Epic, change to proper init values once we have logics.
-        Engine(){engSts = On; engTrq = 300;}
+        Engine();
         ~Engine()= default;
 
         // Setters
@@ -16,6 +16,7 @@ class Engine{
         //Chosen maxTrq = 300
         void setEngTrq(uint16_t engTrq){if(engTrq <=300)this->engTrq = engTrq;}
 
+        void run();
         // Getters
         EngSts getEngSts(){return engSts;}
         uint16_t getEngTrq(){return engTrq;}
@@ -23,5 +24,6 @@ class Engine{
     private:
         EngSts engSts;
         uint16_t engTrq;
+        
 };
 #endif
