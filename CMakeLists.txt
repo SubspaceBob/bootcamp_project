@@ -10,8 +10,8 @@ add_executable(Test_KeyReader   tests/Test_KeyboardReader.cpp
 target_link_libraries(Test_KeyReader X11)    
 
 # Test GearboxClass
-add_executable(Test_Gearbox     tests/TestGearboxClass.cpp
-                                Gearbox/GearClass.cpp)    
+#add_executable(Test_Gearbox     tests/TestGearboxClass.cpp
+                                #Gearbox/GearClass.cpp)    
 
 # Shared Object of InputHandler with SendCAN-stuff
 add_library(InputHandler SHARED InputHandler/KeyboardReader.cpp
@@ -39,6 +39,8 @@ add_executable(EmulatorMainThreads Emulator-main-threads.cpp
                                 Gearbox/GearClass.cpp
                                 Engine/Engine.cpp
                                 ReadCan/canReader.cpp
-                                Includes/socketcan_cpp/socketcan_cpp.cpp)  
+                                Includes/socketcan_cpp/socketcan_cpp.cpp  
+                                EmulatorFramePacker/FramePacker.cpp
+                                SendCan/frameToBus.cpp)
 find_package (Threads)
 target_link_libraries(EmulatorMainThreads pthread)              

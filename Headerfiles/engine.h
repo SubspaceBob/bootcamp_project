@@ -1,7 +1,7 @@
 #ifndef engine_h
 #define engine_h
 #include <iostream>
-
+#include "CanInput.h"
 enum EngSts : uint8_t {Off, On};
 
 class Engine{
@@ -16,7 +16,7 @@ class Engine{
         //Chosen maxTrq = 300
         void setEngTrq(uint16_t engTrq){if(engTrq <=300)this->engTrq = engTrq;}
 
-        void run();
+        void run(canInput inputVal);
         // Getters
         EngSts getEngSts(){return engSts;}
         uint16_t getEngTrq(){return engTrq;}

@@ -55,5 +55,4 @@ public:
     bool ReadCANWriteToMemory(SharedMemory *memory);
 };
 
-
 #endif
