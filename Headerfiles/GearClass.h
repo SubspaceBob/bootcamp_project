@@ -1,5 +1,8 @@
 #include<iostream> 
-enum GearPattern :int8_t
+#include "CanInput.h"
+#include "engine.h"
+
+enum class GearPattern :int8_t
 {
     P, R, N, D
 };
@@ -20,9 +23,9 @@ class Gearbox
     float getRPS();
     GearPattern getGearStick();
     int8_t getEngagedGear();
-    void setSpeed(float x);
-    void setRPS(float x);
-    void setGearStick( GearPattern x);
-    void setEngagedGear(int8_t x);
-    void run();
+    void setSpeed(uint16_t x);
+    void setRPS(uint16_t x);
+    void setGearStick( int8_t x);
+    void setEngagedGear();
+    void run(canInput &Input, Engine &Eng);
 };

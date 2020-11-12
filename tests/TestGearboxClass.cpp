@@ -1,33 +1,24 @@
 #include "GearClass.h"
 #include <iomanip>
+#include "engine.h"
+#include "CanInput.h"
 
 int main()
 {
-    float y=19.259;
     Gearbox x;
+    Engine Eng;
+    canInput InputVal;
 
-    x.setSpeed(119.258963);
-    x.setRPS(12.3);
-    x.setGearStick(D);
-    x.setEngagedGear(2);
+    InputVal.GearReq=2;
+    Eng.setEngTrq(4);
 
-    std::cout << std::fixed;
-    std::cout << std::setprecision(6);
-    std::cout << x.getSpeed() << std::endl;
-    std::cout << x.getRPS()<< std::endl;
-    std::cout << x.getGearStick() << std::endl;
-    printf("%d  \n", x.getEngagedGear());
+    x.run(InputVal, Eng);
 
-    x.setSpeed(-111119.258963);
-    x.setRPS(-14849562.354656546546);
-    x.setGearStick(P);
-    x.setEngagedGear(6);
 
     std::cout << std::fixed;
     std::cout << std::setprecision(6);
     std::cout << x.getSpeed() << std::endl;
     std::cout << x.getRPS()<< std::endl;
-    std::cout << x.getGearStick() << std::endl;
+    std::cout << static_cast <int> (x.getGearStick()) << std::endl;
     printf("%d  \n", x.getEngagedGear());
-
 }

@@ -7,5 +7,5 @@
 void FramePacker(Engine &EngingeOut, Gearbox &GearboxOut)
 {
     frameToBus(004, GearboxOut.getSpeed());
-    frameToBus(005, GearboxOut.getGearStick());
+    frameToBus(005, static_cast <int8_t> (GearboxOut.getGearStick()));
 };

@@ -1,4 +1,6 @@
 #include <iostream>
+#ifndef CANINPUT_H
+#define CANINPUT_H
 
 
 struct canInput
@@ -11,3 +13,4 @@ struct canInput
 
         canInput() {BrakePdl=0; AccPdl=0; GearReq=0; StartBtn=0; Ignition=0;}
     };
+#endif
