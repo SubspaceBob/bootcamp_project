@@ -4,6 +4,7 @@
 #include <cmath>
 #include <utility>
 #include "KeyboardReader.h"
+#include "CanInput.h"
 
 struct user_input_signals{
     //Frame 1 signals
@@ -26,7 +27,7 @@ public:
     bool run(int cycleTime);
     KeyboardReader reader;
     user_input_signals data;
-    // create CANWriter object
+    CANSender canSender;
 };
 
 #endif // INPUTHANDLER_H

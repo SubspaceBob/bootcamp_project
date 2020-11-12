@@ -6,9 +6,7 @@
 
 InputHandler::InputHandler(){
     std::cout << "Hello there!" << std::endl;
-    frameToBus(001, (uint8_t)data.BrkPdl, (uint8_t)data.AccPdl);
-    frameToBus(003, (uint8_t)data.StartBtn, (uint8_t)data.Ignition);
-    frameToBus(003, (uint8_t)data.StartBtn, (uint8_t)data.Ignition);
+    canSender.start_can();
     reader.start();
 } 
 
@@ -57,9 +55,9 @@ bool InputHandler::run(int cycleTime){
     } 
 
     //Output the frames
-    frameToBus(data.Frame1, data.BrkPdl, data.AccPdl);
-    frameToBus(data.Frame2, (uint8_t)data.GearReq);
-    frameToBus(data.Frame3, (uint8_t)data.StartBtn, (uint8_t)data.Ignition);
+    canSender.frameToBus(data.Frame1, data.BrkPdl, data.AccPdl);
+    canSender.frameToBus(data.Frame2, (uint8_t)data.GearReq);
+    canSender.frameToBus(data.Frame3, (uint8_t)data.StartBtn, (uint8_t)data.Ignition);
     
     // Wait CAN cycletime
     std::this_thread::sleep_for(std::chrono::milliseconds(cycleTime));

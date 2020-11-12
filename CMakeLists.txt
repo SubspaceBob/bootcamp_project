@@ -17,6 +17,7 @@ target_link_libraries(Test_KeyReader X11)
 add_library(InputHandler SHARED InputHandler/KeyboardReader.cpp
                                 InputHandler/InputHandler.cpp
                                 SendCan/frameToBus.cpp
+                                SendCan/canSender.cpp
                                 Includes/socketcan_cpp/socketcan_cpp.cpp)                          
 target_link_libraries(InputHandler X11)
 
@@ -31,6 +32,7 @@ add_executable(InputHandler_Main   InputHandler/main.cpp
                                 InputHandler/InputHandler.cpp
                                 InputHandler/KeyboardReader.cpp
                                 SendCan/frameToBus.cpp
+                                SendCan/canSender.cpp
                                 Includes/socketcan_cpp/socketcan_cpp.cpp)
 target_link_libraries(InputHandler_Main X11) 
 
@@ -39,6 +41,7 @@ add_executable(EmulatorMainThreads Emulator-main-threads.cpp
                                 Gearbox/GearClass.cpp
                                 Engine/Engine.cpp
                                 ReadCan/canReader.cpp
+                                SendCan/canSender.cpp
                                 Includes/socketcan_cpp/socketcan_cpp.cpp  
                                 EmulatorFramePacker/FramePacker.cpp
                                 SendCan/frameToBus.cpp)

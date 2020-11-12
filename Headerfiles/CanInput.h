@@ -55,4 +55,16 @@ public:
     bool ReadCANWriteToMemory(SharedMemory *memory);
 };
 
+class CANSender{
+public:
+    CANSender() = default;
+    ~CANSender() = default;
+    scpp::SocketCan sockat_can;
+    bool start_can();
+    void frameToBus(uint8_t frameNo, uint8_t signalValue);
+    void frameToBus(uint8_t frameNo, uint8_t signal1Value, uint8_t signal2Value);
+    void frameToBus(uint8_t frameNo, uint8_t signal1Value, uint16_t signal2Value);
+    //bool ReadMemoryWriteToCAN(SharedMemory *memory);
+};
+
 #endif
