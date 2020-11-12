@@ -6,12 +6,15 @@
 #include "frameToBus.h"
 #include <atomic>
 
+
+
 std::atomic<bool> something;
-void runCANIO(SharedMemory *memory, CANReader *canReader)
+void runCANIO(SharedMemory *memory)
 {
-    
+    CANReader canReader;
+    canReader.start_can();
     while(true) {
-        bool terminate = canReader->ReadCANWriteToMemory(memory);
+        bool terminate = canReader.ReadCANWriteToMemory(memory);
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
         //FramePacker(Engine, Gearbox);
         if (something) {
@@ -22,9 +25,11 @@ void runCANIO(SharedMemory *memory, CANReader *canReader)
 }
 
 void runVehicle(SharedMemory *memory){
+    Engine engine;
+    Gearbox gearbox;
     while(true) {
         canInput from_memory = memory->read_memory();
-        std::cout << "Gear Request: " << (int)from_memory.GearReq << std::endl << std::flush;
+        //std::cout << "Gear Request: " << (int)from_memory.GearReq << std::endl << std::flush;
         std::this_thread::sleep_for(std::chrono::milliseconds(10));
         engine.run(from_memory);
         gearbox.run(from_memory, engine);
@@ -38,14 +43,13 @@ void runVehicle(SharedMemory *memory){
 
 
 int main(){
-    CANReader canReader;
+    
     SharedMemory memory;
-    Engine engine;
-    Gearbox gearbox;
+    
     something = false;
 
-    canReader.start_can();
-    std::thread t3(runCANIO, &memory, &canReader);
+  
+    std::thread t3(runCANIO, &memory);
     std::thread t4(runVehicle, &memory);
 
     t3.join();
