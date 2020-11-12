@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 3.10)
 project(TeamA)
+set(CMAKE_CXX_STANDARD 17)
 
 include_directories(Headerfiles)
 
@@ -33,12 +34,13 @@ add_executable(InputHandler_Main   InputHandler/main.cpp
                                 Includes/socketcan_cpp/socketcan_cpp.cpp)
 target_link_libraries(InputHandler_Main X11) 
 
-# Create executable for temporaryEmulator without threads
-add_executable(Emulator_Main    Emulatormain.cpp
-                                Engine/Engine.cpp
+# EmulatorMainThreads
+add_executable(EmulatorMainThreads Emulator-main-threads.cpp
                                 Gearbox/GearClass.cpp
+                                Engine/Engine.cpp
+                                ReadCan/canReader.cpp
+                                Includes/socketcan_cpp/socketcan_cpp.cpp  
                                 EmulatorFramePacker/FramePacker.cpp
-                                SendCan/frameToBus.cpp
-                                Includes/socketcan_cpp/socketcan_cpp.cpp
-                                ReadCan/canReader.cpp)
-target_link_libraries(Emulator_Main X11)
+                                SendCan/frameToBus.cpp)
+find_package (Threads)
+target_link_libraries(EmulatorMainThreads pthread)              
