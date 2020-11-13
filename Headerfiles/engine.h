@@ -19,13 +19,13 @@ class Engine{
         uint16_t getEngTrq(){return engTrq;}
 
     private:
-        EngSts engSts   = Off;
-        Trq engTrq      = 0;
+        EngSts engSts;
+        Trq engTrq;
+        canInput lastCycle;
+
         // Setters
         void setEngSts(EngSts engSts){this->engSts = engSts;}
-                
-        //Chosen maxTrq = 300
-        void setEngTrqFromAccPdl(canInput inputVal, float EngineSpeed);
-
+        void setEngTrqFromAccPdl(canInput inputVal, float EngineSpeed);//Chosen maxTrq = 300
+        void setLastCycleBtnSts(canInput inputVal){this->lastCycle = inputVal;}
 };
 #endif
