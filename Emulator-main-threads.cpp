@@ -27,17 +27,22 @@ void runCANIO(SharedMemory *memory)
 void runVehicle(SharedMemory *memory){
     Engine engine;
     Gearbox gearbox;
+    int TimeStepSize = 10; // Milliseconds
+
     while(true) {
         canInput from_memory = memory->read_memory();
-        //std::cout << "Gear Request: " << (int)from_memory.GearReq << std::endl << std::flush;
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
-        engine.run(from_memory);
-        gearbox.run(from_memory, engine);
+        std::cout << "AccPdl: " << (int)from_memory.AccPdl << std::endl << std::flush;
+                
+        engine.run(from_memory, gearbox.getRPS(), TimeStepSize);
+        gearbox.run(from_memory, engine.getEngTrq(), TimeStepSize);
         if (from_memory.Ignition==1)
         {
             something.exchange(true);
             break;
         }
+
+        std::this_thread::sleep_for(std::chrono::milliseconds(TimeStepSize));
+        
     }
 }
 

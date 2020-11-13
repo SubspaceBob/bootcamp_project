@@ -9,12 +9,15 @@ enum class GearPattern :int8_t
 
 class Gearbox
 {
-    int VehicleMass = 2000; 
-    float WheelRadius = 0.3;
-    float VehicleSpeed; // 0-70,8 m/s 
+    int VehicleMass; 
+    float WheelRadius;
+    float VehicleSpeed; // 0-70,8 m/s
     float EngineRPS; // 0-10000 rpm
-    GearPattern GearStickPosition;  //Active gear (P,R,N,D)
+    float GearboxRPS;
+    float GearRatios[4] = {4, 4, 4, 4};
+    float FinalGear;
     int8_t EngagedGear;  //what gear we are in while in D 
+    GearPattern GearStickPosition;  //Active gear (P,R,N,D)
 
     public:
     Gearbox();
@@ -27,5 +30,5 @@ class Gearbox
     void setRPS(uint16_t x);
     void setGearStick( int8_t x);
     void setEngagedGear();
-    void run(canInput &Input, Engine &Eng);
+    void run(canInput &Input, Trq EngTrq, int TimeStep);
 };

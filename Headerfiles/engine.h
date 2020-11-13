@@ -3,6 +3,7 @@
 #include <iostream>
 #include "CanInput.h"
 enum EngSts : uint8_t {Off, On};
+typedef uint16_t Trq;
 
 class Engine{
     public:
@@ -11,19 +12,20 @@ class Engine{
         Engine();
         ~Engine()= default;
 
-        // Setters
-        void setEngSts(EngSts engSts){this->engSts = engSts;}
-        //Chosen maxTrq = 300
-        void setEngTrq(uint16_t engTrq){if(engTrq <=300)this->engTrq = engTrq;}
-
-        void run(canInput inputVal);
+    
+        void run(canInput inputVal, float EngineSpeed, int TimeStep);
         // Getters
         EngSts getEngSts(){return engSts;}
         uint16_t getEngTrq(){return engTrq;}
 
     private:
-        EngSts engSts;
-        uint16_t engTrq;
-        
+        EngSts engSts   = Off;
+        Trq engTrq      = 0;
+        // Setters
+        void setEngSts(EngSts engSts){this->engSts = engSts;}
+                
+        //Chosen maxTrq = 300
+        void setEngTrqFromAccPdl(canInput inputVal, float EngineSpeed);
+
 };
 #endif

@@ -2,7 +2,6 @@
 #include <chrono>
 #include <thread>
 #include "InputHandler.h"
-#include "frameToBus.h"
 
 InputHandler::InputHandler(){
     std::cout << "Hello there!" << std::endl;

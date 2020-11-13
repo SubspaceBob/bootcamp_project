@@ -42,7 +42,7 @@ namespace scpp
         SocketCan();
         SocketCan(const SocketCan &) = delete;
         SocketCan & operator=(const SocketCan &) = delete;
-        SocketCanStatus open(const std::string & can_interface, int32_t read_timeout_ms = 3, SocketMode mode = MODE_CAN_MTU);
+        SocketCanStatus open(const std::string & can_interface, int32_t read_timeout_ms = 0, SocketMode mode = MODE_CAN_MTU);
         SocketCanStatus write(const CanFrame & msg);
         SocketCanStatus read(CanFrame & msg);
         SocketCanStatus close();
@@ -50,7 +50,7 @@ namespace scpp
         ~SocketCan();
     private:
         int m_socket = -1;
-        int32_t m_read_timeout_ms = 3;
+        int32_t m_read_timeout_ms = 0;
         std::string m_interface;
         SocketMode m_socket_mode;
     };

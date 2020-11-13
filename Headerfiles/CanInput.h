@@ -41,7 +41,7 @@ struct SharedMemory
 
     canInput read_memory(){
         std::shared_lock lock(can_input_mutex);
-        std::cout << "Reading from shared memory " << std::endl << std::flush;
+        //std::cout << "Reading from shared memory " << std::endl << std::flush;
         return can_input;
     }
 };

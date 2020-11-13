@@ -44,7 +44,7 @@ void CANSender::frameToBus(uint8_t frameNo, uint8_t signalValue) {
         printf("something went wrong on socket write, error code : %d \n", int32_t(write_sc_status));
     /*else
         printf("Sent to bus using 1st overloaded function.\n");*/
-    sockat_can.close();
+    //sockat_can.close();
 }
 
 // Frame with 2 uint8 signals...
@@ -66,7 +66,7 @@ void CANSender::frameToBus(uint8_t frameNo, uint8_t signal1Value, uint8_t signal
         printf("something went wrong on socket write, error code : %d \n", int32_t(write_sc_status));
     /*else
         printf("Sent to bus using 2nd overloaded function.\n");*/
-    sockat_can.close();    
+    //sockat_can.close();    
 }
 
 // Frame with 1 uint8 signal & 1 uint16 signal...
@@ -91,5 +91,5 @@ void CANSender::frameToBus(uint8_t frameNo, uint8_t signal1Value, uint16_t signa
         printf("something went wrong on socket write, error code : %d \n", int32_t(write_sc_status));
     /*else
         printf("Sent to bus using 3rd overloaded function.\n");*/
-    sockat_can.close(); 
+    //sockat_can.close(); 
 }
