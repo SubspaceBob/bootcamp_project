@@ -1,0 +1,22 @@
+#!/bin/bash
+
+# This bash runs the cmake, and make file in the build folder before starting up the main thread in a separate terminal window and thereafter starting the input handler in the first terminal window. 
+
+cd Build
+cmake ..
+make
+gnome-terminal --window-with-profile=EmulatorMainThreads -e ./EmulatorMainThreads
+./InputHandler_Main
+
+
+
+
+
+
+
+
+
+
+
+
+
