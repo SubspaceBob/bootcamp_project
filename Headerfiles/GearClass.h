@@ -1,3 +1,5 @@
+#ifndef GEARCLASS_H
+#define GEARCLASS_H
 #include<iostream> 
 #include "CanInput.h"
 #include "engine.h"
@@ -30,5 +32,7 @@ class Gearbox
     void setRPS(uint16_t x);
     void setGearStick( int8_t x);
     void setEngagedGear();
-    void run(canInput &Input, Trq EngTrq, int TimeStep);
+    void run(canInput &Input, canOutput &CANOut, Trq EngTrq, int TimeStep);
 };
+
+#endif
