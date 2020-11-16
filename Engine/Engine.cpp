@@ -7,8 +7,12 @@ Engine::Engine()
    engTrq = 0;
 }
 
-void Engine::run(canInput inputVal, float EngineSpeed, int TimeStep){
-   //std::cout << "running Engine\n";
+void Engine::run(canInput inputVal, canOutput CANOut, float EngineSpeed, int TimeStep)
+{
+   // Move Stop/Start code to separate function?
+   // Make sure to have a slow stop and start procedure(>200ms?) to not trigger this 
+   // multiple times on one keypress, memory is read more(10ms cycle) often than CAN
+   // is sent so we could get a flipping behaviour
 
    // Using last cycle for debouncing
    if(engSts == 0 && (int)inputVal.StartBtn == 1 
@@ -50,8 +54,6 @@ void Engine::setEngTrqFromAccPdl(canInput inputVal, float EngineSpeed)
    if(inputVal.AccPdl && this->engSts== On)
    {
       engTrq = 300; // Pedal to the metal
-      std::cout << "pedal to the metal" << std::endl;
-      
    }
    else
       engTrq = 0;

@@ -12,7 +12,7 @@ union RPM{
     bitfield rpmOut;
 };
 
-bool CANSender::start_can(){
+bool CANIO::start_can(){
     if (sockat_can.open("vcan0") != scpp::STATUS_OK) {
         std::cout << "Cannot open vcan0." << std::endl;
         std::cout << "Check whether the vcan0 interface is up!" << std::endl;
@@ -20,14 +20,31 @@ bool CANSender::start_can(){
     }
     else
     {
-        std::cout << "CANSender vcan0 open." << std::endl;
+        std::cout << "CANReader vcan0 open." << std::endl;
         return true;
     }
     
 }
 
+bool CANIO::ReadCANWriteToMemory(SharedMemory *memory) {
+    bool retval=false;
+    scpp::CanFrame fr;
+    if (sockat_can.read(fr) == scpp::STATUS_OK) { 
+        memory->save_can_input(fr);
+        if (fr.id==3 && fr.data[1]==1){
+            retval = true;
+        }
+        
+    }
+    else
+    {
+        std::cout << "CANReader read STATUS not OK!!" << std::endl;
+    }
+    return (retval);
+}
+
 // Frame with 1 uint8 signal...
-void CANSender::frameToBus(uint8_t frameNo, uint8_t signalValue) {
+void CANIO::frameToBus(uint8_t frameNo, uint8_t signalValue) {
     scpp::CanFrame cf_to_write;
 
     // Set Frame ID   
@@ -48,7 +65,7 @@ void CANSender::frameToBus(uint8_t frameNo, uint8_t signalValue) {
 }
 
 // Frame with 2 uint8 signals...
-void CANSender::frameToBus(uint8_t frameNo, uint8_t signal1Value, uint8_t signal2Value) {
+void CANIO::frameToBus(uint8_t frameNo, uint8_t signal1Value, uint8_t signal2Value) {
 
     scpp::CanFrame cf_to_write; 
     cf_to_write.id = frameNo;
@@ -70,7 +87,7 @@ void CANSender::frameToBus(uint8_t frameNo, uint8_t signal1Value, uint8_t signal
 }
 
 // Frame with 1 uint8 signal & 1 uint16 signal...
-void CANSender::frameToBus(uint8_t frameNo, uint8_t signal1Value, uint16_t signal2Value) {
+void CANIO::frameToBus(uint8_t frameNo, uint8_t signal1Value, uint16_t signal2Value) {
 
     RPM rpm;
     rpm.rpmIn= signal2Value;
@@ -93,3 +110,4 @@ void CANSender::frameToBus(uint8_t frameNo, uint8_t signal1Value, uint16_t signa
         printf("Sent to bus using 3rd overloaded function.\n");*/
     //sockat_can.close(); 
 }
+

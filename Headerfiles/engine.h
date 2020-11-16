@@ -7,16 +7,15 @@ typedef uint16_t Trq;
 
 class Engine{
     public:
-        // TODO: Constructor values are stubbed to always on acc to 1st story of 
-        // Start Engine Epic, change to proper init values once we have logics.
+        // Engine has On/Off status and generates a torque based on AccPdl from CANInput
+        // and current EngineSpeed from gearbox. run method is its main method.
         Engine();
         ~Engine()= default;
-
-    
-        void run(canInput inputVal, float EngineSpeed, int TimeStep);
+        void run(canInput inputVal, canOutput CANOut, float EngineSpeed, int TimeStep);
+        
         // Getters
         EngSts getEngSts(){return engSts;}
-        uint16_t getEngTrq(){return engTrq;}
+        Trq getEngTrq(){return engTrq;}
 
     private:
         EngSts engSts;
@@ -24,8 +23,7 @@ class Engine{
         canInput lastCycle;
 
         // Setters
-        void setEngSts(EngSts engSts){this->engSts = engSts;}
         void setEngTrqFromAccPdl(canInput inputVal, float EngineSpeed);//Chosen maxTrq = 300
-        void setLastCycleBtnSts(canInput inputVal){this->lastCycle = inputVal;}
+        
 };
 #endif

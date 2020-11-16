@@ -1,7 +1,7 @@
 #include <iostream>
 #include <cassert>
-#include "engine.h"
-#include "CanInput.h"
+#include "../Headerfiles/engine.h"
+#include "../Headerfiles/CanInput.h"
 
 int main(){
     Engine testEngine;

@@ -39,14 +39,14 @@ void Gearbox::setSpeed(uint16_t x)
 {
     float y=x*0.236; // x/300*0.708*100
     this->VehicleSpeed=y;
-    std::cout << "setSpeed: "<< std::endl << std::flush;
+    //std::cout << "setSpeed: "<< std::endl << std::flush;
 }
 
 void Gearbox::setRPS(uint16_t x)
 {
     float y=x*0.556; // x/300*1.667*100
     this->EngineRPS=y;
-    std::cout << "setRPS: "<< std::endl << std::flush;
+    //std::cout << "setRPS: "<< std::endl << std::flush;
 }
 
 void Gearbox::setGearStick(int8_t x)
@@ -55,29 +55,33 @@ void Gearbox::setGearStick(int8_t x)
     //std::cout << "setGearStick: "<< std::endl << std::flush;
     {if (x==0)
     {this->GearStickPosition=GearPattern::P;
-    std::cout << "Gear in P: "<< std::endl << std::flush;} //this->GearStickPosition=static_cast<GearPattern>(x)/*P*/;
+    //std::cout << "Gear in P: "<< std::endl << std::flush;
+    }
     
     else if (x==1)
     {this->GearStickPosition=GearPattern::R;
-    std::cout << "Gear in R: "<< std::endl << std::flush;}
+    //std::cout << "Gear in R: "<< std::endl << std::flush;
+    }
     
     else if (x==2)
     {this->GearStickPosition=GearPattern::N;
-    std::cout << "Gear in N: "<< std::endl << std::flush;}
+    //std::cout << "Gear in N: "<< std::endl << std::flush;
+    }
     
     else if (x==3)
     {this->GearStickPosition=GearPattern::D;
-    std::cout << "Gear in D: "<< std::endl << std::flush;}
+    //std::cout << "Gear in D: "<< std::endl << std::flush;
+    }
     }
 }
 
 void Gearbox::setEngagedGear()
 {
+    // Sets the EngagedGear index, the ratio is given by GearRatio[EngagedGear]
     this->EngagedGear=0;
-    // std::cout << "setEngagedGear: "<< std::endl << std::flush;
 }
 
-void Gearbox::run(canInput &Input, Trq EngTrq, int TimeStep){
+void Gearbox::run(canInput &Input, canOutput &CANOut, Trq EngTrq, int TimeStep){
     /*
     GearStickPosition = setGearStickPosition
     EngagedGear = setEngagedGear(WheelSpeed, EngineSpeed, GearStickPosition)
@@ -94,6 +98,7 @@ void Gearbox::run(canInput &Input, Trq EngTrq, int TimeStep){
 
     this->setGearStick(Input.GearReq);
     this->setEngagedGear();
+    
     // TODO add BrakeTorque and Rolling Resistance to acceleration
     auto acceleration   = EngTrq * GearRatios[EngagedGear] * FinalGear *WheelRadius /VehicleMass;
     VehicleSpeed        = VehicleSpeed + acceleration * TimeStep * 0.001; //TimeStep is Int Milliseconds, convert to Seconds
@@ -101,9 +106,16 @@ void Gearbox::run(canInput &Input, Trq EngTrq, int TimeStep){
     GearboxRPS  = VehicleSpeed/WheelRadius;
     EngineRPS   = GearboxRPS/GearRatios[EngagedGear];
 
-    std::cout << "EngTrq: "<< EngTrq << " Acceleration: " << acceleration << " VehicleSpeed[km/h]: " << VehicleSpeed*3.6 << std::endl;
-    //std::cout << "Vehicle Speed : " << VehicleSpeed << std::endl;
-
+    // Store values to CANOut
+    CANOut.GearStickPos     = static_cast<uint8_t> (GearStickPosition);
+    CANOut.RPM              = static_cast<uint16_t>(EngineRPS*60);
+    CANOut.VehicleSpeed     = static_cast<uint8_t> (VehicleSpeed*3.6);
+    
+    std::cout <<" EngTrq: "             << EngTrq           << 
+                " Acceleration: "       << acceleration     << 
+                " VehicleSpeed[km/h]: " << VehicleSpeed*3.6 << 
+                std::endl;
+ 
     // this->setSpeed(Eng.getEngTrq());
     // this->setRPS(Eng.getEngTrq());
 }

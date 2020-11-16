@@ -5,7 +5,7 @@
 
 InputHandler::InputHandler(){
     std::cout << "Hello there!" << std::endl;
-    canSender.start_can();
+    canIO.start_can();
     reader.start();
 } 
 
@@ -26,8 +26,8 @@ bool InputHandler::run(int cycleTime){
     // Frame1
         case 116: // Down Arrow = Brake
             // TODO: Implement logic for making this signal analog
-                if (key.second == 0) data.BrkPdl = 0;
-                else data.BrkPdl = 100;
+                if (key.second == 0) data.BrakePdl = 0;
+                else data.BrakePdl = 100;
             break;
         case 111: // Up Arrow = Accelerate
             // TODO: Implement logic for making this signal analog
@@ -54,9 +54,9 @@ bool InputHandler::run(int cycleTime){
     } 
 
     //Output the frames
-    canSender.frameToBus(data.Frame1, data.BrkPdl, data.AccPdl);
-    canSender.frameToBus(data.Frame2, (uint8_t)data.GearReq);
-    canSender.frameToBus(data.Frame3, (uint8_t)data.StartBtn, (uint8_t)data.Ignition);
+    canIO.frameToBus((uint8_t)1, (uint8_t)data.BrakePdl, (uint8_t)data.AccPdl);
+    canIO.frameToBus((uint8_t)2, (uint8_t)data.GearReq);
+    canIO.frameToBus((uint8_t)3, (uint8_t)data.StartBtn, (uint8_t)data.Ignition);
     
     // Wait CAN cycletime
     std::this_thread::sleep_for(std::chrono::milliseconds(cycleTime));
