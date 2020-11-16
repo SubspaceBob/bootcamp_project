@@ -9,8 +9,7 @@ Engine -> Engine : If Engine == Off && StartBtn == 1 && BrakePedal == 100
 note right of Engine : Start engine sequence is started(this.EngineSts=On)
 
 Engine <- GearBox : GearFunc
-Engine -> Engine : Else If Engine == On && GearFunc == P (&& Velocity == 0)
-note right of Engine #pink : Velocity to be checked by Gearbox? If secured remove
+Engine -> Engine : Else If Engine == On && GearFunc == P
 note right of Engine : Turn off engine sequence is started(this.EngineSts=Off)
 
 Engine <- input : GasPed

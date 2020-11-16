@@ -11,7 +11,8 @@ void Engine::run(canInput inputVal, float EngineSpeed, int TimeStep){
    //std::cout << "running Engine\n";
 
    // Using last cycle to make sure I only react once to each buttonpress
-   if(engSts == 0 && (int)inputVal.StartBtn == 1 && lastCycle.StartBtn == 0) {
+   if(engSts == 0 && (int)inputVal.StartBtn == 1 
+      && lastCycle.StartBtn == 0 && (int)inputVal.BrakePdl == 100) {
       // Engine off and first press = Turn on
       std::cout << "Starting engine" << std::endl;
       this->setEngSts(On);
@@ -24,13 +25,13 @@ void Engine::run(canInput inputVal, float EngineSpeed, int TimeStep){
          lastCycle.StartBtn = 1;
    }
    else if ((int)inputVal.StartBtn == 1) {
-      // Not first press - just wait for release
-      lastCycle.StartBtn = 1;
+      // No scenario fullfilled yet - just wait for more action
+      // lastCycle.StartBtn = 1;
    }
    else if ((int)inputVal.StartBtn == 0)
    {
-      // Button released reset last cycle to 
-      // be ready for another press
+      // Nobody wants to start or shutdown the engine
+      // make ready for another debounce sequence
       lastCycle.StartBtn = 0;
    }
    else {
