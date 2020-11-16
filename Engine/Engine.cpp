@@ -10,7 +10,7 @@ Engine::Engine()
 void Engine::run(canInput inputVal, float EngineSpeed, int TimeStep){
    //std::cout << "running Engine\n";
 
-   // Using last cycle to make sure I only react once to each buttonpress
+   // Using last cycle for debouncing
    if(engSts == 0 && (int)inputVal.StartBtn == 1 
       && lastCycle.StartBtn == 0 && (int)inputVal.BrakePdl == 100) {
       // Engine off and first press = Turn on
@@ -18,15 +18,14 @@ void Engine::run(canInput inputVal, float EngineSpeed, int TimeStep){
       this->setEngSts(On);
       lastCycle.StartBtn = 1;
    }
-   else if(engSts == 1 && (int)inputVal.StartBtn == 1 && lastCycle.StartBtn == 0) {
-         // Engine on and first press = Trun off
+   else if(engSts == 1 && (int)inputVal.StartBtn == 1 && lastCycle.StartBtn == 0 && (int) inputVal.GearReq == 0 ) {
+         // Engine on and first press = Turn off
          std::cout << "Stopping engine" << std::endl;
          this->setEngSts(Off);
          lastCycle.StartBtn = 1;
    }
    else if ((int)inputVal.StartBtn == 1) {
-      // No scenario fullfilled yet - just wait for more action
-      // lastCycle.StartBtn = 1;
+      // No scenario fullfilled yet - waiting for more
    }
    else if ((int)inputVal.StartBtn == 0)
    {
@@ -55,8 +54,5 @@ void Engine::setEngTrqFromAccPdl(canInput inputVal, float EngineSpeed)
       
    }
    else
-   {
       engTrq = 0;
-   }
-   
 }
