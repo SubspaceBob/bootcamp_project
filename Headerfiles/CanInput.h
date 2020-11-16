@@ -7,13 +7,13 @@
 
 struct canInput
 {
-    int8_t BrakePdl;
+    int8_t BrkPdl;
     int8_t AccPdl;
     int8_t GearReq;
     int8_t StartBtn;
-    int8_t Ignition;
+    int8_t QuitEmul;
 
-    canInput() {BrakePdl=0; AccPdl=0; GearReq=0; StartBtn=0; Ignition=0;}
+    canInput() {BrkPdl=0; AccPdl=0; GearReq=0; StartBtn=0; QuitEmul=0;}
 };
 
 struct canOutput
@@ -37,7 +37,7 @@ struct SharedMemory
         std::unique_lock lock(can_input_mutex);
         if(fr.id==001)
         {
-            can_input.BrakePdl=fr.data[0];
+            can_input.BrkPdl=fr.data[0];
             can_input.AccPdl=fr.data[1];
         }  
         else if(fr.id==002)
@@ -47,7 +47,7 @@ struct SharedMemory
         else if(fr.id==003)
         {
             can_input.StartBtn=fr.data[0];
-            can_input.Ignition=fr.data[1];
+            can_input.QuitEmul=fr.data[1];
         }
         
     }

@@ -5,7 +5,9 @@
 cd Build
 cmake ..
 make
-gnome-terminal --window-with-profile=EmulatorMainThreads -e ./EmulatorMainThreads
+gnome-terminal -- ./EmulatorMainThreads
+# Copy above row and edit to start GUI
+
 ./InputHandler_Main
 
 

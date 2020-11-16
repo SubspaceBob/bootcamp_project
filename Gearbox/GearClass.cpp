@@ -51,27 +51,24 @@ void Gearbox::setRPS(uint16_t x)
 
 void Gearbox::setGearStick(int8_t x)
 {
-    if (0<=x && x<4 && this->VehicleSpeed<1)
+    if (0>=x && x<4 && this->VehicleSpeed<1){
     //std::cout << "setGearStick: "<< std::endl << std::flush;
-    {if (x==0)
-    {this->GearStickPosition=GearPattern::P;
-    //std::cout << "Gear in P: "<< std::endl << std::flush;
-    }
-    
-    else if (x==1)
-    {this->GearStickPosition=GearPattern::R;
-    //std::cout << "Gear in R: "<< std::endl << std::flush;
-    }
-    
-    else if (x==2)
-    {this->GearStickPosition=GearPattern::N;
-    //std::cout << "Gear in N: "<< std::endl << std::flush;
-    }
-    
-    else if (x==3)
-    {this->GearStickPosition=GearPattern::D;
-    //std::cout << "Gear in D: "<< std::endl << std::flush;
-    }
+       if (x==0){
+           this->GearStickPosition=GearPattern::P;
+            //std::cout << "Gear in P: "<< std::endl << std::flush;
+        }
+        else if (x==1){
+            this->GearStickPosition=GearPattern::R;
+            //std::cout << "Gear in R: "<< std::endl << std::flush;
+        }
+        else if (x==2){
+            this->GearStickPosition=GearPattern::N;
+            //std::cout << "Gear in N: "<< std::endl << std::flush;
+        }
+        else if (x==3){
+            this->GearStickPosition=GearPattern::D;
+        //std::cout << "Gear in D: "<< std::endl << std::flush;
+        }
     }
 }
 
@@ -113,8 +110,7 @@ void Gearbox::run(canInput &Input, canOutput &CANOut, Trq EngTrq, int TimeStep){
     
     std::cout <<" EngTrq: "             << EngTrq           << 
                 " Acceleration: "       << acceleration     << 
-                " VehicleSpeed[km/h]: " << VehicleSpeed*3.6 << 
-                std::endl;
+                " VehicleSpeed[km/h]: " << VehicleSpeed*3.6 << std::endl;
  
     // this->setSpeed(Eng.getEngTrq());
     // this->setRPS(Eng.getEngTrq());

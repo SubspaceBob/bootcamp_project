@@ -7,7 +7,7 @@ Engine::Engine()
    engTrq = 0;
 }
 
-void Engine::run(canInput inputVal, canOutput CANOut, float EngineSpeed, int TimeStep)
+void Engine::run(canInput inputVal, canOutput CANOut, float EngineSpeed, int TimeStep, int gearStick)
 {
    // Move Stop/Start code to separate function?
    // Make sure to have a slow stop and start procedure(>200ms?) to not trigger this 
@@ -15,18 +15,26 @@ void Engine::run(canInput inputVal, canOutput CANOut, float EngineSpeed, int Tim
    // is sent so we could get a flipping behaviour
 
    // Using last cycle for debouncing
+
+   for (int i = 0; i <100; i++){
+      std::cout << "Gearstick" << gearStick << std::endl;
+   }
+
    if(engSts == 0 && (int)inputVal.StartBtn == 1 
-      && lastCycle.StartBtn == 0 && (int)inputVal.BrakePdl == 100) {
+      && lastCycle.StartBtn == 0 && (int)inputVal.BrkPdl == 100)
+   {
       // Engine off and first press = Turn on
       std::cout << "Starting engine" << std::endl;
       engSts = On;
       lastCycle.StartBtn = 1;
    }
-   else if(engSts == 1 && (int)inputVal.StartBtn == 1 && lastCycle.StartBtn == 0 && (int) inputVal.GearReq == 0 ) {
-         // Engine on and first press = Turn off
-         std::cout << "Stopping engine" << std::endl;
-         engSts = Off;
-         lastCycle.StartBtn = 1;
+   else if(engSts == 1 && (int)inputVal.StartBtn == 1 
+      && lastCycle.StartBtn == 0 && gearStick == 0 )
+   {
+      // Engine on and first press = Turn off
+      std::cout << "Stopping engine" << std::endl;
+      engSts = Off;
+      lastCycle.StartBtn = 1;
    }
    else if ((int)inputVal.StartBtn == 1) {
       // No scenario fullfilled yet - waiting for more
