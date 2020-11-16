@@ -16,7 +16,7 @@ target_link_libraries(Test_KeyReader X11)
 # Shared Object of InputHandler with SendCAN-stuff
 add_library(InputHandler SHARED InputHandler/KeyboardReader.cpp
                                 InputHandler/InputHandler.cpp
-                                SendCan/canSender.cpp
+                                CANIO/CANIO.cpp
                                 Includes/socketcan_cpp/socketcan_cpp.cpp)                          
 target_link_libraries(InputHandler X11)
 
@@ -30,16 +30,14 @@ target_link_libraries(Test_InputHandler PUBLIC X11 InputHandler)
 add_executable(InputHandler_Main   InputHandler/main.cpp
                                 InputHandler/InputHandler.cpp
                                 InputHandler/KeyboardReader.cpp
-                                SendCan/canSender.cpp
+                                CANIO/CANIO.cpp
                                 Includes/socketcan_cpp/socketcan_cpp.cpp)
-target_link_libraries(InputHandler_Main X11) 
+target_link_libraries(InputHandler_Main X11 pthread) 
 
 # EmulatorMainThreads
 add_executable(EmulatorMainThreads Emulator-main-threads.cpp
                                 Gearbox/GearClass.cpp
                                 Engine/Engine.cpp
-                                ReadCan/canReader.cpp
-                                SendCan/canSender.cpp
-                                Includes/socketcan_cpp/socketcan_cpp.cpp  
-                                EmulatorFramePacker/FramePacker.cpp)
+                                CANIO/CANIO.cpp
+                                Includes/socketcan_cpp/socketcan_cpp.cpp)
 target_link_libraries(EmulatorMainThreads pthread)              

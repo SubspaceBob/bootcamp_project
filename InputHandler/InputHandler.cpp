@@ -5,7 +5,7 @@
 
 InputHandler::InputHandler(){
     std::cout << "Hello there!" << std::endl;
-    canSender.start_can();
+    canIO.start_can();
     reader.start();
 } 
 
@@ -54,9 +54,9 @@ bool InputHandler::run(int cycleTime){
     } 
 
     //Output the frames
-    canSender.frameToBus((uint8_t)1, (uint8_t)data.BrakePdl, (uint8_t)data.AccPdl);
-    canSender.frameToBus((uint8_t)2, (uint8_t)data.GearReq);
-    canSender.frameToBus((uint8_t)3, (uint8_t)data.StartBtn, (uint8_t)data.Ignition);
+    canIO.frameToBus((uint8_t)1, (uint8_t)data.BrakePdl, (uint8_t)data.AccPdl);
+    canIO.frameToBus((uint8_t)2, (uint8_t)data.GearReq);
+    canIO.frameToBus((uint8_t)3, (uint8_t)data.StartBtn, (uint8_t)data.Ignition);
     
     // Wait CAN cycletime
     std::this_thread::sleep_for(std::chrono::milliseconds(cycleTime));

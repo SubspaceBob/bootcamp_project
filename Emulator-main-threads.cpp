@@ -8,16 +8,14 @@
 std::atomic<bool> something;
 void runCANIO(SharedMemory *memory)
 {
-    CANSender canSender;
-    canSender.start_can();
-    CANReader canReader;
-    canReader.start_can();
+    CANIO canIO;
+    canIO.start_can();
     while(true) {
-        bool terminate = canReader.ReadCANWriteToMemory(memory);
+        bool terminate = canIO.ReadCANWriteToMemory(memory);
 
         canOutput canSend=memory->read_output_memory();
-        canSender.frameToBus(005, canSend.GearStickPos, canSend.RPM);
-        canSender.frameToBus(004, canSend.VehicleSpeed);
+        canIO.frameToBus(005, canSend.GearStickPos, canSend.RPM);
+        canIO.frameToBus(004, canSend.VehicleSpeed);
 
         if (something) {
             
@@ -25,7 +23,7 @@ void runCANIO(SharedMemory *memory)
         }
 
         // Sleep
-        std::this_thread::sleep_for(std::chrono::microseconds(10));
+        std::this_thread::sleep_for(std::chrono::microseconds(10000));
     }
 }
 

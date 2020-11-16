@@ -13,7 +13,7 @@ public:
     bool run(int cycleTime);
     KeyboardReader reader;
     canInput data;
-    CANSender canSender;
+    CANIO canIO;
 };
 
 #endif // INPUTHANDLER_H

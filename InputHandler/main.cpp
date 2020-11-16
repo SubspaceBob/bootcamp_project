@@ -2,7 +2,7 @@
 #include "frameToBus.h"
 
 int main() { 
-    int cycleTime = 1000; // Rough Can cycletime in ms
+    int cycleTime = 100; // Rough Can cycletime in ms
     InputHandler inpHandl;
     bool stop = false;
 
