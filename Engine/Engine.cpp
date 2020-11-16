@@ -3,8 +3,7 @@
 
 Engine::Engine()
 {
-   // Init values are no torque but engine is started, for now
-   engSts = On;
+   engSts = Off;
    engTrq = 0;
 }
 
@@ -15,22 +14,36 @@ void Engine::run(canInput inputVal, canOutput CANOut, float EngineSpeed, int Tim
    // multiple times on one keypress, memory is read more(10ms cycle) often than CAN
    // is sent so we could get a flipping behaviour
 
-   if(engSts == 0 && (int)inputVal.StartBtn == 1) 
-   {
-      engSts = EngSts::On;
-      setEngTrqFromAccPdl(inputVal, EngineSpeed);
+   // Using last cycle for debouncing
+   if(engSts == 0 && (int)inputVal.StartBtn == 1 
+      && lastCycle.StartBtn == 0 && (int)inputVal.BrakePdl == 100) {
+      // Engine off and first press = Turn on
+      std::cout << "Starting engine" << std::endl;
+      engSts = On;
+      lastCycle.StartBtn = 1;
    }
-   else if(engSts == 1 && (int)inputVal.StartBtn == 1) 
-   {
-      engSts = EngSts::Off;
-      
-      // Kill torque instead of AccPdl and EngineSpeed
-      engTrq = 0; 
+   else if(engSts == 1 && (int)inputVal.StartBtn == 1 && lastCycle.StartBtn == 0 && (int) inputVal.GearReq == 0 ) {
+         // Engine on and first press = Turn off
+         std::cout << "Stopping engine" << std::endl;
+         engSts = Off;
+         lastCycle.StartBtn = 1;
    }
-   else if(engSts == 1) 
-   {
-      setEngTrqFromAccPdl(inputVal, EngineSpeed);
+   else if ((int)inputVal.StartBtn == 1) {
+      // No scenario fullfilled yet - waiting for more
    }
+   else if ((int)inputVal.StartBtn == 0)
+   {
+      // Nobody wants to start or shutdown the engine
+      // make ready for another debounce sequence
+      lastCycle.StartBtn = 0;
+   }
+   else {
+      // If this happens my logic is in Friday afternoon mode...
+      std::cout << "Major fail in Engine On/Off" << std::endl;
+      exit(EXIT_FAILURE);
+   }
+   
+   setEngTrqFromAccPdl(inputVal, EngineSpeed);
 }
 
 void Engine::setEngTrqFromAccPdl(canInput inputVal, float EngineSpeed)
@@ -38,14 +51,10 @@ void Engine::setEngTrqFromAccPdl(canInput inputVal, float EngineSpeed)
    // read AcclPdl value from CAN
    // read EngineRPS from gearbox(calculated in previous loop)
    // Calculate new Trq
-   // TODO: take EngSts as input
-
-   if(inputVal.AccPdl)
+   if(inputVal.AccPdl && this->engSts== On)
    {
       engTrq = 300; // Pedal to the metal
    }
    else
-   {
       engTrq = 0;
-   }   
 }

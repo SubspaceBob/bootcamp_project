@@ -19,9 +19,11 @@ class Engine{
 
     private:
         EngSts engSts;
-        Trq engTrq;        
-        //Chosen maxTrq = 300
-        void setEngTrqFromAccPdl(canInput inputVal, float EngineSpeed);
+        Trq engTrq;
+        canInput lastCycle;
 
+        // Setters
+        void setEngTrqFromAccPdl(canInput inputVal, float EngineSpeed);//Chosen maxTrq = 300
+        
 };
 #endif
