@@ -47,29 +47,27 @@ void Gearbox::setRPS(uint16_t x)
     //std::cout << "setRPS: "<< std::endl << std::flush;
 }
 
-void Gearbox::setGearStick(int8_t x)
+void Gearbox::setGearStick(int8_t GearStickRequest, int8_t BrakePedal)
 {
-    if (0<=x && x<4 && this->VehicleSpeed<1)
-    //std::cout << "setGearStick: "<< std::endl << std::flush;
-    {if (x==0)
-    {this->GearStickPosition=GearPattern::P;
-    //std::cout << "Gear in P: "<< std::endl << std::flush;
-    }
-    
-    else if (x==1)
-    {this->GearStickPosition=GearPattern::R;
-    //std::cout << "Gear in R: "<< std::endl << std::flush;
-    }
-    
-    else if (x==2)
-    {this->GearStickPosition=GearPattern::N;
-    //std::cout << "Gear in N: "<< std::endl << std::flush;
-    }
-    
-    else if (x==3)
-    {this->GearStickPosition=GearPattern::D;
-    //std::cout << "Gear in D: "<< std::endl << std::flush;
-    }
+    // If GearStickRequest 0-3, low vehicle speed and brakepedal somewhat pressed
+    if (0<=GearStickRequest && GearStickRequest<4 && VehicleSpeed<1 && BrakePedal > 5)
+    {
+        if (GearStickRequest==0)
+        {
+            GearStickPosition=GearPattern::P;
+        }
+        else if (GearStickRequest==1)
+        {
+            GearStickPosition=GearPattern::R;
+        }
+        else if (GearStickRequest==2)
+        {
+            GearStickPosition=GearPattern::N;
+        }
+        else if (GearStickRequest==3)
+        {
+            GearStickPosition=GearPattern::D;
+        }
     }
 }
 
@@ -102,13 +100,21 @@ void Gearbox::run(canInput &Input, canOutput &CANOut, Trq EngTrq, int TimeStep){
     EngineRPS    = GearboxRPS / GearRatio 
     */
 
-    this->setGearStick(Input.GearReq);
+    this->setGearStick(Input.GearReq, Input.BrakePdl);
     this->setEngagedGear();
 
+    // Get EngineTorque and check against GearStickPosition
+    Trq engine_torque = 0;
+    if (GearStickPosition == GearPattern::D)
+    {
+        engine_torque = EngTrq;
+    }
+
+    // Calculate brake torque and rolling resistance
     Trq BrakeTrq = CalculateBrakeTorque(Input.BrakePdl);
     auto RollingResistance = VehicleSpeed * ROLLINGRESISTANCE;
 
-    auto acceleration   = (EngTrq * GearRatios[EngagedGear] * FinalGear - BrakeTrq) * WHEEL_RADIUS /VEHICLE_MASS - VehicleSpeed * ROLLINGRESISTANCE;
+    auto acceleration   = (engine_torque * GearRatios[EngagedGear] * FinalGear - BrakeTrq) * WHEEL_RADIUS /VEHICLE_MASS - VehicleSpeed * ROLLINGRESISTANCE;
     VehicleSpeed        = VehicleSpeed + acceleration * TimeStep * 0.001; //TimeStep is Int Milliseconds, convert to Seconds
     
     // If only rolling resistance is slowing down, it never stops.
@@ -135,9 +141,11 @@ void Gearbox::run(canInput &Input, canOutput &CANOut, Trq EngTrq, int TimeStep){
     CANOut.RPM              = static_cast<uint16_t>(EngineRPS*60);
     CANOut.VehicleSpeed     = static_cast<uint8_t> (VehicleSpeed*3.6);
     
-    std::cout <<" EngTrq: "             << EngTrq           << 
-                " Acceleration: "       << acceleration     << 
-                " VehicleSpeed[km/h]: " << VehicleSpeed*3.6 << 
+    std::cout <<" EngTrq: "             << EngTrq               << 
+                " GearStickPosition: "  << static_cast<int> (GearStickPosition)               << 
+                " Acceleration: "       << acceleration         << 
+                " VehicleSpeed[km/h]: " << VehicleSpeed*3.6     << 
+
                 //" RollingResistance : " << VehicleSpeed * ROLLINGRESISTANCE <<
                 std::endl;
  
