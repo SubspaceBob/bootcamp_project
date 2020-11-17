@@ -1,0 +1,43 @@
+cmake_minimum_required(VERSION 3.10)
+project(TeamA)
+set(CMAKE_CXX_STANDARD 17)
+
+include_directories(Headerfiles)
+
+# Test KeyboardReader
+add_executable(Test_KeyReader   Tests/test_keyboard_reader.cpp
+                                InputHandler/keyboard_reader.cpp)
+target_link_libraries(Test_KeyReader X11)    
+
+# Test GearboxClass
+#add_executable(Test_Gearbox     Tests/test_gearbox.cpp
+#                                Gearbox/gearbox.cpp)    
+
+# Shared Object of InputHandler with SendCAN-stuff
+add_library(InputHandler SHARED InputHandler/keyboard_reader.cpp
+                                InputHandler/input_handler.cpp
+                                CANIO/can_io.cpp
+                                Includes/socketcan_cpp/socketcan_cpp.cpp)                          
+target_link_libraries(InputHandler X11)
+
+# Test of InputHandler
+add_executable(Test_InputHandler    Tests/test_input_handler.cpp
+                                    InputHandler/keyboard_reader.cpp
+                                    InputHandler/input_handler)
+target_link_libraries(Test_InputHandler PUBLIC X11 InputHandler)
+
+# Create executable for InputHandlerMain
+add_executable(InputHandler_Main   InputHandler/main.cpp
+                                InputHandler/input_handler.cpp
+                                InputHandler/keyboard_reader.cpp
+                                CANIO/can_io.cpp
+                                Includes/socketcan_cpp/socketcan_cpp.cpp)
+target_link_libraries(InputHandler_Main X11 pthread) 
+
+# EmulatorMainThreads
+add_executable(EmulatorMainThreads emulator_main_threads.cpp
+                                Gearbox/gearbox.cpp
+                                Engine/engine.cpp
+                                CANIO/can_io.cpp
+                                Includes/socketcan_cpp/socketcan_cpp.cpp)
+target_link_libraries(EmulatorMainThreads pthread)              

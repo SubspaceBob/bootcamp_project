@@ -1,0 +1,25 @@
+Proposed Can Frames and messages
+
+In order of priority:
+Inputs:
+    Frame1: 
+        Byte1:  BrkPdl      uint8_t     0-F = 0-100%        init = 0
+        Byte2:  accPdl      uint8_t     0-F = 0-100%        init = 0
+    Frame2:
+        Byte1:  gearReq     uint8_t     0-3 = P, R, N, D    init = P
+    Frame3:
+<<<<<<< HEAD:_Docs/CanFrameMessages.txt
+        Byte1:  StartBtn    uint8_t     0/1 = notPrsd/Prsd  init = notPrsd
+        Byte2:  QuitEmul    uint8_t     0/1 = Off/On        init = off
+=======
+        Byte1:  startBtn    uint8_t     0/1 = notPrsd/Prsd  init = notPrsd
+        Byte2:  quitEmul    uint8_t     0/1 = Off/On        init = off
+>>>>>>> 99eaef477f1ee83043fa951560d9f9d1f816fdcc:_Docs/CanFrameMessages.txt
+Outputs:
+    Frame4:
+        Byte1:  Speed       uint8_t     0-255 km/h          init = 0
+    Frame5:
+        Byte1:  GearStick   uint8_t     0-3 = P, R, N, D    init = P
+        Byte2:  MSB of RPM
+        Byte3:  LSB of RPM  uint16_t    0-10000 rpm         init = 0
+

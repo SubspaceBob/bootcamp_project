@@ -1,0 +1,20 @@
+@startuml 
+title Engine Process
+database input
+
+Engine <- input : startBtn
+Engine <- input : brkPed
+
+Engine -> Engine : If Engine == Off && startBtn == 1 && brkPdl == 100
+note right of Engine : Start engine sequence is started(this.engSts=On)
+
+Engine <- GearBox : gearStick
+Engine -> Engine : Else If Engine == On && gearStick == P
+note right of Engine : Turn off engine sequence is started(this.engSts=Off)
+
+Engine <- input : accPdl
+Engine <- GearBox : RPS
+note right of Engine : Set this.engTrq
+
+
+@enduml
