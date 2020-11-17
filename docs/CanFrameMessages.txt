@@ -9,7 +9,7 @@ Inputs:
         Byte1:  GearReq     uint8_t     0-3 = P, R, N, D    init = P
     Frame3:
         Byte1:  StartBtn    uint8_t     0/1 = notPrsd/Prsd  init = notPrsd
-        Byte2:  Ignition    uint8_t     0/1 = Off/On        init = off
+        Byte2:  QuitEmul    uint8_t     0/1 = Off/On        init = off
 Outputs:
     Frame4:
         Byte1:  Speed       uint8_t     0-255 km/h          init = 0

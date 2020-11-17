@@ -38,14 +38,14 @@ void runVehicle(SharedMemory *memory){
         canInput CANIn = memory->read_input_memory();
         
         // Run engine and gearbox simulation with CANIn and CANOut
-        engine.run(CANIn, CANOut, gearbox.getRPS(), TimeStepSize);
+        engine.run(CANIn, CANOut, gearbox.getRPS(), TimeStepSize, (int) gearbox.getGearStick());
         gearbox.run(CANIn, CANOut, engine.getEngTrq(), TimeStepSize);
 
         // Push CAN Output values to shared memory
         memory->write_can_output(CANOut);
 
         // Shutdown condition
-        if (CANIn.Ignition==1)
+        if (CANIn.QuitEmul==1)
         {
             something.exchange(true);
             break;

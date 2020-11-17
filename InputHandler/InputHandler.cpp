@@ -26,8 +26,8 @@ bool InputHandler::run(int cycleTime){
     // Frame1
         case 116: // Down Arrow = Brake
             // TODO: Implement logic for making this signal analog
-                if (key.second == 0) data.BrakePdl = 0;
-                else data.BrakePdl = 100;
+                if (key.second == 0) data.BrkPdl = 0;
+                else data.BrkPdl = 100;
             break;
         case 111: // Up Arrow = Accelerate
             // TODO: Implement logic for making this signal analog
@@ -42,7 +42,7 @@ bool InputHandler::run(int cycleTime){
     // Frame 3 Enter = Start button
         case 36: data.StartBtn = key.second; break;
         case 24: //Q = quitbutton
-            data.Ignition = key.second; break;
+            data.QuitEmul = key.second; break;
             // TODO: Possibly connected in gracefull shutdown see also escape button
             break;
     // Unused buttons
@@ -54,9 +54,9 @@ bool InputHandler::run(int cycleTime){
     } 
 
     //Output the frames
-    canIO.frameToBus((uint8_t)1, (uint8_t)data.BrakePdl, (uint8_t)data.AccPdl);
+    canIO.frameToBus((uint8_t)1, (uint8_t)data.BrkPdl, (uint8_t)data.AccPdl);
     canIO.frameToBus((uint8_t)2, (uint8_t)data.GearReq);
-    canIO.frameToBus((uint8_t)3, (uint8_t)data.StartBtn, (uint8_t)data.Ignition);
+    canIO.frameToBus((uint8_t)3, (uint8_t)data.StartBtn, (uint8_t)data.QuitEmul);
     
     // Wait CAN cycletime
     std::this_thread::sleep_for(std::chrono::milliseconds(cycleTime));

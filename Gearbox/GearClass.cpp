@@ -100,7 +100,7 @@ void Gearbox::run(canInput &Input, canOutput &CANOut, Trq EngTrq, int TimeStep){
     EngineRPS    = GearboxRPS / GearRatio 
     */
 
-    this->setGearStick(Input.GearReq, Input.BrakePdl);
+    this->setGearStick(Input.GearReq, Input.BrkPdl);
     this->setEngagedGear();
 
     // Get EngineTorque and check against GearStickPosition
@@ -111,7 +111,7 @@ void Gearbox::run(canInput &Input, canOutput &CANOut, Trq EngTrq, int TimeStep){
     }
 
     // Calculate brake torque and rolling resistance
-    Trq BrakeTrq = CalculateBrakeTorque(Input.BrakePdl);
+    Trq BrakeTrq = CalculateBrakeTorque(Input.BrkPdl);
     auto RollingResistance = VehicleSpeed * ROLLINGRESISTANCE;
 
     auto acceleration   = (engine_torque * GearRatios[EngagedGear] * FinalGear - BrakeTrq) * WHEEL_RADIUS /VEHICLE_MASS - VehicleSpeed * ROLLINGRESISTANCE;
