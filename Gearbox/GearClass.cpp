@@ -5,8 +5,6 @@
 
  Gearbox::Gearbox()
  {
-    VehicleMass     = 2000; 
-    WheelRadius     = 0.3;
     VehicleSpeed    = 0; // 0-70,8 m/s
     EngineRPS       = 0; // 0-10000 rpm
     GearboxRPS      = 0;
@@ -81,6 +79,14 @@ void Gearbox::setEngagedGear()
     this->EngagedGear=0;
 }
 
+Trq Gearbox::CalculateBrakeTorque(int8_t BrakePdl)
+{
+    // Calculates Brake Torque based on BrakePedal Value and max possible brake torque.
+    // BrakePdl is 0-255, BrakePdl == 255 -> BrkTrq = MAX_BRAKETORQUE
+    // TODO: If driving in reverse the Torque should be negated.
+    Trq BrkTrq = MAX_BRAKETORQUE * BrakePdl / 255;
+}
+
 void Gearbox::run(canInput &Input, canOutput &CANOut, Trq EngTrq, int TimeStep){
     /*
     GearStickPosition = setGearStickPosition
@@ -98,12 +104,30 @@ void Gearbox::run(canInput &Input, canOutput &CANOut, Trq EngTrq, int TimeStep){
 
     this->setGearStick(Input.GearReq);
     this->setEngagedGear();
-    
-    // TODO add BrakeTorque and Rolling Resistance to acceleration
-    auto acceleration   = EngTrq * GearRatios[EngagedGear] * FinalGear *WheelRadius /VehicleMass;
-    VehicleSpeed        = VehicleSpeed + acceleration * TimeStep * 0.001; //TimeStep is Int Milliseconds, convert to Seconds
 
-    GearboxRPS  = VehicleSpeed/WheelRadius;
+    Trq BrakeTrq = CalculateBrakeTorque(Input.BrakePdl);
+    auto RollingResistance = VehicleSpeed * ROLLINGRESISTANCE;
+
+    auto acceleration   = (EngTrq * GearRatios[EngagedGear] * FinalGear - BrakeTrq) * WHEEL_RADIUS /VEHICLE_MASS - VehicleSpeed * ROLLINGRESISTANCE;
+    VehicleSpeed        = VehicleSpeed + acceleration * TimeStep * 0.001; //TimeStep is Int Milliseconds, convert to Seconds
+    
+    // If only rolling resistance is slowing down, it never stops.
+    // Low speed and deceleration can be rounded of to stopped. 
+    if (VehicleSpeed < 0.1 && acceleration < 0)
+    {
+        VehicleSpeed = 0;
+    }
+    
+    // We don't allow negative speed, and then the acceleration should also be forced to zero.
+    // TODO: This limit should be applied on the EngineRPS and take GearStickPosition into consideration, 
+    // and braketorque to take driving direction into consideration. But it makes a bit more complicated.
+    if (VehicleSpeed < 0) 
+    {
+        acceleration = 0;
+        VehicleSpeed = 0;
+    }
+
+    GearboxRPS  = VehicleSpeed/WHEEL_RADIUS;
     EngineRPS   = GearboxRPS/GearRatios[EngagedGear];
 
     // Store values to CANOut
@@ -114,6 +138,7 @@ void Gearbox::run(canInput &Input, canOutput &CANOut, Trq EngTrq, int TimeStep){
     std::cout <<" EngTrq: "             << EngTrq           << 
                 " Acceleration: "       << acceleration     << 
                 " VehicleSpeed[km/h]: " << VehicleSpeed*3.6 << 
+                //" RollingResistance : " << VehicleSpeed * ROLLINGRESISTANCE <<
                 std::endl;
  
     // this->setSpeed(Eng.getEngTrq());
