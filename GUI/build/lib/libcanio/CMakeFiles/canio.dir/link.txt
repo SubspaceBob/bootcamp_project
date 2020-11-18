@@ -1,0 +1,2 @@
+/usr/bin/ar qc libcanio.a  CMakeFiles/canio.dir/src/can_common.cpp.o CMakeFiles/canio.dir/src/canio.cpp.o
+/usr/bin/ranlib libcanio.a

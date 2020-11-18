@@ -1,0 +1,5 @@
+-I/home/rkallum/Project/GroupA/GUI/app/avic
+-I/home/rkallum/Project/GroupA/GUI/build/app/avic
+-o
+/home/rkallum/Project/GroupA/GUI/build/app/avic/include/moc_your_stuff.cpp
+/home/rkallum/Project/GroupA/GUI/app/avic/include/your_stuff.h

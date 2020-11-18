@@ -1,7 +1,7 @@
 #include <iostream>
 #include <chrono>
 #include <thread>
-#include "input_handler.h"
+#include "../Include/input_handler.h"
 
 InputHandler::InputHandler(){
     std::cout << "Hello there!" << std::endl;
@@ -60,7 +60,10 @@ bool InputHandler::run(int cycleTime){
         case 24: //Q = quitbutton
             data.quitEmul = key.second; break;
             // TODO: Possibly connected in gracefull shutdown see also escape button
-        
+            break;
+        case 99: //hazard button
+            data.ttSignal.telltales1.hazard=1; break;
+
         // Unused buttons
         default: // Unexpected buttons ignored for now
             /*std::cout << "The key.first switch case generated an unvalid scenario" << std::endl;

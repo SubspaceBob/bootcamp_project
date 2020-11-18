@@ -1,0 +1,2 @@
+/usr/bin/ar qc libx11keyio.a  CMakeFiles/x11keyio.dir/src/keyboard_reader/x11/x11reader.cpp.o
+/usr/bin/ranlib libx11keyio.a
