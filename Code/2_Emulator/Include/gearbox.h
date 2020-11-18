@@ -31,7 +31,8 @@ class Gearbox
     GearPattern gearStickPosition;  //Active gear (P,R,N,D)
     Trq calculateBrakeTorque(int8_t brakePdl);
     void setGearStick( int8_t gearStickRequest, int8_t brakePedal);
-    float calculateEngineRPS(float gearbox_rps, int8_t engaged_gear);
+    float calculateEngineRPS(float gearbox_rps, float currentGearRatio);
+    float getGearRatio(float engineSpeed, GearPattern gearStick);
     
     public:
     Gearbox();
@@ -40,7 +41,6 @@ class Gearbox
     float getRPS();
     GearPattern getGearStick();
     int8_t getEngagedGear();
-    void setEngagedGear(float engineSpeed);
     void run(CanInput &input, CanOutput &canOut, Trq engTrq, int timeStep);
 };
 
