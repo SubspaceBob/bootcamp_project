@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# This bash runs the cmake, and make file in the build
+# folder before Initializing all test cases in separate
+# windows for readaility. 
+
+cd Build
+cmake ..
+make
+cd 2_Emulator
+gnome-terminal -- ./EngineTest --gtest_output=xml:../EngineTestReport.xml
+gnome-terminal -- ./GearboxTest --gtest_output=xml:../GearboxTestReport.xml
+#gnome-terminal -- ./EmulatorMainTest --gtest_output=xml:../EmulatorMainTestReport.xml

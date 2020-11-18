@@ -60,6 +60,8 @@ void Engine::setEngTrqFromAccPdl(CanInput inputVal, float engineSpeed)
    {
       engTrq = VEHICLE::MAX_TORQUE; // Pedal to the metal
    }
-   else
+   else if (this->engSts== On)
       engTrq = VEHICLE::IDLE_TORQUE;   // Engine always produces torque if running
+   else
+      engTrq = 0;
 }
