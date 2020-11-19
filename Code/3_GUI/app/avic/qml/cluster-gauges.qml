@@ -1,4 +1,4 @@
-
+﻿
 
 import QtQuick 2.2
 import QtQuick.Window 2.1
@@ -334,12 +334,13 @@ ApplicationWindow {
                 id: fuelGaugeStyle
 
                 icon: "./images/fuel-icon.png"
-                minWarningColor: valueSource.startUp ? "#f42d2d" : "gray"
+                minWarningColor:"#f42d2d"
+
+
 
                 tickmarkLabel: Text {
-                    color: "transparent"}
-
-
+                    color: "transparent"
+                }
             }
         }
 
@@ -356,15 +357,13 @@ ApplicationWindow {
                 id: oilGaugeStyle
 
                 icon: "./images/AGL_Icons_Oil.svg"
-                maxWarningColor: valueSource.startUp ? "#f42d2d" : "gray"
-                minWarningColor: valueSource.startUp ? "#2487e4" : "gray"
+
+                maxWarningColor: "#f42d2d"
+                minWarningColor: "#2487e4"
 
 
-                tickmarkLabel: Text {
+               tickmarkLabel: Text {
                     color: "transparent"
-                    visible: styleData.value === 0 || styleData.value === 1
-                    font.pixelSize: fuelGaugeStyle.toPixels(0.225)
-                    text: styleData.value === 0 ? "E" : (styleData.value === 1 ? "F" : "")
                 }
             }
         }
@@ -382,14 +381,10 @@ ApplicationWindow {
                 id: tempGaugeStyle
 
                 icon: "./images/temperature-icon.png"
-                maxWarningColor: valueSource.startUp ? "#f42d2d" : "gray"
-                minWarningColor: valueSource.startUp ? "#2487e4" : "gray"
-
-                tickmarkLabel: Text {
-                    color: "transparent"
-                    visible: styleData.value === 0 || styleData.value === 1
-                    font.pixelSize: tempGaugeStyle.toPixels(0.225)
-                    text: styleData.value === 0 ? "C" : (styleData.value === 1 ? "H" : "")
+                maxWarningColor: "#f42d2d"
+                minWarningColor: "#2487e4"
+               tickmarkLabel: Text {
+                    color: "transparent"                 
                 }
             }
         }
@@ -401,7 +396,7 @@ ApplicationWindow {
         width: 441
         height: 190
 
-        source: valueSource.startUp ? "images/logod.png" : "images/a.png"
+        source: valueSource.startUp ? './images/logod.png' : './images/logod_B.png'
         //x: 772
     }
 
@@ -410,15 +405,15 @@ ApplicationWindow {
         x: 740
         y: 664
         width: 441
-        height: 98
+        height: 130
         color: "black"
         Text {
             id: matn
             color: "white"
             text: valueSource.txt
             width: 441
-            height: 98
-            font.pixelSize: 12
+            height: 130
+            font.pixelSize: 15
 
         }
     }

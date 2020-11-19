@@ -1,6 +1,4 @@
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
-set(CMAKE_AUTOMOC ON)
-set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
@@ -19,9 +17,11 @@ add_executable(avic main.cpp ${appavic_src} ${RESOURCES} ${MOC_FILES} )
 #qt5_add_resources(RCC_SOURCES qml/cluster-gauges.qrc)
 #target_link_libraries(avic PUBLIC Qt5::Core Qt5::QuickControls2)
 include_directories(include
+#                    ${CMAKE_CURRENT_SOURCE_DIR}/../../lib/libcanio/include/
                     include_directories(${Qt5Gui_PRIVATE_INCLUDE_DIRS})
                     ${QTAPPFW_INCLUDE_DIRS})
 target_link_libraries(avic
+#    canio
     Qt5::Core
     Qt5::QuickControls2
     Qt5::QuickWidgets

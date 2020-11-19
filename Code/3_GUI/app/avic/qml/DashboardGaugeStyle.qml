@@ -132,7 +132,7 @@ CircularGaugeStyle {
         }
         Text {
             id: speedLabel
-            text: "MPH"
+            text: "km/h"
             color: "#c3c3c3"
             font.pixelSize: toPixels(0.09)
             anchors.top: speedText.bottom
