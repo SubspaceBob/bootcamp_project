@@ -15,7 +15,7 @@ void runCANIO(SharedMemory<CanInput> *canInMem, SharedMemory<CanOutput> *canOutM
         bool terminate = canIO.readCANWriteToMemory(canInMem);
         
         CanOutput canSend=canOutMem->read();
-        canIO.frameToBus(005, canSend.gearStick, canSend.RPM);
+        canIO.frameToBus(005, canSend.gearStick, canSend.RPM, canSend.engagedGear);
         canIO.frameToBus(004, canSend.vhlSpeed);
 
         if (exitFlag) {

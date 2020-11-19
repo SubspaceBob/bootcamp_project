@@ -169,9 +169,10 @@ void Gearbox::run(CanInput &input, CanOutput &canOut, Trq engTrq, EngSts engSts,
     canOut.gearStick    = static_cast<uint8_t> (gearStickPosition);
     canOut.RPM          = static_cast<uint16_t>(engineRPS * 60);
     canOut.vhlSpeed     = static_cast<uint8_t> (vhlSpeed * 3.6);
+    canOut.engagedGear  = static_cast<uint8_t> (engagedGear);
     
     std::cout <<//" EngTrq: "             << engTrq                                   << 
-                //" Engaged Gear: "       << static_cast<int> (engagedGear)           << 
+                " Engaged Gear: "       << static_cast<int> (engagedGear)           << 
                 //" GearStickPosition: "  << static_cast<int> (gearStickPosition)     << 
                 " GearRatio: "          << currentGearRatio                         << 
                 " RollingResistance: "  << RollingResistance                        << 
