@@ -20,9 +20,12 @@ struct bitpattern2 {
         unsigned high_beam:1;
         unsigned hand_break:1;
 };
-union tellatales {
-    uint8_t canSignal;
+union telltales1 {
+    uint8_t canByte;
     bitpattern1 telltales1;
+};
+union telltales2 {
+    uint8_t canByte;;
     bitpattern2 telltales2;
 };
 
@@ -33,7 +36,8 @@ struct CanInput
     int8_t gearReq;
     int8_t startBtn;
     int8_t quitEmul;
-    tellatales ttSignal;
+    telltales1 ttByte1;
+    telltales2 ttByte2;
 
     CanInput() {brkPdl=0; accPdl=0; gearReq=0; startBtn=0; quitEmul=0;}
 

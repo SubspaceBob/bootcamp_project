@@ -9,7 +9,8 @@ cd 5_Build
 cmake ..
 make
 gnome-terminal -- ./2_Emulator/EmulatorMain
-./1_InputHandler/InputHandler_Main
+gnome-terminal -- ./3_GUI/app/avic/avic -c vcan0
+./1_InputHandler/InputHandler_Main 
 
 
 

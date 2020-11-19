@@ -1,1 +1,0 @@
-/usr/bin/c++     CMakeFiles/ih.dir/main.cpp.o CMakeFiles/ih.dir/src/input_handler.cpp.o  -o ih  ../../lib/libcanio/libcanio.a ../../lib/libuserio/libx11keyio.a -lX11 
