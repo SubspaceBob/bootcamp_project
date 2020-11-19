@@ -59,9 +59,7 @@ void Gearbox::setGearStick(int8_t gearStickRequest, int8_t brakePedal)
         {
             gearStickPosition=GearPattern::D;
         }
-        else if (gearStickRequest==4) { //No request = ignore
-            std::cout <<"No request in gearStickselect" <<std::endl;
-        } 
+        else if (gearStickRequest==4) {} //No request = ignore
         else { // If this then something seriously wrong
             std::cout <<"Major fail in gearStickselect" <<std::endl;
         }
