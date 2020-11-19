@@ -24,8 +24,9 @@ void yourStuff::YouHaveJustRecievedACANFrame(const canfd_frame * const _frame) {
         double rpm =_frame->data[1];
         rpm=rpm*256;
         rpm =rpm+_frame->data[2];
-        this->InstrumentCluster.setGearPindle(_frame->data[0]);
+        this->InstrumentCluster.setGearPindle_int(_frame->data[0]);
         this->InstrumentCluster.setRPM(rpm);
+        this->InstrumentCluster.setGear(static_cast<const char &> (_frame->data[3]));
         break;
     }
 
