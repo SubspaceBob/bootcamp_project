@@ -2,18 +2,19 @@
 #include <thread>
 #include <atomic>
 #include "can_io.h"
+#include "shared_memory.h"
 #include "engine.h"
 #include "gearbox.h"
 
 std::atomic<bool> exitFlag;
-void runCANIO(SharedMemory *memory)
+void runCANIO(SharedMemory<CanInput> *canInMem, SharedMemory<CanOutput> *canOutMem)
 {
     CANIO canIO;
     canIO.start_can();
     while(true) {
-        bool terminate = canIO.readCANWriteToMemory(memory);
-
-        CanOutput canSend=memory->read_output_memory();
+        bool terminate = canIO.readCANWriteToMemory(canInMem);
+        
+        CanOutput canSend=canOutMem->read();
         canIO.frameToBus(005, canSend.gearStick, canSend.RPM);
         canIO.frameToBus(004, canSend.vhlSpeed);
 
@@ -27,7 +28,7 @@ void runCANIO(SharedMemory *memory)
     }
 }
 
-void runVehicle(SharedMemory *memory){
+void runVehicle(SharedMemory<CanInput> *canInMem, SharedMemory<CanOutput> *canOutMem){
     CanOutput canOut;
     Engine engine;
     Gearbox gearbox;
@@ -35,14 +36,17 @@ void runVehicle(SharedMemory *memory){
 
     while(true) {
         // Fetch CAN Input from shared memory
-        CanInput canIn = memory->read_input_memory();
+        CanInput canIn = canInMem->read();
+
+
+        //std::cout << "canIn.accPdl : " << static_cast<int>(canIn.accPdl) << std::endl;
         
         // Run engine and gearbox simulation with CANIn and CANOut
         engine.run(canIn, canOut, gearbox.getRPS(), timeStepSize, (int) gearbox.getGearStick());
         gearbox.run(canIn, canOut, engine.getEngTrq(), timeStepSize);
 
         // Push CAN Output values to shared memory
-        memory->write_can_output(canOut);
+        canOutMem->write(canOut);
 
         // Shutdown condition
         if (canIn.quitEmul==1)
@@ -59,11 +63,12 @@ void runVehicle(SharedMemory *memory){
 
 int main()
 {    
-    SharedMemory memory;   
+    SharedMemory<CanInput> canInMem;   
+    SharedMemory<CanOutput> canOutMem;   
     exitFlag = false;
   
-    std::thread t3(runCANIO, &memory);
-    std::thread t4(runVehicle, &memory);
+    std::thread t3(runCANIO, &canInMem, &canOutMem);
+    std::thread t4(runVehicle, &canInMem, &canOutMem);
 
     t3.join();
     t4.join();

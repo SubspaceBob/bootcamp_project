@@ -4,6 +4,7 @@ set(CMAKE_CXX_STANDARD 17)
 
 include_directories(Include)
 include_directories(../4_CommonUtils/CANIO/Include)
+include_directories(../4_CommonUtils/SharedMemory/Include)
 
 # Create executable for EmulatorMain
 add_executable(EmulatorMain Src/emulator_main.cpp

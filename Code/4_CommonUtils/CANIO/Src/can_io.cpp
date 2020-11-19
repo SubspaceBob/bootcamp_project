@@ -1,5 +1,6 @@
 #include <iostream>
 #include "can_io.h"
+#include "../../SharedMemory/Include/shared_memory.h"
 #include "socketcan_cpp.h"
 // https://github.com/siposcsaba89/socketcan-cpp
 
@@ -11,6 +12,23 @@ union RPM{
     uint16_t rpmIn;
     Bitfield rpmOut;
 };
+
+void CanInput::write(CanInput input)
+{
+    brkPdl=input.brkPdl;
+    accPdl=input.accPdl;
+    gearReq=input.gearReq;
+    startBtn=input.startBtn;
+    quitEmul=input.quitEmul;
+}
+
+void CanOutput::write(CanOutput output)
+{
+    gearStick=output.gearStick;
+    RPM=output.RPM;
+    vhlSpeed=output.vhlSpeed;
+    //std::cout << "Writing to shared memory " << std::endl << std::flush;
+}
 
 bool CANIO::start_can(){
     if (sockat_can.open("vcan0") != scpp::STATUS_OK) {
@@ -26,11 +44,27 @@ bool CANIO::start_can(){
     
 }
 
-bool CANIO::readCANWriteToMemory(SharedMemory *memory) {
+bool CANIO::readCANWriteToMemory(SharedMemory<CanInput> *canInMem) {
     bool retval=false;
     scpp::CanFrame fr;
     if (sockat_can.read(fr) == scpp::STATUS_OK) { 
-        memory->save_can_input(fr);
+        if(fr.id==001)
+        {
+            canIn.brkPdl=fr.data[0];
+            canIn.accPdl=fr.data[1];
+        }  
+        else if(fr.id==002)
+        {
+            canIn.gearReq=fr.data[0];
+        } 
+        else if(fr.id==003)
+        {
+            canIn.startBtn=fr.data[0];
+            canIn.quitEmul=fr.data[1];
+        }
+
+        canInMem->write(canIn);
+
         if (fr.id==3 && fr.data[1]==1){
             retval = true;
         }
