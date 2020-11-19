@@ -4,7 +4,7 @@
 # folder before Initializing all test cases in separate
 # windows for readaility. 
 
-cd Build
+cd 5_Build
 cmake ..
 make
 cd 2_Emulator

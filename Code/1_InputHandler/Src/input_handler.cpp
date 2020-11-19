@@ -19,8 +19,6 @@ bool InputHandler::run(int cycleTime){
     switch(key.first){ 
         case 0: break; // No buttons pressed = Do nothing     
         case 9: // Escape = Exit program
-            // TODO: Implement a gracefull shutdown see also Q button
-            // Stop eternal main loop
             exitLoop = true;
             break;
         
@@ -59,7 +57,6 @@ bool InputHandler::run(int cycleTime){
         case 36: data.startBtn = key.second; break;
         case 24: //Q = quitbutton
             data.quitEmul = key.second; break;
-            // TODO: Possibly connected in gracefull shutdown see also escape button
             break;
         case 99: //hazard button
             data.ttSignal.telltales1.hazard=1; break;

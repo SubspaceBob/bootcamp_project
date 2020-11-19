@@ -28,7 +28,7 @@ class Engine{
         CanInput lastCycle;
 
         // Setters
-        void setEngTrqFromAccPdl(CanInput inputVal, float engineSpeed);//Chosen maxTrq = 300
-        
+        //Chosen maxTrq = 450
+        void setEngTrqFromAccPdl(CanInput inputVal, float engineSpeed);
 };
 #endif

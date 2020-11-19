@@ -20,7 +20,6 @@ public:
     KeyInput getKey();
     void start();
     void stop();
-
 };
 
 #endif // KEYBOARDREADER_H

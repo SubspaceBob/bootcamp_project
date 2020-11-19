@@ -5,11 +5,11 @@
 
 Gearbox::Gearbox()
 {
-vhlSpeed        = 0; // 0-70,8 m/s
-engineRPS       = 0; // 0-10000 rpm
-gearboxRPS      = 0;
-engagedGear     = 0;  //what gear we are in while in D 
-gearStickPosition=GearPattern::P;
+    vhlSpeed        = 0; // 0-70,8 m/s
+    engineRPS       = 0; // 0-10000 rpm
+    gearboxRPS      = 0;
+    engagedGear     = 0;  //what gear we are in while in D 
+    gearStickPosition=GearPattern::P;
 }
 
 float Gearbox::getSpeed()
@@ -59,6 +59,12 @@ void Gearbox::setGearStick(int8_t gearStickRequest, int8_t brakePedal)
         {
             gearStickPosition=GearPattern::D;
         }
+        else if (gearStickRequest==4) { //No request = ignore
+            std::cout <<"No request in gearStickselect" <<std::endl;
+        } 
+        else { // If this then something seriously wrong
+            std::cout <<"Major fail in gearStickselect" <<std::endl;
+        }
     }
 }
 
@@ -84,9 +90,7 @@ float Gearbox::getGearRatio(float engineSpeed, GearPattern gearStick)
     else
     {
         return 0;
-    }
-    
-    
+    } 
 }
 
 Trq Gearbox::calculateBrakeTorque(int8_t brakePdl)
