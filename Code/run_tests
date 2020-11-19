@@ -8,6 +8,6 @@ cd 5_Build
 cmake ..
 make
 cd 2_Emulator
-gnome-terminal -- ./EngineTest --gtest_output=xml:../EngineTestReport.xml
-gnome-terminal -- ./GearboxTest --gtest_output=xml:../GearboxTestReport.xml
+gnome-terminal -- ./EngineTest --gtest_output=xml:../TestReports/EngineTestReport.xml
+gnome-terminal -- ./GearboxTest --gtest_output=xml:../TestReports/GearboxTestReport.xml
 #gnome-terminal -- ./EmulatorMainTest --gtest_output=xml:../EmulatorMainTestReport.xml
