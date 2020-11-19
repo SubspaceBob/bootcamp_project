@@ -10,9 +10,6 @@ Engine::Engine()
 void Engine::run(CanInput inputVal, CanOutput canOut, float engineSpeed, int timeStep, int gearStick)
 {
    // Move Stop/Start code to separate function?
-   // Make sure to have a slow stop and start procedure(>200ms?) to not trigger this 
-   // multiple times on one keypress, memory is read more(10ms cycle) often than CAN
-   // is sent so we could get a flipping behaviour
 
    // Using last cycle for debouncing
    if(engSts == 0 && (int)inputVal.startBtn == 1 
@@ -22,7 +19,7 @@ void Engine::run(CanInput inputVal, CanOutput canOut, float engineSpeed, int tim
       engSts = On;
       lastCycle.startBtn = 1;
    }
-   else if(engSts == 1 && (int)inputVal.startBtn == 1 && lastCycle.startBtn == 0 && (int) inputVal.gearReq == 0 ) {
+   else if(engSts == 1 && (int)inputVal.startBtn == 1 && lastCycle.startBtn == 0 && gearStick == 0 ) {
          // Engine on and first press = Turn off
          std::cout << "Stopping engine" << std::endl;
          engSts = Off;

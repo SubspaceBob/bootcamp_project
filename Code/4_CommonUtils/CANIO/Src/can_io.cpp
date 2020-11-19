@@ -34,7 +34,6 @@ bool CANIO::readCANWriteToMemory(SharedMemory *memory) {
         if (fr.id==3 && fr.data[1]==1){
             retval = true;
         }
-        
     }
     else
     {
@@ -59,9 +58,6 @@ void CANIO::frameToBus(uint8_t frameNo, uint8_t signalValue) {
 
     if (write_sc_status != scpp::STATUS_OK)
         printf("something went wrong on socket write, error code : %d \n", int32_t(write_sc_status));
-    /*else
-        printf("Sent to bus using 1st overloaded function.\n");*/
-    //sockat_can.close();
 }
 
 // Frame with 2 uint8 signals...
@@ -80,10 +76,7 @@ void CANIO::frameToBus(uint8_t frameNo, uint8_t signal1Value, uint8_t signal2Val
     auto write_sc_status = sockat_can.write(cf_to_write);
 
     if (write_sc_status != scpp::STATUS_OK)
-        printf("something went wrong on socket write, error code : %d \n", int32_t(write_sc_status));
-    /*else
-        printf("Sent to bus using 2nd overloaded function.\n");*/
-    //sockat_can.close();    
+        printf("something went wrong on socket write, error code : %d \n", int32_t(write_sc_status));    
 }
 
 // Frame with 1 uint8 signal & 1 uint16 signal...
@@ -106,8 +99,5 @@ void CANIO::frameToBus(uint8_t frameNo, uint8_t signal1Value, uint16_t signal2Va
 
     if (write_sc_status != scpp::STATUS_OK)
         printf("something went wrong on socket write, error code : %d \n", int32_t(write_sc_status));
-    /*else
-        printf("Sent to bus using 3rd overloaded function.\n");*/
-    //sockat_can.close(); 
 }
 

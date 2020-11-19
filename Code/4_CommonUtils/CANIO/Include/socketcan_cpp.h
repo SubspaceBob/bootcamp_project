@@ -1,8 +1,6 @@
 #ifndef SOCKETCANCPP_H
 #define SOCKETCANCPP_H
 #include <string>
-
-
 #include <linux/can.h>
 
 namespace scpp

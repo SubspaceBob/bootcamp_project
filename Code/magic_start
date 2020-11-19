@@ -5,13 +5,11 @@
 # terminal window and thereafter starting the input handler
 # in the first terminal window. 
 
-cd Build
+cd 5_Build
 cmake ..
 make
 gnome-terminal -- ./2_Emulator/EmulatorMain
 ./1_InputHandler/InputHandler_Main
-
-
 
 
 
