@@ -43,7 +43,7 @@ void runVehicle(SharedMemory<CanInput> *canInMem, SharedMemory<CanOutput> *canOu
         
         // Run engine and gearbox simulation with CANIn and CANOut
         engine.run(canIn, canOut, gearbox.getRPS(), timeStepSize, (int) gearbox.getGearStick());
-        gearbox.run(canIn, canOut, engine.getEngTrq(), timeStepSize);
+        gearbox.run(canIn, canOut, engine.getEngTrq(), engine.getEngSts(),timeStepSize);
 
         // Push CAN Output values to shared memory
         canOutMem->write(canOut);

@@ -32,10 +32,18 @@ int8_t Gearbox::getEngagedGear()
     return (engagedGear);
 }
 
-float Gearbox::calculateEngineRPS(float gearbox_rps, float currentGearRatio )
+float Gearbox::calculateEngineRPS(float gearbox_rps, float currentGearRatio, EngSts engSts)
 {
     float engine_rps = gearbox_rps * currentGearRatio;
-    return std::max<float>(engine_rps, VEHICLE::ENGINE_IDLE_RPS); // Engine does not go below IDLE_RPS
+    if (engSts)
+    {
+        return std::max<float>(engine_rps, VEHICLE::ENGINE_IDLE_RPS); // Engine does not go below IDLE_RPS
+    }
+    else
+    {
+        return 0;
+    }
+    
 }
 
 void Gearbox::setGearStick(int8_t gearStickRequest, int8_t brakePedal)
@@ -71,11 +79,11 @@ float Gearbox::getGearRatio(float engineSpeed, GearPattern gearStick)
     if (gearStick==GearPattern::D)
     {
         // Very simple shift up/down based on Engine RPM, sets the engagedGear index, the ratio is given by GEARRATIOS[engagedGear]
-        if (engineSpeed > (3500/60) && engagedGear <7)
+        if (engineSpeed > (6000/60) && engagedGear <7)
         {
             engagedGear++;
         }
-        else if (engineSpeed < (1000/60) && engagedGear > 0)
+        else if (engineSpeed < (2000/60) && engagedGear > 0)
         {
             engagedGear--;
         }
@@ -98,7 +106,7 @@ Trq Gearbox::calculateBrakeTorque(int8_t brakePdl)
     Trq BrkTrq = VEHICLE::MAX_BRAKETORQUE * brakePdl / 100;
 }
 
-void Gearbox::run(CanInput &input, CanOutput &canOut, Trq engTrq, int timeStep){
+void Gearbox::run(CanInput &input, CanOutput &canOut, Trq engTrq, EngSts engSts, int timeStep){
     /*
     Basic physics/mechanics:
     Torque from engine is used to calculate the vehicle acceleration, which is integrated into vehicle speed.
@@ -126,12 +134,12 @@ void Gearbox::run(CanInput &input, CanOutput &canOut, Trq engTrq, int timeStep){
     Trq engine_torque = 0;
     if (gearStickPosition == GearPattern::D || gearStickPosition == GearPattern::R)
     {
-        engine_torque = engTrq;
+        engine_torque = engTrq * 2; // TorqueConverter to double torque output
     }
 
     // Calculate brake torque and rolling resistance
     Trq BrakeTrq = calculateBrakeTorque(input.brkPdl);
-    auto RollingResistance = vhlSpeed * vhlSpeed * VEHICLE::ROLLINGRESISTANCE; //Exponential
+    auto RollingResistance = vhlSpeed * VEHICLE::ROLLINGRESISTANCE; //Exponential
 
     // Calculate acceleration and vehicle speed
     auto acceleration   = (engine_torque * currentGearRatio - BrakeTrq) * VEHICLE::WHEEL_RADIUS /VEHICLE::VEHICLE_MASS - RollingResistance;
@@ -155,17 +163,19 @@ void Gearbox::run(CanInput &input, CanOutput &canOut, Trq engTrq, int timeStep){
 
     // VehicleSpeed[m/s] = GearboxRPS[rev/s] * WheelRadius[m] * 2*Pi
     gearboxRPS  = vhlSpeed /(VEHICLE::WHEEL_RADIUS * 2 * 3.1416);
-    engineRPS   = calculateEngineRPS(gearboxRPS, currentGearRatio);
+    engineRPS   = calculateEngineRPS(gearboxRPS, currentGearRatio, engSts);
 
     // Store values to CANOut
     canOut.gearStick    = static_cast<uint8_t> (gearStickPosition);
     canOut.RPM          = static_cast<uint16_t>(engineRPS * 60);
     canOut.vhlSpeed     = static_cast<uint8_t> (vhlSpeed * 3.6);
     
-    std::cout <<" EngTrq: "             << engTrq                                   << 
-                " Engaged Gear: "       << static_cast<int> (engagedGear)           << 
-                " GearStickPosition: "  << static_cast<int> (gearStickPosition)     << 
+    std::cout <<//" EngTrq: "             << engTrq                                   << 
+                //" Engaged Gear: "       << static_cast<int> (engagedGear)           << 
+                //" GearStickPosition: "  << static_cast<int> (gearStickPosition)     << 
                 " GearRatio: "          << currentGearRatio                         << 
+                " RollingResistance: "  << RollingResistance                        << 
+                " Acceleration: "       << acceleration                             << 
                 " VehicleSpeed[km/h]: " << vhlSpeed * 3.6                           << 
 
                 //" RollingResistance : " << RollingResistance  <<
