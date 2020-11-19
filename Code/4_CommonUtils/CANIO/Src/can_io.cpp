@@ -27,6 +27,7 @@ void CanOutput::write(CanOutput output)
     gearStick=output.gearStick;
     RPM=output.RPM;
     vhlSpeed=output.vhlSpeed;
+    engagedGear=output.engagedGear;
     //std::cout << "Writing to shared memory " << std::endl << std::flush;
 }
 
@@ -113,8 +114,8 @@ void CANIO::frameToBus(uint8_t frameNo, uint8_t signal1Value, uint8_t signal2Val
         printf("something went wrong on socket write, error code : %d \n", int32_t(write_sc_status));    
 }
 
-// Frame with 1 uint8 signal & 1 uint16 signal...
-void CANIO::frameToBus(uint8_t frameNo, uint8_t signal1Value, uint16_t signal2Value) {
+// Frame 5...
+void CANIO::frameToBus(uint8_t frameNo, uint8_t signal1Value, uint16_t signal2Value, uint8_t signal3Value) {
 
     RPM rpm;
     rpm.rpmIn= signal2Value;
@@ -126,8 +127,9 @@ void CANIO::frameToBus(uint8_t frameNo, uint8_t signal1Value, uint16_t signal2Va
     cf_to_write.data[0] = signal1Value;
     cf_to_write.data[1] = rpm.rpmOut.rpmMSB;
     cf_to_write.data[2] = rpm.rpmOut.rpmLSB;
+    cf_to_write.data[3] = signal3Value;
     // ...And rest to 0
-    for (int i = 3; i < 8; ++i)
+    for (int i = 4; i < 8; ++i)
         cf_to_write.data[i] = 0x00;
     auto write_sc_status = sockat_can.write(cf_to_write);
 

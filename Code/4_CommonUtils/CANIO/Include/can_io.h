@@ -49,7 +49,8 @@ struct CanOutput
     uint8_t vhlSpeed;
     uint8_t gearStick;
     uint16_t RPM;
-    CanOutput() {vhlSpeed=2; gearStick=0; RPM=0;}
+    uint8_t engagedGear;
+    CanOutput() {vhlSpeed=2; gearStick=0; RPM=0; engagedGear=0;}
 
     void write(CanOutput output);
 };
@@ -64,6 +65,6 @@ public:
     bool readCANWriteToMemory(SharedMemory<CanInput> *CanInput);
     void frameToBus(uint8_t frameNo, uint8_t signalValue);
     void frameToBus(uint8_t frameNo, uint8_t signal1Value, uint8_t signal2Value);
-    void frameToBus(uint8_t frameNo, uint8_t signal1Value, uint16_t signal2Value);
+    void frameToBus(uint8_t frameNo, uint8_t signal1Value, uint16_t signal2Value, uint8_t signal3Value);
 };
 #endif
