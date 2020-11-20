@@ -6,6 +6,8 @@
 # in the first terminal window. 
 
 cd 5_Build
+rm -R -- */
+rm *
 cmake ..
 make
 gnome-terminal -- ./2_Emulator/EmulatorMain
