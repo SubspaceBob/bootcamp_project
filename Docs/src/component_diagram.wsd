@@ -1,36 +1,41 @@
 @startuml
 title Component Diagram
 
+package "InputHandler" {
+    [Input Handler] --> [InputHandler::CANIO]
+    [InputHandler::CANIO]
+}
+
 package "Emulator"{
-    [runCANIO]
+    [Emulator::CANIO]
     package "runVehicle" {
-        [Engine]
-        [Gearbox]
-    }    
-}
-cloud "CANIO" {
-    [readCANIO]
-    [writeCANIO]
-}
-cloud "Memory"{
+        [Engine] <-> [Gearbox]
+    }  
+    cloud "Memory"{
     [CanIn]
     [CanOut]
+    }  
+    
 }
 
-[Input Handler] --> [writeCANIO]
-[writeCANIO] --> CAN
+package "GUI" {
+    [GUI] <-- [GUI::CANIO]
+}
 
-[runCANIO] <- [readCANIO]
-[readCANIO] <- CAN
-[runCANIO] -> [CanIn]
+[InputHandler::CANIO] ---> CAN
+
+[Engine] -> [CanOut]
+[Gearbox]<--[CanIn]
+[Gearbox] -> [CanOut]
+[CanOut] -> [Emulator::CANIO]
+[CanIn] <-- [Emulator::CANIO] 
+[Emulator::CANIO] <-- CAN 
+[Emulator::CANIO] -> CAN
+
 
 [Engine] <--[CanIn]
-[Engine] <-> [Gearbox]
-[Gearbox]<-[CanIn]
-[Gearbox] -> [CanOut]
-[CanOut] -> [writeCANIO]
 
-CAN -> [GUI]
+[GUI::CANIO] <--- CAN 
 
 
 @enduml
