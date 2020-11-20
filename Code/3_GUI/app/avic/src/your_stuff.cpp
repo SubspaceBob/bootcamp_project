@@ -9,7 +9,7 @@ namespace CANID {
 const canid_t frame4=0x004;
 const canid_t frame5=0x005;
 const canid_t frame6=0x006;
-
+const canid_t frame7=0x007;
 
 }
 
@@ -91,6 +91,15 @@ void yourStuff::YouHaveJustRecievedACANFrame(const canfd_frame * const _frame) {
         this->InstrumentCluster.setIcon(const_cast<const struct _icons * >(&(this->telltales)));
         break;
         }
+        case CANID::frame7 : {
+            if (_frame->data[0]==1){
+                this->InstrumentCluster.ignite(1);
+            }
+            else
+                this->InstrumentCluster.ignite(0);
+    
+            break;
+        }
         
     default:
         break;
@@ -101,10 +110,6 @@ void yourStuff::YouHaveJustRecievedACANFrame(const canfd_frame * const _frame) {
 void yourStuff::readMyEngineFrame(const unsigned char * const _data) {
     this->InstrumentCluster.setSpeed(static_cast<double>(_data[0]));
 }
-
-
-
-
 
 
 

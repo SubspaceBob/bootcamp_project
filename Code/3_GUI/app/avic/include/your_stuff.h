@@ -17,7 +17,6 @@ private:
     void YouHaveJustRecievedACANFrame(const canfd_frame * const _frame);
     void readMyEngineFrame(const unsigned char * const _data);
     void timerEvent(QTimerEvent*) override;
-
 //signals:
 //    void die();
 

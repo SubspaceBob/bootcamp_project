@@ -1,8 +1,0 @@
-/home/rkallum/Project/GroupA/Code/3_GUI/build/CMakeFiles/rebuild_cache.dir
-/home/rkallum/Project/GroupA/Code/3_GUI/build/CMakeFiles/edit_cache.dir
-/home/rkallum/Project/GroupA/Code/3_GUI/build/app/CMakeFiles/rebuild_cache.dir
-/home/rkallum/Project/GroupA/Code/3_GUI/build/app/CMakeFiles/edit_cache.dir
-/home/rkallum/Project/GroupA/Code/3_GUI/build/app/avic/CMakeFiles/rebuild_cache.dir
-/home/rkallum/Project/GroupA/Code/3_GUI/build/app/avic/CMakeFiles/edit_cache.dir
-/home/rkallum/Project/GroupA/Code/3_GUI/build/app/avic/CMakeFiles/avic.dir
-/home/rkallum/Project/GroupA/Code/3_GUI/build/app/avic/CMakeFiles/avic_autogen.dir
