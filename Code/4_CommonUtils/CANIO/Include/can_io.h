@@ -21,11 +21,11 @@ struct bitpattern2 {
         unsigned hand_break:1;
 };
 union telltales1 {
-    uint8_t canByte;
+    uint8_t canByte = 0;
     bitpattern1 telltales1;
 };
 union telltales2 {
-    uint8_t canByte;;
+    uint8_t canByte = 0;
     bitpattern2 telltales2;
 };
 
@@ -39,7 +39,15 @@ struct CanInput
     telltales1 ttByte1;
     telltales2 ttByte2;
 
-    CanInput() {brkPdl=0; accPdl=0; gearReq=0; startBtn=0; quitEmul=0;}
+    CanInput() {
+        brkPdl=0;
+        accPdl=0;
+        gearReq=0;
+        startBtn=0;
+        quitEmul=0;
+        ttByte1;
+        ttByte2;
+    }
 
     void write(CanInput input);
 };
