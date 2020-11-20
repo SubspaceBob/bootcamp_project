@@ -1,24 +1,36 @@
 @startuml
 title Component Diagram
+
 package "Emulator"{
-    [Read CAN]
-    package "Process Information" {
+    [runCANIO]
+    package "runVehicle" {
         [Engine]
-        [Gear]
-        [Send CAN] 
+        [Gearbox]
     }    
 }
-cloud "Shared Memory"{
-    [input]
+cloud "CANIO" {
+    [readCANIO]
+    [writeCANIO]
+}
+cloud "Memory"{
+    [CanIn]
+    [CanOut]
 }
 
-[Input Handler] --> [Read CAN] : CAN
-[input] <.. [Read CAN]
+[Input Handler] --> [writeCANIO]
+[writeCANIO] --> CAN
 
-[input] ..> [Engine]
-[Engine] --> [Gear]
-[input] ..> [Gear]
-[Gear] --> [Send CAN]
-[Send CAN] --> Output : CAN
+[runCANIO] <- [readCANIO]
+[readCANIO] <- CAN
+[runCANIO] -> [CanIn]
+
+[Engine] <--[CanIn]
+[Engine] <-> [Gearbox]
+[Gearbox]<-[CanIn]
+[Gearbox] -> [CanOut]
+[CanOut] -> [writeCANIO]
+
+CAN -> [GUI]
+
 
 @enduml

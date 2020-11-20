@@ -1,7 +1,5 @@
 #include "gearbox.h"
 #include "can_io.h"
-#include "engine.h"
-
 
 Gearbox::Gearbox()
 {

@@ -16,23 +16,11 @@
 [GearBox] <..gearReq: use
 [GearBox] -- GearSts
 [GearBox] -- RPM
-<<<<<<< HEAD:_Docs/src/ComponentDiagram.iuml
-[GearBox] -- vehicleSpeed
-
-[CanWriter] <..GearSts: use
-[CanWriter] <..RPM: use
-[CanWriter] <..vehicleSpeed: use
-=======
 [GearBox] -- vhlSpeed
 
 [CanWriter] <..GearSts: use
 [CanWriter] <..RPM: use
 [CanWriter] <..vhlSpeed: use
->>>>>>> 99eaef477f1ee83043fa951560d9f9d1f816fdcc:_Docs/src/ComponentDiagram.iuml
-
-
-
-
 
 [CanWriter]
 

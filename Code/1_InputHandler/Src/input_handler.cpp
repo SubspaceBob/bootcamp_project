@@ -25,13 +25,13 @@ bool InputHandler::run(int cycleTime){
         // Frame1
         case 116: // Down Arrow = Brake
             // TODO: Implement logic for making this signal analog
-            if (key.second == 0) data.brkPdl = 0;
-            else data.brkPdl = 100;
+            if (key.second == 1) data.brkPdl = 100;
+            else data.brkPdl = 0;
             break;
         case 111: // Up Arrow = Accelerate
             // TODO: Implement logic for making this signal analog
-            if (key.second == 0) data.accPdl = 0;
-            else data.accPdl = 100; 
+            if (key.second == 1) data.accPdl = 100;
+            else data.accPdl = 0; 
             break; 
     
         // Frame 2 // Toggles depending on buttons P,R,N,D = GearStickRequest

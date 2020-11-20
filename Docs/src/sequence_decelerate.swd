@@ -11,5 +11,4 @@ Gearbox -> Engine : IsEngineOn()
 EngineControl <- Engine : EngineState()
 EngineControl <- EngineControl : Decelerate()
 
-
 @enduml

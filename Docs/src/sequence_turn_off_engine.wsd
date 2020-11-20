@@ -9,16 +9,9 @@ participant Output
 Input -> EngineControl : StartButtonPressed()
 EngineControl -> Engine : IsEngineOn()
 EngineControl <- Engine : EngineState
-<<<<<<< HEAD:_Docs/src/sequence_turn_off_engine.wsd
 EngineControl -> Vehicle : GetvehicleSpeed()
 EngineControl <- Vehicle : vehicleSpeed
 EngineControl -> Gearbox : GetgearStickPosition()
 EngineControl <- Gearbox : gearStickPosition
-=======
-EngineControl -> Vehicle : GetvhlSpeed()
-EngineControl <- Vehicle : vhlSpeed
-EngineControl -> Gearbox : GetgearStickition()
-EngineControl <- Gearbox : gearStickition
->>>>>>> 99eaef477f1ee83043fa951560d9f9d1f816fdcc:_Docs/src/sequence_turn_off_engine.wsd
 EngineControl <- EngineControl : Decelerate()
 @enduml
