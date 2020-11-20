@@ -67,14 +67,6 @@ bool InputHandler::run(int cycleTime){
             }
             break;
         case 11: //btn 2
-            if (data.ttByte1.telltales1.right_blinker==1 && key.second==1)
-                data.ttByte1.telltales1.right_blinker=0;
-            else if (data.ttByte1.telltales1.right_blinker==0 && key.second==1)
-            {
-                data.ttByte1.telltales1.right_blinker=1;
-            }
-            break;
-        case 12: //btn 3
             if (data.ttByte1.telltales1.left_blinker==1 && key.second==1)
                 data.ttByte1.telltales1.left_blinker=0;
             else if (data.ttByte1.telltales1.left_blinker==0 && key.second==1)
@@ -82,7 +74,7 @@ bool InputHandler::run(int cycleTime){
                 data.ttByte1.telltales1.left_blinker=1;
             }
             break;
-        case 13: //btn 4
+        case 12: //btn 3
             if (data.ttByte1.telltales1.engine_check==1 && key.second==1)
                 data.ttByte1.telltales1.engine_check=0;
             else if (data.ttByte1.telltales1.engine_check==0 && key.second==1)
@@ -90,7 +82,7 @@ bool InputHandler::run(int cycleTime){
                 data.ttByte1.telltales1.engine_check=1;
             }
             break;
-        case 14: //btn 5
+        case 13: //btn 4
             if (data.ttByte1.telltales1.oil_check==1 && key.second==1)
                 data.ttByte1.telltales1.oil_check=0;
             else if (data.ttByte1.telltales1.oil_check==0 && key.second==1)
@@ -98,7 +90,7 @@ bool InputHandler::run(int cycleTime){
                 data.ttByte1.telltales1.oil_check=1;
             }
             break;
-        case 15: //btn 6
+        case 14: //btn 5
             if (data.ttByte1.telltales1.abs==1 && key.second==1)
                 data.ttByte1.telltales1.abs=0;
             else if (data.ttByte1.telltales1.abs==0 && key.second==1)
@@ -106,7 +98,7 @@ bool InputHandler::run(int cycleTime){
                 data.ttByte1.telltales1.abs=1;
             }
             break;
-        case 16: //btn 7
+        case 15: //btn 6
             if (data.ttByte1.telltales1.battery==1 && key.second==1)
                 data.ttByte1.telltales1.battery=0;
             else if (data.ttByte1.telltales1.battery==0 && key.second==1)
@@ -114,7 +106,7 @@ bool InputHandler::run(int cycleTime){
                 data.ttByte1.telltales1.battery=1;
             }
             break;
-        case 17: //btn 8
+        case 16: //btn 7
             if (data.ttByte1.telltales1.seat_belt==1 && key.second==1)
                 data.ttByte1.telltales1.seat_belt=0;
             else if (data.ttByte1.telltales1.seat_belt==0 && key.second==1)
@@ -122,7 +114,7 @@ bool InputHandler::run(int cycleTime){
                 data.ttByte1.telltales1.seat_belt=1;
             }
             break;
-        case 18: //btn 9
+        case 17: //btn 8
             if (data.ttByte2.telltales2.doors_open==1 && key.second==1)
                 data.ttByte2.telltales2.doors_open=0;
             else if (data.ttByte2.telltales2.doors_open==0 && key.second==1)
@@ -130,7 +122,7 @@ bool InputHandler::run(int cycleTime){
                 data.ttByte2.telltales2.doors_open=1;
             }
             break;
-        case 19: //btn 0
+        case 18: //btn 9
             if (data.ttByte2.telltales2.high_beam==1 && key.second==1)
                 data.ttByte2.telltales2.high_beam=0;
             else if (data.ttByte2.telltales2.high_beam==0 && key.second==1)
@@ -138,12 +130,20 @@ bool InputHandler::run(int cycleTime){
                 data.ttByte2.telltales2.high_beam=1;
             }
             break;
-        case 20: //btn +
+        case 19: //btn 0
             if (data.ttByte2.telltales2.hand_break==1 && key.second==1)
                 data.ttByte2.telltales2.hand_break=0;
             else if (data.ttByte2.telltales2.hand_break==0 && key.second==1)
             {
                 data.ttByte2.telltales2.hand_break=1;
+            }
+            break;
+        case 20: //btn +
+            if (data.ttByte1.telltales1.right_blinker==1 && key.second==1)
+                data.ttByte1.telltales1.right_blinker=0;
+            else if (data.ttByte1.telltales1.right_blinker==0 && key.second==1)
+            {
+                data.ttByte1.telltales1.right_blinker=1;
             }
             break;
 

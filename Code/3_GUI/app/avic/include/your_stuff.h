@@ -17,7 +17,6 @@ private:
     void YouHaveJustRecievedACANFrame(const canfd_frame * const _frame);
     void readMyEngineFrame(const unsigned char * const _data);
     void timerEvent(QTimerEvent*) override;
-
 //signals:
 //    void die();
 
@@ -26,6 +25,9 @@ private:
     CANOpener CANReader;
     ClusterUpdater InstrumentCluster;
     _icons telltales;
+    bool ignitionOn=false;
+    bool engineRunning=false;
+    size_t startuptimer=0;
 
 };
 

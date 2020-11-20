@@ -70,32 +70,6 @@ iostream
 include/your_stuff.h
 /home/rkallum/Project/GroupA/Code/3_GUI/app/avic/include/your_stuff.h
 
-/home/rkallum/Project/GroupA/Code/3_GUI/app/avic/src/can_opener.cpp
-iostream
--
-unistd.h
--
-cstring
--
-net/if.h
--
-sys/ioctl.h
--
-sys/socket.h
--
-linux/can/raw.h
--
-fcntl.h
--
-can_opener.h
-/home/rkallum/Project/GroupA/Code/3_GUI/app/avic/src/can_opener.h
-
-/home/rkallum/Project/GroupA/Code/3_GUI/app/avic/src/cluster_updater.cpp
-iostream
--
-cluster_updater.h
-/home/rkallum/Project/GroupA/Code/3_GUI/app/avic/src/cluster_updater.h
-
 /home/rkallum/Project/GroupA/Code/3_GUI/app/avic/src/your_stuff.cpp
 thread
 -
@@ -108,8 +82,6 @@ cluster_updater.h
 bitset
 -
 
-/home/rkallum/Project/GroupA/Code/3_GUI/build/app/avic/avic_autogen/mocs_compilation.cpp
-
 /home/rkallum/Project/GroupA/Code/3_GUI/build/app/avic/include/moc_your_stuff.cpp
 ../../../../app/avic/include/your_stuff.h
 /home/rkallum/Project/GroupA/Code/3_GUI/app/avic/include/your_stuff.h
@@ -117,10 +89,6 @@ QtCore/qbytearray.h
 -
 QtCore/qmetatype.h
 -
-
-/home/rkallum/Project/GroupA/Code/3_GUI/build/app/avic/qrc_cluster-gauges.cpp
-
-/home/rkallum/Project/GroupA/Code/3_GUI/build/app/avic/qrc_images.cpp
 
 /usr/include/x86_64-linux-gnu/qt5/QtCore/QCommandLineParser
 qcommandlineparser.h

@@ -28,6 +28,7 @@ void CanOutput::write(CanOutput output)
     RPM=output.RPM;
     vhlSpeed=output.vhlSpeed;
     engagedGear=output.engagedGear;
+    engSts=output.engSts;
     //std::cout << "Writing to shared memory " << std::endl << std::flush;
 }
 

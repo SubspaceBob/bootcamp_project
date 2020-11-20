@@ -63,7 +63,7 @@ Item {
     property real temperature: 0
     property real oil_temp: 0
     Behavior on kph { NumberAnimation { duration: 500 } }
-    Behavior on rpm { NumberAnimation { duration: 200 } }
+    Behavior on rpmHezar { NumberAnimation { duration: 300 } }
     Behavior on temperature { NumberAnimation { duration: 1/*500*/ } }
     Behavior on fuel { NumberAnimation { duration: 1/*500*/ } }
     Behavior on oil_temp { NumberAnimation { duration: 1/*500*/ } }
@@ -130,150 +130,151 @@ Item {
 
     SequentialAnimation {
         running: startUp
-       /* running: startDemo
-        PropertyAction {
-            target: valueSource
-            property: "engine_check"
-            value: true
+       // running: startDemo
+       ParallelAnimation {
+            PropertyAction {
+                target: valueSource
+                property: "left_blinker"
+                value: true
+            }
+            PropertyAction {
+                target: valueSource
+                property: "right_blinker"
+                value: true
+            }
+            PropertyAction {
+                target: valueSource
+                property: "engine_check"
+                value: true
+            }
+        
+            PropertyAction {
+                target: valueSource
+                property: "oil_check"
+                value: true
+            }
+            PropertyAction {
+                target: valueSource
+                property: "abs"
+                value: true
+            }
+            PropertyAction {
+                target: valueSource
+                property: "battery"
+                value: true
+            }
+            PropertyAction {
+                target: valueSource
+                property: "seat_belt"
+                value: true
+            }
+            PropertyAction {
+                target: valueSource
+                property: "high_beam"
+                value: true
+            }
+            PropertyAction {
+                target: valueSource
+                property: "hand_break"
+                value: true
+            }
+            PropertyAction {
+                target: valueSource
+                property: "doors_open"
+                value: true
+            }
+        
+            NumberAnimation {
+                target: valueSource
+                property: "kph"
+                easing.type: Easing.InOutQuad
+                from: 0
+                to: 250
+                duration: 700
+            }
+            NumberAnimation {
+                target: valueSource
+                property: "rpmHezar"
+                easing.type: Easing.InOutQuad
+                from: 0
+                to: 9000
+                duration: 700
+            }
         }
         PauseAnimation {
-            duration: 200
+                duration: 300
+            }
+            PropertyAction {
+                target: valueSource
+                property: "left_blinker"
+                value: false
+            }
+            PropertyAction {
+                target: valueSource
+                property: "right_blinker"
+                value: false
+            }
+        
+            PropertyAction {
+                target: valueSource
+                property: "engine_check"
+                value: false
+            }
+                
+            PropertyAction {
+                target: valueSource
+                property: "oil_check"
+                value: false
+            }
+            PropertyAction {
+                target: valueSource
+                property: "abs"
+                value: false
+            }
+            PropertyAction {
+                target: valueSource
+                property: "battery"
+                value: false
+            }
+            PropertyAction {
+                target: valueSource
+                property: "seat_belt"
+                value: false
+            }
+            PropertyAction {
+                target: valueSource
+                property: "high_beam"
+                value: false
+            }
+            PropertyAction {
+                target: valueSource
+                property: "hand_break"
+                value: false
+            }
+            PropertyAction {
+                target: valueSource
+                property: "doors_open"
+                value: false
+            }
+        ParallelAnimation {
+            NumberAnimation {
+                target: valueSource
+                property: "kph"
+                easing.type: Easing.InOutSine
+                from: 250
+                to: 0
+                duration: 700
+            }
+            NumberAnimation {
+                    target: valueSource
+                    property: "rpmHezar"
+                    easing.type: Easing.InOutQuad
+                    from: 9000
+                    to: 0
+                    duration: 700
+                }
         }
-        PropertyAction {
-            target: valueSource
-            property: "engine_check"
-            value: false
-        }
-        PauseAnimation {
-            duration: 200
-        }
-        PropertyAction {
-            target: valueSource
-            property: "engine_check"
-            value: true
-        }
-        PauseAnimation {
-            duration: 200
-        }*/
-//        PropertyAction {
-//            target: valueSource
-//            property: "engine_check"
-//            value: false
-//        }
-//        PauseAnimation {
-//            duration: 200
-//        }
-//        PropertyAction {
-//            target: valueSource
-//            property: "engine_check"
-//            value: true
-//        }
-//        PauseAnimation {
-//            duration: 200
-//        }
-//        PropertyAction {
-//            target: valueSource
-//            property: "engine_check"
-//            value: false
-//        }
-//        PauseAnimation {
-//            duration: 100
-//        }
-        NumberAnimation {
-            target: valueSource
-            property: "kph"
-            easing.type: Easing.InOutQuad
-            from: 0
-            to: 250
-            duration: 700
-        }
-//        PropertyAction {
-//            target: valueSource
-//            property: "oil_check"
-//            value: true
-//        }
-//        PropertyAction {
-//            target: valueSource
-//            property: "high_beam"
-//            value: true
-//        }
-//        PauseAnimation {
-//            duration: 200
-//        }
-//        PropertyAction {
-//            target: valueSource
-//            property: "abs"
-//            value: true
-//        }
-//        PropertyAction {
-//            target: valueSource
-//            property: "doors_open"
-//            value: true
-//        }
-//        PauseAnimation {
-//            duration: 200
-//        }
-//        PropertyAction {
-//            target: valueSource
-//            property: "battery"
-//            value: true
-//        }
-//        PropertyAction {
-//            target: valueSource
-//            property: "seat_belt"
-//            value: true
-//        }
-        PauseAnimation {
-            duration: 300
-        }
-//        PropertyAction {
-//            target: valueSource
-//            property: "oil_check"
-//            value: false
-//        }
-//        PropertyAction {
-//            target: valueSource
-//            property: "high_beam"
-//            value: false
-//        }
-//        PauseAnimation {
-//            duration: 100
-//        }
-//        PropertyAction {
-//            target: valueSource
-//            property: "abs"
-//            value: false
-//        }
-//        PropertyAction {
-//            target: valueSource
-//            property: "doors_open"
-//            value: false
-//        }
-//        PauseAnimation {
-//            duration: 100
-//        }
-//        PropertyAction {
-//            target: valueSource
-//            property: "battery"
-//            value: false
-//        }
-//        PropertyAction {
-//            target: valueSource
-//            property: "seat_belt"
-//            value: false
-//        }
-//        PauseAnimation {
-//            duration: 100
-//        }
-        NumberAnimation {
-            target: valueSource
-            property: "kph"
-            easing.type: Easing.InOutSine
-            from: 250
-            to: 0
-            duration: 700
-        }
-
+        
 
     }
 

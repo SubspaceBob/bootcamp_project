@@ -50,7 +50,8 @@ struct CanOutput
     uint8_t gearStick;
     uint16_t RPM;
     uint8_t engagedGear;
-    CanOutput() {vhlSpeed=2; gearStick=0; RPM=0; engagedGear=0;}
+    uint8_t engSts;
+    CanOutput() {vhlSpeed=2; gearStick=0; RPM=0; engagedGear=0; engSts=0;}
 
     void write(CanOutput output);
 };
