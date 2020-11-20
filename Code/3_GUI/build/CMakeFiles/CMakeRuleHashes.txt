@@ -1,0 +1,5 @@
+# Hashes of file build rules.
+b341809c7f36e415edb424c2d84bff7f app/avic/CMakeFiles/avic_autogen
+95b476efc8b71eab855d539664632c55 app/avic/include/moc_your_stuff.cpp
+80d26a06bae3ef04654606b5e0f39d26 app/avic/qrc_cluster-gauges.cpp
+8af935d33e116ce519d315c4ff74d553 app/avic/qrc_images.cpp

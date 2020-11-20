@@ -25,6 +25,9 @@ private:
     CANOpener CANReader;
     ClusterUpdater InstrumentCluster;
     _icons telltales;
+    bool ignitionOn=false;
+    bool engineRunning=false;
+    size_t startuptimer=0;
 
 };
 
