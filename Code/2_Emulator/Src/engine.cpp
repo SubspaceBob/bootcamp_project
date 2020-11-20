@@ -7,7 +7,7 @@ Engine::Engine()
    engTrq = 0;
 }
 
-void Engine::run(CanInput inputVal, CanOutput canOut, float engineSpeed, int timeStep, int gearStick)
+void Engine::run(CanInput &inputVal, CanOutput &canOut, float engineSpeed, int timeStep, int gearStick)
 {
    // Move Stop/Start code to separate function?
 
@@ -42,10 +42,12 @@ void Engine::run(CanInput inputVal, CanOutput canOut, float engineSpeed, int tim
    
    setEngTrqFromAccPdl(inputVal, engineSpeed);
 
-   std::cout <<" EngineStatus: "       << engSts               << 
-               " EngTrq: "             << engTrq               << 
-               " EngSpeed[RPM]: "      << engineSpeed*60       << 
-               std::endl;
+   // Store values to CANOut
+   canOut.engSts    = static_cast<uint8_t> (engSts);
+   
+   std::cout <<" EngineStatus: "    << engSts         << 
+               " EngTrq: "          << engTrq         << 
+               " EngSpeed[RPM]: "   << engineSpeed*60 << std::endl;
 }
 
 void Engine::setEngTrqFromAccPdl(CanInput inputVal, float engineSpeed)

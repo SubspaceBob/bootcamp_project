@@ -16,7 +16,7 @@ class Engine{
         // and current EngineSpeed from gearbox. run method is its main method.
         Engine();
         ~Engine()= default;
-        void run(CanInput inputVal, CanOutput CANOut, float engineSpeed, int timeStep, int gearStick);
+        void run(CanInput &inputVal, CanOutput &CANOut, float engineSpeed, int timeStep, int gearStick);
         
         // Getters
         EngSts getEngSts(){return engSts;}

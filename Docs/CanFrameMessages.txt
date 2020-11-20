@@ -18,4 +18,7 @@ Outputs:
         Byte2:  MSB of RPM
         Byte3:  LSB of RPM  uint16_t    0-10000 rpm         init = 0
         Byte4:  engagedGear uint8_t     0-7                 init = 0
+    Frame6:
+    Frame7:
+        Byte1: engSts       uint8_t     0/1 = Off/On        init = 0
 
