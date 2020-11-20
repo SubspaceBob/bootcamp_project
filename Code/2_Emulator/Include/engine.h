@@ -2,8 +2,8 @@
 #define ENGINE_H
 #include <iostream>
 #include "can_io.h"
-enum EngSts : uint8_t {Off, On};
-typedef uint16_t Trq;
+#include "com_eng_gbx_def.h"
+
 namespace VEHICLE
 {
     const static float MAX_TORQUE         = 450;

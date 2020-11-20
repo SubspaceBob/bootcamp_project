@@ -1,25 +1,13 @@
 @startuml
-<<<<<<< HEAD
 title Change gearStickPosition
-=======
-title Change gearStickition
->>>>>>> 99eaef477f1ee83043fa951560d9f9d1f816fdcc
 participant Input
 participant Engine
 participant Gearbox
 participant Vehicle
 participant Output
-<<<<<<< HEAD
 Input -> Gearbox : ChangegearStickPosition(PRND)
 Gearbox -> Vehicle : GetvehicleSpeed()
 Gearbox <- Vehicle : vehicleSpeed
 Gearbox -> Gearbox : SetgearStickPosition()
-=======
-Input -> Gearbox : ChangegearStickition(PRND)
-Gearbox -> Vehicle : GetvhlSpeed()
-Gearbox <- Vehicle : vhlSpeed
-Gearbox -> Gearbox : SetgearStickition()
->>>>>>> 99eaef477f1ee83043fa951560d9f9d1f816fdcc
-
 
 @enduml

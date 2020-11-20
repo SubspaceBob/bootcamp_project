@@ -2,10 +2,8 @@
 #include <gtest/gtest.h>
 
 TEST(EmulatorMainTest, trialOne) {
-
     // Do checks
     ASSERT_EQ(0, 0);
-
 }
 
 //__Test_Main_____________________________________________

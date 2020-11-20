@@ -2,7 +2,8 @@
 #define GEARCLASS_H
 #include <iostream> 
 #include "can_io.h"
-#include "engine.h"
+#include "com_eng_gbx_def.h"
+
 namespace VEHICLE
 {
     const static float WHEEL_RADIUS         = 0.3;
@@ -16,11 +17,6 @@ namespace VEHICLE
     const static float MAX_ENGINETORQUE     = 450;
     const static float ROLLINGRESISTANCE    = MAX_ENGINETORQUE * FINALGEAR * GEARRATIOS[0] * WHEEL_RADIUS * 3.6 / (VEHICLE_MASS * TOPSPEED_KPH);    // Magic number = 255km/h topspeed /60 * FinalGear * TopGear * WheelRadius / VEHICLE_MASS
 }
-
-enum class GearPattern :int8_t
-{
-    P, R, N, D
-};
 
 class Gearbox
 {

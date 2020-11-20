@@ -3,19 +3,12 @@ title Turn off engine
 start
 :Start button pressed;
 if (Engine on) then (yes)
-    if (Speed==0) then (yes)
-        if (Is gear in P) then (yes)
+    if (Is gear in P) then (yes)
         :turn off engine;
-else (No)
-stop
+    else (No)
+        stop
 endif
 else (No)
-stop
+    stop
 endif
-else (No)
-stop
-endif
-stop
-
-
 @enduml

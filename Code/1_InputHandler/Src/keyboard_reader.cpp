@@ -56,8 +56,7 @@ KeyInput KeyboardReader::getKey()
         {
             key.first = event.xkey.keycode;
             key.second = 0;
-        }
-        
+        } 
     } 
     return key; 
 }

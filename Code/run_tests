@@ -7,7 +7,10 @@
 cd 5_Build
 cmake ..
 make
-cd 2_Emulator
-gnome-terminal -- ./EngineTest --gtest_output=xml:../TestReports/EngineTestReport.xml
-gnome-terminal -- ./GearboxTest --gtest_output=xml:../TestReports/GearboxTestReport.xml
-#gnome-terminal -- ./EmulatorMainTest --gtest_output=xml:../EmulatorMainTestReport.xml
+./2_Emulator/EngineTest --gtest_output=xml:../6_TestReports/EngineTestReport.xml
+./2_Emulator/GearboxTest --gtest_output=xml:../6_TestReports/GearboxTestReport.xml
+cd ../6_TestReports
+#Wait a while to make sure the testreports have been written
+sleep 1
+xunit-viewer -r .
+sensible-browser --new-tab index.html
