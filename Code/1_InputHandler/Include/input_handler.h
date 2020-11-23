@@ -9,7 +9,7 @@
 class InputHandler{
 public:
     InputHandler();
-    ~InputHandler(){reader.stop();}
+    ~InputHandler(){reader.stop();}//no need
     bool run(int cycleTime);
     KeyboardReader reader;
     CanInput data;

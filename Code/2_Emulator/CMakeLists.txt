@@ -7,6 +7,7 @@ include_directories(../4_CommonUtils/CANIO/Include)
 include_directories(../4_CommonUtils/SharedMemory/Include)
 
 # Create executable for EmulatorMain
+# maybe static libraries for the shared
 add_executable(EmulatorMain Src/emulator_main.cpp
                             Src/gearbox.cpp
                             Src/engine.cpp

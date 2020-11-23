@@ -45,7 +45,7 @@ bool CANIO::start_can(){
     }
     
 }
-
+//generalize to get only data pointer
 bool CANIO::readCANWriteToMemory(SharedMemory<CanInput> *canInMem) {
     bool retval=false;
     scpp::CanFrame fr;

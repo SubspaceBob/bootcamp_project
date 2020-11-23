@@ -12,7 +12,7 @@ using KeyInput = std::pair<int, int>;
 class KeyboardReader{
 public:
     KeyboardReader() = default;
-    ~KeyboardReader(){};
+    ~KeyboardReader(){/*STOP HERE*/};
     Display *display;
     Window window;
     XEvent event;

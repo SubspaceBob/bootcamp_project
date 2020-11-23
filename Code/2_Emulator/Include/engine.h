@@ -19,8 +19,8 @@ class Engine{
         void run(CanInput &inputVal, CanOutput &CANOut, float engineSpeed, int timeStep, int gearStick);
         
         // Getters
-        EngSts getEngSts(){return engSts;}
-        Trq getEngTrq(){return engTrq;}
+        inline EngSts getEngSts();
+        inline Trq getEngTrq(){return engTrq;}
 
     private:
         EngSts engSts;
@@ -31,4 +31,7 @@ class Engine{
         //Chosen maxTrq = 450
         void setEngTrqFromAccPdl(CanInput inputVal, float engineSpeed);
 };
+
+inline EngSts Engine::getEngSts() {return engSts;}
+
 #endif

@@ -90,13 +90,15 @@ bool InputHandler::run(int cycleTime){
                 data.ttByte1.telltales1.oil_check=1;
             }
             break;
-        case 14: //btn 5
-            if (data.ttByte1.telltales1.abs==1 && key.second==1)
+        case 14: //btn 5/*
+        if (key.second==1)
+        //data.ttByte1.telltales1.abs^-
+/*            if (data.ttByte1.telltales1.abs==1 && key.second==1)
                 data.ttByte1.telltales1.abs=0;
             else if (data.ttByte1.telltales1.abs==0 && key.second==1)
             {
                 data.ttByte1.telltales1.abs=1;
-            }
+            }*/
             break;
         case 15: //btn 6
             if (data.ttByte1.telltales1.battery==1 && key.second==1)
@@ -154,14 +156,14 @@ bool InputHandler::run(int cycleTime){
             exit(EXIT_FAILURE);*/
             break;  
     } 
-
+    // lets generalized on pionter and size
     //Output the frames
     canIO.frameToBus((uint8_t)1, (uint8_t)data.brkPdl, (uint8_t)data.accPdl);
     canIO.frameToBus((uint8_t)2, (uint8_t)data.gearReq);
     canIO.frameToBus((uint8_t)3, (uint8_t)data.startBtn, (uint8_t)data.quitEmul);
     canIO.frameToBus((uint8_t)6, (uint8_t)data.ttByte1.canByte, (uint8_t)data.ttByte2.canByte);
     
-    // Wait CAN cycletime
+    // Wait CAN cycletime move to main
     std::this_thread::sleep_for(std::chrono::milliseconds(cycleTime));
     
     return exitLoop; 

@@ -12,7 +12,7 @@ void Engine::run(CanInput &inputVal, CanOutput &canOut, float engineSpeed, int t
    // Move Stop/Start code to separate function?
 
    // Using last cycle for debouncing
-   if(engSts == 0 && (int)inputVal.startBtn == 1 
+   if(engSts == EngSts::Off && (int)inputVal.startBtn == 1 
       && lastCycle.startBtn == 0 && (int)inputVal.brkPdl == 100) {
       // Engine off and first press = Turn on
       std::cout << "Starting engine" << std::endl;
