@@ -52,18 +52,22 @@ void Gearbox::setGearStick(int8_t gearStickRequest, int8_t brakePedal)
         if (gearStickRequest==0)
         {
             gearStickPosition=GearPattern::P;
+            engagedGear = 0;            
         }
         else if (gearStickRequest==1)
         {
             gearStickPosition=GearPattern::R;
+            engagedGear = 0;
         }
         else if (gearStickRequest==2)
         {
             gearStickPosition=GearPattern::N;
+            engagedGear = 0;
         }
         else if (gearStickRequest==3)
         {
             gearStickPosition=GearPattern::D;
+            engagedGear = 1;
         }
         else if (gearStickRequest==4) {} //No request = ignore
         else { // If this then something seriously wrong
@@ -81,7 +85,7 @@ float Gearbox::getGearRatio(float engineSpeed, GearPattern gearStick)
         {
             engagedGear++;
         }
-        else if (engineSpeed < (2000/60) && engagedGear > 0)
+        else if (engineSpeed < (2000/60) && engagedGear > 1)
         {
             engagedGear--;
         }
@@ -171,7 +175,7 @@ void Gearbox::run(CanInput &input, CanOutput &canOut, Trq engTrq, EngSts engSts,
     
     std::cout <<//" EngTrq: "             << engTrq                                   << 
                 " Engaged Gear: "       << static_cast<int> (engagedGear)           << 
-                //" GearStickPosition: "  << static_cast<int> (gearStickPosition)     << 
+                " GearStickPosition: "  << static_cast<int> (gearStickPosition)     << 
                 " GearRatio: "          << currentGearRatio                         << 
                 " RollingResistance: "  << RollingResistance                        << 
                 " Acceleration: "       << acceleration                             << 
