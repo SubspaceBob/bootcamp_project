@@ -7,12 +7,12 @@ Engine::Engine()
    engTrq = 0;
 }
 
-void Engine::run(const Frame1 *frame1, const Frame3 *frame3, const Frame4 *frame4 , Frame5 *frame5, Frame6 *frame6, const int *timeStepSize)
+void Engine::run(const std::vector<Frame> &frames, const int &timeStepSize)
 {
    // Move Stop/Start code to separate function?
 
    // Using last cycle for debouncing
-   if(engSts == EngSts::Off && frame1->data.startBtn == 1 
+   if(engSts == EngSts::Off && frame1.data.startBtn == 1 
       && debounce == 0 && frame3->data.brkPdl == 100) {
       // Engine off and first press = Turn on
       std::cout << "Starting engine" << std::endl;

@@ -1,4 +1,8 @@
 #include <iostream>
+#include <algorithm>
+#include <find>
+#include <move>
+#include <vector>
 #include "can_io.h"
 #include "../../SharedMemory/Include/shared_memory.h"
 #include "socketcan_cpp.h"
@@ -40,74 +44,27 @@ bool CANIO::start_can(){
 }
 
 //generalize to get only data pointer
-bool CANIO::readCANWriteToMemory(SharedMemory<Frame> *frame1, SharedMemory<Frame> *frame3, SharedMemory<Frame> *frame4) {
+bool CANIO::readCANWriteToMemory(std::vector<SharedMemory<Frame>> &SharedFrameMemoryVector, uint8_t CanInFrames[]) {
     bool retval=false;
     scpp::CanFrame fr;
-    if (sockat_can.read(fr) == scpp::STATUS_OK) { 
-        if (fr.id == 1) {
+    if (sockat_can.read(fr) == scpp::STATUS_OK) {
+
+        // using std::begin/end instead of size of array as argument
+        // if fr.id is any_of CanInFrames
+        if (std::any_of(std::begin(CanInFrames), std::end(CanInFrames), [&](int fr.id))) 
+        {
             // Set the data according to frame
+
             canIn.id = fr.id;
-            canIn.data.Byte0 = fr.data[0];
-            canIn.data.Byte1 = fr.data[1];
-            canIn.data.Byte2 = fr.data[2];
-            canIn.data.Byte3 = fr.data[3];
-            canIn.data.Byte4 = fr.data[4];
-            canIn.data.Byte5 = fr.data[5];
-            canIn.data.Byte6 = fr.data[6];
-            canIn.data.Byte7 = fr.data[7];
+            canIn.data = fr.data;
             
             // Ẃrite it to memory
-            frame1->write(canIn);
+            SharedFrameMemoryVector[fr.id]->write(canIn);
 
             // TODO: Not actually used clean up
             // And set bool return according to q btn.
-            if (fr.data[1]==1) retval = true;
+            retval = true;
         }
-        else if (fr.id == 3) {
-            canIn.id = fr.id;
-            canIn.data.Byte0 = fr.data[0];
-            canIn.data.Byte1 = fr.data[1];
-            canIn.data.Byte2 = fr.data[2];
-            canIn.data.Byte3 = fr.data[3];
-            canIn.data.Byte4 = fr.data[4];
-            canIn.data.Byte5 = fr.data[5];
-            canIn.data.Byte6 = fr.data[6];
-            canIn.data.Byte7 = fr.data[7];
-            
-            frame3->write(canIn);
-        }
-        else if (fr.id == 4) {
-            canIn.id = fr.id;
-            canIn.data.Byte0 = fr.data[0];
-            canIn.data.Byte1 = fr.data[1];
-            canIn.data.Byte2 = fr.data[2];
-            canIn.data.Byte3 = fr.data[3];
-            canIn.data.Byte4 = fr.data[4];
-            canIn.data.Byte5 = fr.data[5];
-            canIn.data.Byte6 = fr.data[6];
-            canIn.data.Byte7 = fr.data[7];
-            
-            frame4->write(canIn);
-        }
-        else {} // Emulator don't care about the other frames
-        
-        /*if(fr.id==001)
-        {
-            canIn.brkPdl=fr.data[0];
-            canIn.accPdl=fr.data[1];
-        }  
-        else if(fr.id==002)
-        {
-            canIn.gearReq=fr.data[0];
-        } 
-        else if(fr.id==003)
-        {
-            canIn.startBtn=fr.data[0];
-            canIn.quitEmul=fr.data[1];
-        } */
-
-        //canInMem->write(canIn);
-        
     }
     else
     {

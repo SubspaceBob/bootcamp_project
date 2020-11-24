@@ -1,3 +1,4 @@
+#include <vector>
 #include "gearbox.h"
 #include "can_io.h"
 
@@ -108,7 +109,7 @@ Trq Gearbox::calculateBrakeTorque(int8_t brakePdl)
     Trq BrkTrq = VEHICLE::MAX_BRAKETORQUE * brakePdl / 100;
 }
 
-void Gearbox::run(CanInput &input, CanOutput &canOut, Trq engTrq, EngSts engSts, int timeStep){
+void Gearbox::run(const std::vector<Frame> &frames, Trq engTrq, EngSts engSts, int timeStep){
     /*
     Basic physics/mechanics:
     Torque from engine is used to calculate the vehicle acceleration, which is integrated into vehicle speed.

@@ -73,7 +73,7 @@ public:
     Frame canIn; // persistent object needed for readCANWriteToMemory
     //CanInput canIn; // persistent object needed for readCANWriteToMemory
     bool start_can();
-    bool readCANWriteToMemory(SharedMemory<Frame> *frame1, SharedMemory<Frame> *frame3, SharedMemory<Frame> *frame4);
+    bool readCANWriteToMemory(std::vector<SharedMemory<Frame>> &SharedFrameMemoryVector, uint8_t CanInFrames[]); // CanInFrames is an array = pointer ;)
     //bool readCANWriteToMemory(SharedMemory<CanInput> *CanInput);
     void frameToBus(SharedMemory<Frame> *frame);
     void frameToBus(uint8_t frameNo, uint8_t signalValue);
