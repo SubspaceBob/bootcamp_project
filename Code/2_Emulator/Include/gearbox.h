@@ -20,15 +20,16 @@ namespace VEHICLE
 
 class Gearbox
 {
+    protected: // protected, for testability    
     float vhlSpeed; // 0-70,8 m/s
     float engineRPS; // 0-10000 rpm
     float gearboxRPS;
-    int8_t engagedGear;  //what gear we are in while in D 
+    Trq calculateBrakeTorque(const int8_t &brakePdl);
+    void setGearStick(const int8_t &gearStickRequest, const int8_t &brakePedal);
+    
     GearPattern gearStickPosition;  //Active gear (P,R,N,D)
-    Trq calculateBrakeTorque(int8_t brakePdl);
-    void setGearStick( int8_t gearStickRequest, int8_t brakePedal);
-    float calculateEngineRPS(float gearbox_rps, float currentGearRatio, EngSts engSts);
-    float getGearRatio(float engineSpeed, GearPattern gearStick);
+    int8_t engagedGear;  //what gear we are in while in D 
+    void gearShiftLogic();
     
     public:
     Gearbox();

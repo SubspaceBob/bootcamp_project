@@ -30,7 +30,7 @@ int8_t Gearbox::getEngagedGear()
     return (engagedGear);
 }
 
-float Gearbox::calculateEngineRPS(float gearbox_rps, float currentGearRatio, EngSts engSts)
+float calculateEngineRPS(const float &gearbox_rps, const float &currentGearRatio, const EngSts &engSts)
 {
     float engine_rps = gearbox_rps * currentGearRatio;
     if (engSts)
@@ -41,10 +41,9 @@ float Gearbox::calculateEngineRPS(float gearbox_rps, float currentGearRatio, Eng
     {
         return 0;
     }
-    
 }
 
-void Gearbox::setGearStick(int8_t gearStickRequest, int8_t brakePedal)
+void Gearbox::setGearStick(const int8_t &gearStickRequest, const int8_t &brakePedal)
 {
     // If GearStickRequest 0-3, low vehicle speed and brakepedal somewhat pressed
     if (0<=gearStickRequest && gearStickRequest<4 && vhlSpeed<1 && brakePedal > 5)
@@ -52,22 +51,18 @@ void Gearbox::setGearStick(int8_t gearStickRequest, int8_t brakePedal)
         if (gearStickRequest==0)
         {
             gearStickPosition=GearPattern::P;
-            engagedGear = 0;            
         }
         else if (gearStickRequest==1)
         {
             gearStickPosition=GearPattern::R;
-            engagedGear = 0;
         }
         else if (gearStickRequest==2)
         {
             gearStickPosition=GearPattern::N;
-            engagedGear = 0;
         }
         else if (gearStickRequest==3)
         {
             gearStickPosition=GearPattern::D;
-            engagedGear = 1;
         }
         else if (gearStickRequest==4) {} //No request = ignore
         else { // If this then something seriously wrong
@@ -75,21 +70,35 @@ void Gearbox::setGearStick(int8_t gearStickRequest, int8_t brakePedal)
         }
     }
 }
-
-float Gearbox::getGearRatio(float engineSpeed, GearPattern gearStick)
+void Gearbox::gearShiftLogic()
 {
-    if (gearStick==GearPattern::D)
+    // Gear Shift logic, updating engagedGear depending on enginespeed and gearStick
+    if (gearStickPosition==GearPattern::D)
     {
         // Very simple shift up/down based on Engine RPM, sets the engagedGear index, the ratio is given by GEARRATIOS[engagedGear]
-        if (engineSpeed > (6000/60) && engagedGear <7)
+        if (engineRPS > (6000/60) && engagedGear <7)
         {
             engagedGear++;
         }
-        else if (engineSpeed < (2000/60) && engagedGear > 1)
+        else if (engineRPS < (2000/60) && engagedGear > 0)
         {
             engagedGear--;
         }
-        return VEHICLE::GEARRATIOS[engagedGear] * VEHICLE::FINALGEAR;
+    }
+    // Would it be better to return engagedGear?
+}
+
+float calculateGearRatio(const GearPattern &gearStick, const int8_t &engagedGear)
+{
+    // Since method is not attached to class, the method should have some limit on input, for testing it.
+    // A bit weird since the limit should be on the function setting the gear.
+    auto gear = std::max<int8_t>(std::min<int8_t>(engagedGear,
+                                                    7),
+                                                    0);
+
+    if (gearStick==GearPattern::D)
+    {
+        return VEHICLE::GEARRATIOS[gear] * VEHICLE::FINALGEAR;
     }
     else if (gearStick==GearPattern::R)
     {
@@ -101,11 +110,20 @@ float Gearbox::getGearRatio(float engineSpeed, GearPattern gearStick)
     } 
 }
 
-Trq Gearbox::calculateBrakeTorque(int8_t brakePdl)
+Trq Gearbox::calculateBrakeTorque(const int8_t &brakePdl)
 {
-    // Calculates Brake Torque based on BrakePedal Value and max possible brake torque.
-    // BrakePdl is 0-100, BrakePdl == 100 -> BrkTrq = MAX_BRAKETORQUE
-    Trq BrkTrq = VEHICLE::MAX_BRAKETORQUE * brakePdl / 100;
+    // Calculates Brake Torque linearly based on BrakePedal Value and max possible brake torque.
+    // Limit on brakepedal input and on braketorque output, a bit overkill but maybe good practice
+    auto brake_pedal = std::max<float>(std::min<float>(brakePdl, 
+                                                        100),    // Range top limiter
+                                                        0);      // Range bottom limiter
+    
+    // Linear scale
+    auto brake_torque = VEHICLE::MAX_BRAKETORQUE * brake_pedal / 100;
+
+    Trq BrkTrq = std::max<float>(std::min<float>(brake_torque, 
+                                        VEHICLE::MAX_BRAKETORQUE), // Range top limiter
+                                        0);                        // Range bottom limiter
 }
 
 void Gearbox::run(CanInput &input, CanOutput &canOut, Trq engTrq, EngSts engSts, int timeStep){
@@ -126,11 +144,14 @@ void Gearbox::run(CanInput &input, CanOutput &canOut, Trq engTrq, EngSts engSts,
     EngineRPS is used as input to Engine to calculate torque next iteration.
     */
 
-    // Set the GearStick position
+      // Evaluate gearStick position
     setGearStick(input.gearReq, input.brkPdl);
 
-    // Get the current gear ratio
-    float currentGearRatio = getGearRatio(engineRPS, gearStickPosition);
+    // Evaluate gearShifting
+    gearShiftLogic();
+    
+    // calculate gear ratio depending on GearStickPosition and EngagedGear(used if Drive)
+    float currentGearRatio = calculateGearRatio(gearStickPosition, engagedGear);
 
     // Gearbox should use the engine torque only if in D or R, else the torque is 0.
     Trq engine_torque = 0;
@@ -174,8 +195,8 @@ void Gearbox::run(CanInput &input, CanOutput &canOut, Trq engTrq, EngSts engSts,
     canOut.engagedGear  = static_cast<uint8_t> (engagedGear);
     
     std::cout <<//" EngTrq: "             << engTrq                                   << 
-                " Engaged Gear: "       << static_cast<int> (engagedGear)           << 
-                " GearStickPosition: "  << static_cast<int> (gearStickPosition)     << 
+                //" Engaged Gear: "       << static_cast<int> (engagedGear)           << 
+                //" GearStickPosition: "  << static_cast<int> (gearStickPosition)     << 
                 " GearRatio: "          << currentGearRatio                         << 
                 " RollingResistance: "  << RollingResistance                        << 
                 " Acceleration: "       << acceleration                             << 
