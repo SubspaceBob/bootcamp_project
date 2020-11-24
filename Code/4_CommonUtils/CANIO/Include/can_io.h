@@ -1,6 +1,7 @@
 #ifndef CANIO_H
 #define CANIO_H
 #include <iostream>
+#include "database.h"
 #include "socketcan_cpp.h"
 #include "../../SharedMemory/Include/shared_memory.h"
 
@@ -62,16 +63,19 @@ struct CanOutput
     CanOutput() {vhlSpeed=2; gearStick=0; RPM=0; engagedGear=0; engSts=0;}
 
     void write(CanOutput output);
-};
+}; 
 
 class CANIO{
 public:
     CANIO() = default;
     ~CANIO() = default;
     scpp::SocketCan sockat_can;
-    CanInput canIn; // persistent object needed for readCANWriteToMemory
+    Frame canIn; // persistent object needed for readCANWriteToMemory
+    //CanInput canIn; // persistent object needed for readCANWriteToMemory
     bool start_can();
-    bool readCANWriteToMemory(SharedMemory<CanInput> *CanInput);
+    bool readCANWriteToMemory(SharedMemory<Frame> *frame1, SharedMemory<Frame> *frame3, SharedMemory<Frame> *frame4);
+    //bool readCANWriteToMemory(SharedMemory<CanInput> *CanInput);
+    void frameToBus(SharedMemory<Frame> *frame);
     void frameToBus(uint8_t frameNo, uint8_t signalValue);
     void frameToBus(uint8_t frameNo, uint8_t signal1Value, uint8_t signal2Value);
     void frameToBus(uint8_t frameNo, uint8_t signal1Value, uint16_t signal2Value, uint8_t signal3Value);

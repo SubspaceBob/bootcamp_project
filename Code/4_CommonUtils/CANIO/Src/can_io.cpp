@@ -4,15 +4,8 @@
 #include "socketcan_cpp.h"
 // https://github.com/siposcsaba89/socketcan-cpp
 
-struct Bitfield{
-    uint8_t rpmLSB;
-    uint8_t rpmMSB; 
-};
-union RPM{
-    uint16_t rpmIn;
-    Bitfield rpmOut;
-};
 
+ //Replaced by database frame1-6
 void CanInput::write(CanInput input)
 {
     brkPdl=input.brkPdl;
@@ -45,12 +38,60 @@ bool CANIO::start_can(){
     }
     
 }
+
 //generalize to get only data pointer
-bool CANIO::readCANWriteToMemory(SharedMemory<CanInput> *canInMem) {
+bool CANIO::readCANWriteToMemory(SharedMemory<Frame> *frame1, SharedMemory<Frame> *frame3, SharedMemory<Frame> *frame4) {
     bool retval=false;
     scpp::CanFrame fr;
     if (sockat_can.read(fr) == scpp::STATUS_OK) { 
-        if(fr.id==001)
+        if (fr.id == 1) {
+            // Set the data according to frame
+            canIn.id = fr.id;
+            canIn.data.Byte0 = fr.data[0];
+            canIn.data.Byte1 = fr.data[1];
+            canIn.data.Byte2 = fr.data[2];
+            canIn.data.Byte3 = fr.data[3];
+            canIn.data.Byte4 = fr.data[4];
+            canIn.data.Byte5 = fr.data[5];
+            canIn.data.Byte6 = fr.data[6];
+            canIn.data.Byte7 = fr.data[7];
+            
+            // Ẃrite it to memory
+            frame1->write(canIn);
+
+            // TODO: Not actually used clean up
+            // And set bool return according to q btn.
+            if (fr.data[1]==1) retval = true;
+        }
+        else if (fr.id == 3) {
+            canIn.id = fr.id;
+            canIn.data.Byte0 = fr.data[0];
+            canIn.data.Byte1 = fr.data[1];
+            canIn.data.Byte2 = fr.data[2];
+            canIn.data.Byte3 = fr.data[3];
+            canIn.data.Byte4 = fr.data[4];
+            canIn.data.Byte5 = fr.data[5];
+            canIn.data.Byte6 = fr.data[6];
+            canIn.data.Byte7 = fr.data[7];
+            
+            frame3->write(canIn);
+        }
+        else if (fr.id == 4) {
+            canIn.id = fr.id;
+            canIn.data.Byte0 = fr.data[0];
+            canIn.data.Byte1 = fr.data[1];
+            canIn.data.Byte2 = fr.data[2];
+            canIn.data.Byte3 = fr.data[3];
+            canIn.data.Byte4 = fr.data[4];
+            canIn.data.Byte5 = fr.data[5];
+            canIn.data.Byte6 = fr.data[6];
+            canIn.data.Byte7 = fr.data[7];
+            
+            frame4->write(canIn);
+        }
+        else {} // Emulator don't care about the other frames
+        
+        /*if(fr.id==001)
         {
             canIn.brkPdl=fr.data[0];
             canIn.accPdl=fr.data[1];
@@ -63,13 +104,10 @@ bool CANIO::readCANWriteToMemory(SharedMemory<CanInput> *canInMem) {
         {
             canIn.startBtn=fr.data[0];
             canIn.quitEmul=fr.data[1];
-        }
+        } */
 
-        canInMem->write(canIn);
-
-        if (fr.id==3 && fr.data[1]==1){
-            retval = true;
-        }
+        //canInMem->write(canIn);
+        
     }
     else
     {
@@ -77,6 +115,29 @@ bool CANIO::readCANWriteToMemory(SharedMemory<CanInput> *canInMem) {
     }
     return (retval);
 }
+
+void CANIO::frameToBus(SharedMemory<Frame> *frame) {
+    scpp::CanFrame cf_to_write;
+
+    // Set Frame ID   
+    cf_to_write.id = frame->memory.id;
+    cf_to_write.len = 8;
+    // Output signal value...
+    cf_to_write.data[0] = frame->memory.data.Byte0;
+    cf_to_write.data[1] = frame->memory.data.Byte1;
+    cf_to_write.data[2] = frame->memory.data.Byte2;
+    cf_to_write.data[3] = frame->memory.data.Byte3;
+    cf_to_write.data[4] = frame->memory.data.Byte4;
+    cf_to_write.data[5] = frame->memory.data.Byte5;
+    cf_to_write.data[6] = frame->memory.data.Byte6;
+    cf_to_write.data[7] = frame->memory.data.Byte7;
+
+    auto write_sc_status = sockat_can.write(cf_to_write);
+
+    if (write_sc_status != scpp::STATUS_OK)
+        printf("something went wrong on socket write, error code : %d \n", int32_t(write_sc_status));
+}
+
 
 // Frame with 1 uint8 signal...
 void CANIO::frameToBus(uint8_t frameNo, uint8_t signalValue) {
@@ -117,17 +178,26 @@ void CANIO::frameToBus(uint8_t frameNo, uint8_t signal1Value, uint8_t signal2Val
 
 // Frame 5...
 void CANIO::frameToBus(uint8_t frameNo, uint8_t signal1Value, uint16_t signal2Value, uint8_t signal3Value) {
+    //in dataBase Frame6
+    struct Bitfield{
+        uint8_t LSB;
+        uint8_t MSB; 
+    };
+    union rpm{
+        uint16_t In;
+        Bitfield Out;
+    };
 
-    RPM rpm;
-    rpm.rpmIn= signal2Value;
+    rpm rpm;
+    rpm.In= signal2Value;
     scpp::CanFrame cf_to_write; 
     cf_to_write.id = frameNo;
     cf_to_write.len = 8;
 
     // Output signal values...
     cf_to_write.data[0] = signal1Value;
-    cf_to_write.data[1] = rpm.rpmOut.rpmMSB;
-    cf_to_write.data[2] = rpm.rpmOut.rpmLSB;
+    cf_to_write.data[1] = rpm.Out.MSB;
+    cf_to_write.data[2] = rpm.Out.LSB;
     cf_to_write.data[3] = signal3Value;
     // ...And rest to 0
     for (int i = 4; i < 8; ++i)
@@ -137,4 +207,5 @@ void CANIO::frameToBus(uint8_t frameNo, uint8_t signal1Value, uint16_t signal2Va
     if (write_sc_status != scpp::STATUS_OK)
         printf("something went wrong on socket write, error code : %d \n", int32_t(write_sc_status));
 }
+
 

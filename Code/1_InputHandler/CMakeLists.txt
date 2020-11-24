@@ -4,6 +4,7 @@ set(CMAKE_CXX_STANDARD 17)
 
 include_directories(Include)
 include_directories(../4_CommonUtils/CANIO/Include)
+include_directories(../4_CommonUtils/DataBase/Include)
 
 # Create executable for InputHandlerMain
 add_executable(InputHandler_Main    Src/main.cpp

@@ -30,6 +30,7 @@ void yourStuff::YouHaveJustRecievedACANFrame(const canfd_frame * const _frame) {
         }
 
         case CANID::frame6 : {
+            //const _icons *p = reinterpret_cast<const _icons *p>(_frame->data);
             if (std::bitset <8> (0b00000001 & _frame->data[0]).any())
                 this->telltales.hazard=1;
             else
