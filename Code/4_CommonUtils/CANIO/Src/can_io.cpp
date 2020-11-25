@@ -86,14 +86,14 @@ void CANIO::frameToBus(const Frame &frame) {
     cf_to_write.id = frame.id;
     cf_to_write.len = 8;
     // Output signal value...
-    cf_to_write.data[0] = frame.data.Byte0;
-    cf_to_write.data[1] = frame.data.Byte1;
-    cf_to_write.data[2] = frame.data.Byte2;
-    cf_to_write.data[3] = frame.data.Byte3;
-    cf_to_write.data[4] = frame.data.Byte4;
-    cf_to_write.data[5] = frame.data.Byte5;
-    cf_to_write.data[6] = frame.data.Byte6;
-    cf_to_write.data[7] = frame.data.Byte7;
+    cf_to_write.data[0] = (unsigned int) frame.data.Byte0;
+    cf_to_write.data[1] = (unsigned int) frame.data.Byte1;
+    cf_to_write.data[2] = (unsigned int) frame.data.Byte2;
+    cf_to_write.data[3] = (unsigned int) frame.data.Byte3;
+    cf_to_write.data[4] = (unsigned int) frame.data.Byte4;
+    cf_to_write.data[5] = (unsigned int) frame.data.Byte5;
+    cf_to_write.data[6] = (unsigned int) frame.data.Byte6;
+    cf_to_write.data[7] = (unsigned int) frame.data.Byte7;
 
     auto write_sc_status = sockat_can.write(cf_to_write);
 

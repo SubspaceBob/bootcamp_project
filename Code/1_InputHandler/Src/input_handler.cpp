@@ -18,7 +18,7 @@ bool InputHandler::run(){
         case 0: break; // No buttons pressed = Do nothing     
         case 9: exitLoop = true; break; // Escape = Exit inputHandler
 //______Frame1_startBtn,_Quitbtn,_Battery_telltale______________________________
-        case 36: frame1.data.startBtn = key.second; break; // Enter = startBtn
+        case 36: frame1.data.startBtn = (uint8_t) key.second; break; // Enter = startBtn
         case 24: frame1.data.quitEmul = key.second; break; // Q = quitEmul
         case 15: // btn 6 = battery telltale
             if (key.second == 1) {
@@ -72,8 +72,8 @@ bool InputHandler::run(){
             if (key.second==1) {
                 /*if (frame3.data.flagByte.flags.abs == 0)
                     frame3.data.flagByte.flags.abs = 1;
-                else frame3.data.flagByte.flags.abs = 0;
-            }*/ break;
+                else frame3.data.flagByte.flags.abs = 0;*/
+            } break;
 //______Frame4_GearReq,_seat_belt_&_doors_open_telltales______________________
 //__________GearReq_Toggles_depending_on_buttons_P,_R,_N,_D,_NoReq________________
         case 33: // P = Park 
@@ -114,6 +114,11 @@ bool InputHandler::run(){
             break;
     } 
 
+    //copy data to parent data
+    frame1.write();
+    frame2.write();
+    frame3.write();
+    frame4.write();
     //Output the frames
     canIO.frameToBus(frame1);
     canIO.frameToBus(frame2);
