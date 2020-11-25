@@ -46,6 +46,88 @@ bool CANIO::start_can(){
     }
     
 }
+
+int CANIO::readCAN() {
+    int frameWritten = 0;
+    scpp::CanFrame fr;
+    
+    if (sockat_can.read(fr) == scpp::STATUS_OK) { 
+        if(fr.id==1)
+        {
+            frame1.data.startBtn       = fr.data[0];
+            frame1.data.quitEmul       = fr.data[1];
+            frame1.data.unusedByte2    = fr.data[2];
+            frame1.data.unusedByte3    = fr.data[3];
+            frame1.data.unusedByte4    = fr.data[4];
+            frame1.data.unusedByte5    = fr.data[5];
+            frame1.data.unusedByte6    = fr.data[6];
+            frame1.data.flagByte.byte7 = fr.data[7];
+        }  
+        else if(fr.id==2)
+        {
+            frame2.data.unusedByte0    = fr.data[0];
+            frame2.data.unusedByte1    = fr.data[1];
+            frame2.data.unusedByte2    = fr.data[2];
+            frame2.data.unusedByte3    = fr.data[3];
+            frame2.data.unusedByte4    = fr.data[4];
+            frame2.data.unusedByte5    = fr.data[5];
+            frame2.data.unusedByte6    = fr.data[6];
+            frame2.data.flagByte.byte7 = fr.data[7];
+        } 
+        else if(fr.id==3)
+        {
+            frame3.data.brkPdl         = fr.data[0];
+            frame3.data.accPdl         = fr.data[1];
+            frame3.data.unusedByte2    = fr.data[2];
+            frame3.data.unusedByte3    = fr.data[3];
+            frame3.data.unusedByte4    = fr.data[4];
+            frame3.data.unusedByte5    = fr.data[5];
+            frame3.data.unusedByte6    = fr.data[6];
+            frame3.data.flagByte.byte7 = fr.data[7];
+        }
+        else if(fr.id==4)
+        {
+            frame4.data.gearReq        = fr.data[0];
+            frame4.data.unusedByte1    = fr.data[1];
+            frame4.data.unusedByte2    = fr.data[2];
+            frame4.data.unusedByte3    = fr.data[3];
+            frame4.data.unusedByte4    = fr.data[4];
+            frame4.data.unusedByte5    = fr.data[5];
+            frame4.data.unusedByte6    = fr.data[6];
+            frame4.data.flagByte.byte7 = fr.data[7];
+        }
+        else if(fr.id==5)
+        {
+            frame5.data.engSts          = fr.data[0];
+            frame5.data.engTrq          = fr.data[1];
+            frame5.data.unusedByte2     = fr.data[2];
+            frame5.data.unusedByte3     = fr.data[3];
+            frame5.data.unusedByte4     = fr.data[4];
+            frame5.data.unusedByte5     = fr.data[5];
+            frame5.data.unusedByte6     = fr.data[6];
+            frame5.data.flagByte.byte7  = fr.data[7];
+        }
+        else if(fr.id==6)
+        {
+            frame6.data.engagedGear         = fr.data[0];
+            frame6.data.rpm.bytes.rpmMSB    = fr.data[1];
+            frame6.data.rpm.bytes.rpmLSB    = fr.data[2];
+            frame6.data.gearStick           = fr.data[3];
+            frame6.data.vhlSpd              = fr.data[4];
+            frame6.data.unusedByte5         = fr.data[5];
+            frame6.data.unusedByte6         = fr.data[6];
+            frame6.data.unusedByte7         = fr.data[7];
+        }
+        frameWritten = fr.id;
+    }
+    else
+    {
+        std::cout << "CANReader read STATUS not OK!!" << std::endl;
+    }
+    return frameWritten;
+}
+
+/*
 //generalize to get only data pointer
 bool CANIO::readCANWriteToMemory(SharedMemory<CanInput> *canInMem) {
     bool retval=false;
@@ -77,7 +159,7 @@ bool CANIO::readCANWriteToMemory(SharedMemory<CanInput> *canInMem) {
         std::cout << "CANReader read STATUS not OK!!" << std::endl;
     }
     return (retval);
-}
+}*/
 
 void CANIO::frameToBus(const Frame &frame) {
     scpp::CanFrame cf_to_write;
@@ -101,6 +183,7 @@ void CANIO::frameToBus(const Frame &frame) {
         printf("something went wrong on socket write (Frame type), error code : %d \n", int32_t(write_sc_status));
 }
 
+/*
 // Frame with 1 uint8 signal...
 void CANIO::frameToBus(uint8_t frameNo, uint8_t signalValue) {
     scpp::CanFrame cf_to_write;
@@ -159,5 +242,5 @@ void CANIO::frameToBus(uint8_t frameNo, uint8_t signal1Value, uint16_t signal2Va
 
     if (write_sc_status != scpp::STATUS_OK)
         printf("something went wrong on socket write, error code : %d \n", int32_t(write_sc_status));
-}
+}*/
 

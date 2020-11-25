@@ -5,7 +5,7 @@
 class Frame{
     public:
         Frame() = default;
-        ~Frame() = default;
+        virtual ~Frame(){};
 
         uint32_t id;
         struct FrameData{
@@ -20,7 +20,7 @@ class Frame{
         };
         FrameData data;     
 
-        virtual void write() {}
+        void write(Frame frame){};
 };
 
 //_Inputs______________________________________________________
@@ -56,18 +56,19 @@ class Frame1 : public Frame {
         };
         FrameData data;
 
-        inline void write();
+        inline void write(Frame1 frame);
 };
 
-inline void Frame1::write() {
-    Frame::data.Byte0 = data.startBtn;
-    Frame::data.Byte1 = data.quitEmul;
-    Frame::data.Byte2 = data.unusedByte2;
-    Frame::data.Byte3 = data.unusedByte3;
-    Frame::data.Byte4 = data.unusedByte4;
-    Frame::data.Byte5 = data.unusedByte5;
-    Frame::data.Byte6 = data.unusedByte6;
-    Frame::data.Byte7 = data.flagByte.byte7;
+inline void Frame1::write(Frame1 frame) {
+    Frame::id = frame.id;
+    Frame::data.Byte0 = frame.data.startBtn;
+    Frame::data.Byte1 = frame.data.quitEmul;
+    Frame::data.Byte2 = frame.data.unusedByte2;
+    Frame::data.Byte3 = frame.data.unusedByte3;
+    Frame::data.Byte4 = frame.data.unusedByte4;
+    Frame::data.Byte5 = frame.data.unusedByte5;
+    Frame::data.Byte6 = frame.data.unusedByte6;
+    Frame::data.Byte7 = frame.data.flagByte.byte7;
 }
 
 //____Frame2_Lights_ECU_________________________________________
@@ -102,18 +103,19 @@ class Frame2 : public Frame {
         };
         FrameData data;
 
-        inline void write();
+        inline void write(Frame2 frame);
 };
 
-inline void Frame2::write() {
-    Frame::data.Byte0 = data.unusedByte0;
-    Frame::data.Byte1 = data.unusedByte1;
-    Frame::data.Byte2 = data.unusedByte2;
-    Frame::data.Byte3 = data.unusedByte3;
-    Frame::data.Byte4 = data.unusedByte4;
-    Frame::data.Byte5 = data.unusedByte5;
-    Frame::data.Byte6 = data.unusedByte6;
-    Frame::data.Byte7 = data.flagByte.byte7;
+inline void Frame2::write(Frame2 frame) {
+    Frame::id = frame.id;
+    Frame::data.Byte0 = frame.data.unusedByte0;
+    Frame::data.Byte1 = frame.data.unusedByte1;
+    Frame::data.Byte2 = frame.data.unusedByte2;
+    Frame::data.Byte3 = frame.data.unusedByte3;
+    Frame::data.Byte4 = frame.data.unusedByte4;
+    Frame::data.Byte5 = frame.data.unusedByte5;
+    Frame::data.Byte6 = frame.data.unusedByte6;
+    Frame::data.Byte7 = frame.data.flagByte.byte7;
 }
 
 
@@ -149,18 +151,19 @@ class Frame3 : public Frame {
         };
         FrameData data;
 
-        inline void write();
+        inline void write(Frame3 frame);
 };
 
-inline void Frame3::write() {
-    Frame::data.Byte0 = data.brkPdl;
-    Frame::data.Byte1 = data.accPdl;
-    Frame::data.Byte2 = data.unusedByte2;
-    Frame::data.Byte3 = data.unusedByte3;
-    Frame::data.Byte4 = data.unusedByte4;
-    Frame::data.Byte5 = data.unusedByte5;
-    Frame::data.Byte6 = data.unusedByte6;
-    Frame::data.Byte7 = data.flagByte.byte7;
+inline void Frame3::write(Frame3 frame) {
+    Frame::id = frame.id;
+    Frame::data.Byte0 = frame.data.brkPdl;
+    Frame::data.Byte1 = frame.data.accPdl;
+    Frame::data.Byte2 = frame.data.unusedByte2;
+    Frame::data.Byte3 = frame.data.unusedByte3;
+    Frame::data.Byte4 = frame.data.unusedByte4;
+    Frame::data.Byte5 = frame.data.unusedByte5;
+    Frame::data.Byte6 = frame.data.unusedByte6;
+    Frame::data.Byte7 = frame.data.flagByte.byte7;
 }
 
 //____Frame4_Rest_of_vehicle___________________________________
@@ -195,18 +198,19 @@ class Frame4 : public Frame {
         };
         FrameData data;
 
-        inline void write();
+        inline void write(Frame4 frame);
 };
 
-inline void Frame4::write() {
-    Frame::data.Byte0 = data.gearReq;
-    Frame::data.Byte1 = data.unusedByte1;
-    Frame::data.Byte2 = data.unusedByte2;
-    Frame::data.Byte3 = data.unusedByte3;
-    Frame::data.Byte4 = data.unusedByte4;
-    Frame::data.Byte5 = data.unusedByte5;
-    Frame::data.Byte6 = data.unusedByte6;
-    Frame::data.Byte7 = data.flagByte.byte7;
+inline void Frame4::write(Frame4 frame) {
+    Frame::id = frame.id;
+    Frame::data.Byte0 = frame.data.gearReq;
+    Frame::data.Byte1 = frame.data.unusedByte1;
+    Frame::data.Byte2 = frame.data.unusedByte2;
+    Frame::data.Byte3 = frame.data.unusedByte3;
+    Frame::data.Byte4 = frame.data.unusedByte4;
+    Frame::data.Byte5 = frame.data.unusedByte5;
+    Frame::data.Byte6 = frame.data.unusedByte6;
+    Frame::data.Byte7 = frame.data.flagByte.byte7;
 }
 
 //_Oututs______________________________________________________
@@ -231,8 +235,8 @@ class Frame5 : public Frame {
         ~Frame5() = default;
 
         struct FrameData {
-            uint8_t engSts = 0; // 0-450
-            uint8_t unusedByte1 = 0;
+            uint8_t engSts = 0; // 0/1 Off/On
+            uint8_t engTrq = 0; // 0-450
             uint8_t unusedByte2 = 0;
             uint8_t unusedByte3 = 0;
             uint8_t unusedByte4 = 0;
@@ -242,18 +246,19 @@ class Frame5 : public Frame {
         };
         FrameData data;
 
-        inline void write();
+        inline void write(Frame5 frame);
 };
 
-inline void Frame5::write() {
-    Frame::data.Byte0 = data.engSts;
-    Frame::data.Byte1 = data.unusedByte1;
-    Frame::data.Byte2 = data.unusedByte2;
-    Frame::data.Byte3 = data.unusedByte3;
-    Frame::data.Byte4 = data.unusedByte4;
-    Frame::data.Byte5 = data.unusedByte5;
-    Frame::data.Byte6 = data.unusedByte6;
-    Frame::data.Byte7 = data.flagByte.byte7;
+inline void Frame5::write(Frame5 frame) {
+    Frame::id = frame.id;
+    Frame::data.Byte0 = frame.data.engSts;
+    Frame::data.Byte1 = frame.data.engTrq;
+    Frame::data.Byte2 = frame.data.unusedByte2;
+    Frame::data.Byte3 = frame.data.unusedByte3;
+    Frame::data.Byte4 = frame.data.unusedByte4;
+    Frame::data.Byte5 = frame.data.unusedByte5;
+    Frame::data.Byte6 = frame.data.unusedByte6;
+    Frame::data.Byte7 = frame.data.flagByte.byte7;
 }
 
 //____Frame6_Gearbox_ECU______________________________________
@@ -267,32 +272,33 @@ union rpmByte{
 };
 class Frame6 : public Frame { 
     public:
-        Frame6() {this->id = 60;}
+        Frame6() {this->id = 6;}
         ~Frame6() = default;
 
         struct FrameData {
-            uint8_t gearStick = 0; // 0-3 (P/R/N/D)
-            rpmByte rpm; // uint16_t 0-10000 divided in MSB-LSB
-            uint8_t engagedGear = 0;
-            uint8_t unusedByte4 = 0;
+            uint8_t gearStick = 0;   // 0-3 (P/R/N/D)
+            rpmByte rpm;             // uint16_t 0-10000 divided in MSB-LSB
+            uint8_t engagedGear = 0; // 0-3 (P/R/N/D)
+            uint8_t vhlSpd      = 0; // 0-255 km/h
             uint8_t unusedByte5 = 0;
             uint8_t unusedByte6 = 0;
             uint8_t unusedByte7 = 0;
         };
         FrameData data;
 
-        inline void write();
+        inline void write(Frame6 frame);
 };
 
-inline void Frame6::write() {
-    Frame::data.Byte0 = data.gearStick;
-    Frame::data.Byte1 = data.rpm.bytes.rpmMSB;
-    Frame::data.Byte2 = data.rpm.bytes.rpmLSB;
-    Frame::data.Byte3 = data.engagedGear;
-    Frame::data.Byte4 = data.unusedByte4;
-    Frame::data.Byte5 = data.unusedByte5;
-    Frame::data.Byte6 = data.unusedByte6;
-    Frame::data.Byte7 = data.unusedByte7;
+inline void Frame6::write(Frame6 frame) {
+    Frame::id = frame.id;
+    Frame::data.Byte0 = frame.data.gearStick;
+    Frame::data.Byte1 = frame.data.rpm.bytes.rpmMSB;
+    Frame::data.Byte2 = frame.data.rpm.bytes.rpmLSB;
+    Frame::data.Byte3 = frame.data.engagedGear;
+    Frame::data.Byte4 = frame.data.vhlSpd;
+    Frame::data.Byte5 = frame.data.unusedByte5;
+    Frame::data.Byte6 = frame.data.unusedByte6;
+    Frame::data.Byte7 = frame.data.unusedByte7;
 }
 
 #endif

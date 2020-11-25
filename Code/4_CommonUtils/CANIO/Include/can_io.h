@@ -69,13 +69,22 @@ class CANIO{
 public:
     CANIO() = default;
     ~CANIO() = default;
-    scpp::SocketCan sockat_can;
-    CanInput canIn; // persistent object needed for readCANWriteToMemory
+
     bool start_can();
-    bool readCANWriteToMemory(SharedMemory<CanInput> *CanInput);
+    int readCAN();
+    //bool readCANWriteToMemory(SharedMemory<CanInput> *CanInput);
     void frameToBus(const Frame &frame);
-    void frameToBus(uint8_t frameNo, uint8_t signalValue);
-    void frameToBus(uint8_t frameNo, uint8_t signal1Value, uint8_t signal2Value);
-    void frameToBus(uint8_t frameNo, uint8_t signal1Value, uint16_t signal2Value, uint8_t signal3Value);
+    //void frameToBus(uint8_t frameNo, uint8_t signalValue);
+    //void frameToBus(uint8_t frameNo, uint8_t signal1Value, uint8_t signal2Value);
+    //void frameToBus(uint8_t frameNo, uint8_t signal1Value, uint16_t signal2Value, uint8_t signal3Value);
+
+    scpp::SocketCan sockat_can;
+    //CanInput canIn; // persistent object needed for readCANWriteToMemory
+    Frame1 frame1;
+    Frame2 frame2;
+    Frame3 frame3;
+    Frame4 frame4;
+    Frame5 frame5;
+    Frame6 frame6;
 };
 #endif

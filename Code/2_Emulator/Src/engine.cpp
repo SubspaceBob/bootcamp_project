@@ -5,34 +5,35 @@ Engine::Engine()
 {
    engSts = Off;
    engTrq = 0;
+   bool lastCycle = false;
 }
 
-void Engine::run(CanInput &inputVal, CanOutput &canOut, float engineSpeed, int timeStep, int gearStick)
+void Engine::run(const Frame1 &frame1, const Frame3 &frame3, const Frame4 &frame4, Frame5 &frame5, const Frame6 &frame6, SharedMemory<Frame5> &frame5Mem)
 {
    // Move Stop/Start code to separate function?
-
-   // Using last cycle for debouncing
-   if(engSts == EngSts::Off && (int)inputVal.startBtn == 1 
-      && lastCycle.startBtn == 0 && (int)inputVal.brkPdl == 100) {
+   // Using lastCycle for debouncing
+   if(engSts == EngSts::Off && frame1.data.startBtn == 1 
+      && lastCycle == false && frame3.data.brkPdl == 100) {
       // Engine off and first press = Turn on
       std::cout << "Starting engine" << std::endl;
       engSts = On;
-      lastCycle.startBtn = 1;
+      lastCycle = true;
    }
-   else if(engSts == 1 && (int)inputVal.startBtn == 1 && lastCycle.startBtn == 0 && gearStick == 0 ) {
+   else if(engSts == EngSts::On && frame1.data.startBtn == 1
+      && lastCycle == false && frame6.data.gearStick == 0) {
          // Engine on and first press = Turn off
          std::cout << "Stopping engine" << std::endl;
          engSts = Off;
-         lastCycle.startBtn = 1;
+         lastCycle = true;
    }
-   else if ((int)inputVal.startBtn == 1) {
+   else if (frame1.data.startBtn == 1) {
       // No scenario fullfilled yet - waiting for more
    }
-   else if ((int)inputVal.startBtn == 0)
+   else if (frame1.data.startBtn == 0)
    {
       // Nobody wants to start or shutdown the engine
       // make ready for another debounce sequence
-      lastCycle.startBtn = 0;
+      lastCycle = false;
    }
    else {
       // If this happens my logic is in Friday afternoon mode...
@@ -40,22 +41,21 @@ void Engine::run(CanInput &inputVal, CanOutput &canOut, float engineSpeed, int t
       exit(EXIT_FAILURE);
    }
    
-   setEngTrqFromAccPdl(inputVal, engineSpeed);
+   setEngTrqFromAccPdl(frame3);
 
    // Store values to CANOut
-   canOut.engSts    = static_cast<uint8_t> (engSts);
+   frame5Mem.write(frame5);
    
-   std::cout <<" EngineStatus: "    << engSts         << 
-               " EngTrq: "          << engTrq         << 
-               " EngSpeed[RPM]: "   << engineSpeed*60 << std::endl;
+   std::cout <<" EngineStatus: " << engSts    
+             <<" EngTrq: "       << engTrq   << std::endl; //*60?
 }
 
-void Engine::setEngTrqFromAccPdl(CanInput inputVal, float engineSpeed)
+void Engine::setEngTrqFromAccPdl(const Frame3 &frame3)
 {
    // read AcclPdl value from CAN
    // read engineRPS from gearbox(calculated in previous loop)
    // Calculate new Trq
-   if(inputVal.accPdl && this->engSts== On)
+   if(frame3.data.accPdl && this->engSts== On)
    {
       engTrq = VEHICLE::MAX_TORQUE; // Pedal to the metal
    }

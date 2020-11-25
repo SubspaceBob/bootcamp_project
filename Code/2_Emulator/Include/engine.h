@@ -16,7 +16,7 @@ class Engine{
         // and current EngineSpeed from gearbox. run method is its main method.
         Engine();
         ~Engine()= default;
-        void run(CanInput &inputVal, CanOutput &CANOut, float engineSpeed, int timeStep, int gearStick);
+        void run(const Frame1 &frame1, const Frame3 &frame3, const Frame4 &frame4, Frame5 &frame5, const Frame6 &frame6, SharedMemory<Frame5> &frame5Mem);
         
         // Getters
         inline EngSts getEngSts();
@@ -25,11 +25,11 @@ class Engine{
     private:
         EngSts engSts;
         Trq engTrq;
-        CanInput lastCycle;
+        bool lastCycle;
 
         // Setters
         //Chosen maxTrq = 450
-        void setEngTrqFromAccPdl(CanInput inputVal, float engineSpeed);
+        void setEngTrqFromAccPdl(const Frame3 &frame3);
 };
 
 inline EngSts Engine::getEngSts() {return engSts;}

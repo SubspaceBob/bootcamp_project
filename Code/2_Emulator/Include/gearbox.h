@@ -25,7 +25,7 @@ class Gearbox
     float engineRPS; // 0-10000 rpm
     float gearboxRPS;
     Trq calculateBrakeTorque(const int8_t &brakePdl);
-    void setGearStick(const int8_t &gearStickRequest, const int8_t &brakePedal);
+    void setGearStick(const Frame3 &frame3, const Frame4 &frame4);
     
     GearPattern gearStickPosition;  //Active gear (P,R,N,D)
     int8_t engagedGear;  //what gear we are in while in D 
@@ -38,7 +38,7 @@ class Gearbox
     float getRPS();
     GearPattern getGearStick();
     int8_t getEngagedGear();
-    void run(CanInput &input, CanOutput &canOut, Trq engTrq, EngSts engSts, int timeStep);
+    void run(const Frame1 &frame1, const Frame3 &frame3, const Frame4 &frame4, const Frame5 &frame5, Frame6 &frame6, SharedMemory<Frame6> &frame6Mem, const int &timeStep);
 };
 
 #endif

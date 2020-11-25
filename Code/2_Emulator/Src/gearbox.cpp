@@ -30,7 +30,7 @@ int8_t Gearbox::getEngagedGear()
     return (engagedGear);
 }
 
-float calculateEngineRPS(const float &gearbox_rps, const float &currentGearRatio, const EngSts &engSts)
+float calculateEngineRPS(const float &gearbox_rps, const float &currentGearRatio, const unsigned int &engSts)
 {
     float engine_rps = gearbox_rps * currentGearRatio;
     if (engSts)
@@ -43,28 +43,28 @@ float calculateEngineRPS(const float &gearbox_rps, const float &currentGearRatio
     }
 }
 
-void Gearbox::setGearStick(const int8_t &gearStickRequest, const int8_t &brakePedal)
+void Gearbox::setGearStick(const Frame3 &frame3, const Frame4 &frame4)
 {
     // If GearStickRequest 0-3, low vehicle speed and brakepedal somewhat pressed
-    if (0<=gearStickRequest && gearStickRequest<4 && vhlSpeed<1 && brakePedal > 5)
+    if (0<=frame4.data.gearReq && frame4.data.gearReq<4 && vhlSpeed<1 && frame3.data.brkPdl > 5)
     {
-        if (gearStickRequest==0)
+        if (frame4.data.gearReq==0)
         {
             gearStickPosition=GearPattern::P;
         }
-        else if (gearStickRequest==1)
+        else if (frame4.data.gearReq==1)
         {
             gearStickPosition=GearPattern::R;
         }
-        else if (gearStickRequest==2)
+        else if (frame4.data.gearReq==2)
         {
             gearStickPosition=GearPattern::N;
         }
-        else if (gearStickRequest==3)
+        else if (frame4.data.gearReq==3)
         {
             gearStickPosition=GearPattern::D;
         }
-        else if (gearStickRequest==4) {} //No request = ignore
+        else if (frame4.data.gearReq==4) {} //No request = ignore
         else { // If this then something seriously wrong
             std::cout <<"Major fail in gearStickselect" <<std::endl;
         }
@@ -126,7 +126,7 @@ Trq Gearbox::calculateBrakeTorque(const int8_t &brakePdl)
                                         0);                        // Range bottom limiter
 }
 
-void Gearbox::run(CanInput &input, CanOutput &canOut, Trq engTrq, EngSts engSts, int timeStep){
+void Gearbox::run(const Frame1 &frame1, const Frame3 &frame3, const Frame4 &frame4, const Frame5 &frame5, Frame6 &frame6, SharedMemory<Frame6> &frame6Mem,const int &timeStep){
     /*
     Basic physics/mechanics:
     Torque from engine is used to calculate the vehicle acceleration, which is integrated into vehicle speed.
@@ -145,7 +145,7 @@ void Gearbox::run(CanInput &input, CanOutput &canOut, Trq engTrq, EngSts engSts,
     */
 
       // Evaluate gearStick position
-    setGearStick(input.gearReq, input.brkPdl);
+    setGearStick(frame3, frame4);
 
     // Evaluate gearShifting
     gearShiftLogic();
@@ -157,11 +157,11 @@ void Gearbox::run(CanInput &input, CanOutput &canOut, Trq engTrq, EngSts engSts,
     Trq engine_torque = 0;
     if (gearStickPosition == GearPattern::D || gearStickPosition == GearPattern::R)
     {
-        engine_torque = engTrq * 2; // TorqueConverter to double torque output
+        engine_torque = frame5.data.engTrq * 2; // TorqueConverter to double torque output
     }
 
     // Calculate brake torque and rolling resistance
-    Trq BrakeTrq = calculateBrakeTorque(input.brkPdl);
+    Trq BrakeTrq = calculateBrakeTorque(frame3.data.brkPdl);
     auto RollingResistance = vhlSpeed * VEHICLE::ROLLINGRESISTANCE; //Exponential
 
     // Calculate acceleration and vehicle speed
@@ -186,13 +186,16 @@ void Gearbox::run(CanInput &input, CanOutput &canOut, Trq engTrq, EngSts engSts,
 
     // VehicleSpeed[m/s] = GearboxRPS[rev/s] * WheelRadius[m] * 2*Pi
     gearboxRPS  = vhlSpeed /(VEHICLE::WHEEL_RADIUS * 2 * 3.1416);
-    engineRPS   = calculateEngineRPS(gearboxRPS, currentGearRatio, engSts);
+    engineRPS   = calculateEngineRPS(gearboxRPS, currentGearRatio, frame5.data.engSts);
 
+    
     // Store values to CANOut
-    canOut.gearStick    = static_cast<uint8_t> (gearStickPosition);
-    canOut.RPM          = static_cast<uint16_t>(engineRPS * 60);
-    canOut.vhlSpeed     = static_cast<uint8_t> (vhlSpeed * 3.6);
-    canOut.engagedGear  = static_cast<uint8_t> (engagedGear);
+    frame6.data.gearStick       = static_cast<uint8_t> (gearStickPosition);
+    frame6.data.rpm.RPMsignal   = static_cast<uint16_t>(engineRPS * 60);
+    frame6.data.vhlSpd          = static_cast<uint8_t> (vhlSpeed * 3.6);
+    frame6.data.engagedGear     = static_cast<uint8_t> (engagedGear);
+
+    frame6Mem.write(frame6);
     
     std::cout <<//" EngTrq: "             << engTrq                                   << 
                 //" Engaged Gear: "       << static_cast<int> (engagedGear)           << 

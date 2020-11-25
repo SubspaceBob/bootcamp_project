@@ -19,29 +19,30 @@ public:
     void SetUp(uint8_t brkPdl, uint8_t accPdl, bool startBtn, int gearStick) {
         //Set up stuff here
         // Engine currently don't care about some signals 
-        inputVal.accPdl = accPdl;
-        inputVal.brkPdl = brkPdl;
-        inputVal.gearReq = 0;
-        inputVal.quitEmul = 0;
-        inputVal.startBtn = startBtn;
-        gearStick = gearStick;
+        frame3.data.accPdl = accPdl;
+        frame3.data.brkPdl = brkPdl;
+        frame4.data.gearReq = 0;
+        frame1.data.quitEmul = 0;
+        frame1.data.startBtn = startBtn;
+        frame6.data.gearStick = gearStick;
     }
 
     void TearDown() override {/*Tear down stuff here*/}
 
     // Declare needed parts for test
     Engine engine;
-    CanInput inputVal;
-    CanOutput canOut;
-    float engineSpeed = 7.5;
-    int timeStep = 10;
-    int gearStick;
+    Frame1 frame1;
+    Frame3 frame3;
+    Frame4 frame4;
+    Frame5 frame5;
+    Frame6 frame6;
+    SharedMemory<Frame5> frame5Mem;
 };
 
 //__Individual_inputs_no_action_expected__________________
 TEST_F(EngineRun, engineRun_brkPdlPress) {
     SetUp(100,0,0,0);
-    engine.run(inputVal, canOut, engineSpeed, timeStep, gearStick);
+    engine.run(frame1, frame3, frame4, frame5, frame6, frame5Mem);
     
     EXPECT_EQ(engine.getEngSts(), Off);
     EXPECT_EQ(engine.getEngTrq(), 0);
@@ -49,7 +50,7 @@ TEST_F(EngineRun, engineRun_brkPdlPress) {
 
 TEST_F(EngineRun, engineRun_accBtnPress) {
     SetUp(0,100,0,0);
-    engine.run(inputVal, canOut, engineSpeed, timeStep, gearStick);
+    engine.run(frame1, frame3, frame4, frame5, frame6, frame5Mem);
     
     EXPECT_EQ(engine.getEngSts(), Off);
     EXPECT_EQ(engine.getEngTrq(), 0);
@@ -57,7 +58,7 @@ TEST_F(EngineRun, engineRun_accBtnPress) {
 
 TEST_F(EngineRun, engineRun_startBtnPress) {
     SetUp(0,0,1,0);
-    engine.run(inputVal, canOut, engineSpeed, timeStep, gearStick);
+    engine.run(frame1, frame3, frame4, frame5, frame6, frame5Mem);
     
     EXPECT_EQ(engine.getEngSts(), Off);
     EXPECT_EQ(engine.getEngTrq(), 0);
@@ -65,7 +66,7 @@ TEST_F(EngineRun, engineRun_startBtnPress) {
 
 TEST_F(EngineRun, EngineRun_engineRun_gearStick_P) {
     SetUp(0,0,0,0);
-    engine.run(inputVal, canOut, engineSpeed, timeStep, gearStick);
+    engine.run(frame1, frame3, frame4, frame5, frame6, frame5Mem);
     
     EXPECT_EQ(engine.getEngSts(), Off);
     EXPECT_EQ(engine.getEngTrq(), 0);
@@ -73,7 +74,7 @@ TEST_F(EngineRun, EngineRun_engineRun_gearStick_P) {
 
 TEST_F(EngineRun, engineRun_gearStick_R) {
     SetUp(0,0,0,1);
-    engine.run(inputVal, canOut, engineSpeed, timeStep, gearStick);
+    engine.run(frame1, frame3, frame4, frame5, frame6, frame5Mem);
     
     EXPECT_EQ(engine.getEngSts(), Off);
     EXPECT_EQ(engine.getEngTrq(), 0);
@@ -81,7 +82,7 @@ TEST_F(EngineRun, engineRun_gearStick_R) {
 
 TEST_F(EngineRun, engineRun_gearStick_N) {
     SetUp(0,0,0,2);
-    engine.run(inputVal, canOut, engineSpeed, timeStep, gearStick);
+    engine.run(frame1, frame3, frame4, frame5, frame6, frame5Mem);
     
     EXPECT_EQ(engine.getEngSts(), Off);
     EXPECT_EQ(engine.getEngTrq(), 0);
@@ -89,7 +90,7 @@ TEST_F(EngineRun, engineRun_gearStick_N) {
 
 TEST_F(EngineRun, engineRun_gearStick_D) {
     SetUp(0,0,0,3);
-    engine.run(inputVal, canOut, engineSpeed, timeStep, gearStick);
+    engine.run(frame1, frame3, frame4, frame5, frame6, frame5Mem);
     
     EXPECT_EQ(engine.getEngSts(), Off);
     EXPECT_EQ(engine.getEngTrq(), 0);
@@ -98,7 +99,7 @@ TEST_F(EngineRun, engineRun_gearStick_D) {
 //__Turn_on_engine________________________________________
 TEST_F(EngineRun, engineRun_turnOn) {
     SetUp(100,0,1,0);
-    engine.run(inputVal, canOut, engineSpeed, timeStep, gearStick);
+    engine.run(frame1, frame3, frame4, frame5, frame6, frame5Mem);
     
     EXPECT_EQ(engine.getEngSts(), On);
     EXPECT_EQ(engine.getEngTrq(), 20);
@@ -108,11 +109,11 @@ TEST_F(EngineRun, engineRun_turnOn) {
 TEST_F(EngineRun, engineRun_pedalToTheMetall) {
     //  Turn on engine
     SetUp(100,0,1,0);
-    engine.run(inputVal, canOut, engineSpeed, timeStep, gearStick);
+    engine.run(frame1, frame3, frame4, frame5, frame6, frame5Mem);
 
     // Set up for test
     SetUp(0,100,0,0);
-    engine.run(inputVal, canOut, engineSpeed, timeStep, gearStick);
+    engine.run(frame1, frame3, frame4, frame5, frame6, frame5Mem);
     
     EXPECT_EQ(engine.getEngSts(), On);
     EXPECT_EQ(engine.getEngTrq(), 450);
@@ -122,11 +123,11 @@ TEST_F(EngineRun, engineRun_pedalToTheMetall) {
 TEST_F(EngineRun, engineRun_noTurnOff_R) {
     //  Turn on engine
     SetUp(100,0,1,0);
-    engine.run(inputVal, canOut, engineSpeed, timeStep, gearStick);
+    engine.run(frame1, frame3, frame4, frame5, frame6, frame5Mem);
 
     // Set up for test
     SetUp(0,0,1,1);
-    engine.run(inputVal, canOut, engineSpeed, timeStep, gearStick);
+    engine.run(frame1, frame3, frame4, frame5, frame6, frame5Mem);
     
     EXPECT_EQ(engine.getEngSts(), On);
     EXPECT_EQ(engine.getEngTrq(), 20);
@@ -135,11 +136,11 @@ TEST_F(EngineRun, engineRun_noTurnOff_R) {
 TEST_F(EngineRun, engineRun_noTurnOff_N) {
     //  Turn on engine
     SetUp(100,0,1,0);
-    engine.run(inputVal, canOut, engineSpeed, timeStep, gearStick);
+    engine.run(frame1, frame3, frame4, frame5, frame6, frame5Mem);
 
     // Set up for test
     SetUp(0,0,1,2);
-    engine.run(inputVal, canOut, engineSpeed, timeStep, gearStick);
+    engine.run(frame1, frame3, frame4, frame5, frame6, frame5Mem);
     
     EXPECT_EQ(engine.getEngSts(), On);
     EXPECT_EQ(engine.getEngTrq(), 20);
@@ -148,11 +149,11 @@ TEST_F(EngineRun, engineRun_noTurnOff_N) {
 TEST_F(EngineRun, engineRun_noTurnOff_D) {
     //  Turn on engine
     SetUp(100,0,1,0);
-    engine.run(inputVal, canOut, engineSpeed, timeStep, gearStick);
+    engine.run(frame1, frame3, frame4, frame5, frame6, frame5Mem);
 
     // Set up for test
     SetUp(0,0,1,3);
-    engine.run(inputVal, canOut, engineSpeed, timeStep, gearStick);
+    engine.run(frame1, frame3, frame4, frame5, frame6, frame5Mem);
     
     EXPECT_EQ(engine.getEngSts(), On);
     EXPECT_EQ(engine.getEngTrq(), 20);
@@ -161,15 +162,15 @@ TEST_F(EngineRun, engineRun_noTurnOff_D) {
 TEST_F(EngineRun, engineRun_turnOff) {
     //  Turn on engine
     SetUp(100,0,1,0);
-    engine.run(inputVal, canOut, engineSpeed, timeStep, gearStick);
+    engine.run(frame1, frame3, frame4, frame5, frame6, frame5Mem);
 
     //  Run once more to reset debounce
     SetUp(0,0,0,0);
-    engine.run(inputVal, canOut, engineSpeed, timeStep, gearStick);
+    engine.run(frame1, frame3, frame4, frame5, frame6, frame5Mem);
 
     // Set up for test
     SetUp(0,0,1,0);
-    engine.run(inputVal, canOut, engineSpeed, timeStep, gearStick);
+    engine.run(frame1, frame3, frame4, frame5, frame6, frame5Mem);
     
     EXPECT_EQ(engine.getEngSts(), Off);
     EXPECT_EQ(engine.getEngTrq(), 0);
