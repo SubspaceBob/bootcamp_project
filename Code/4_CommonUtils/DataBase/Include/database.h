@@ -69,7 +69,6 @@ inline void Frame1::write(class Frame1 input) {
     data.flagByte    = input.data.flagByte;
 }
 
-
 //____Frame2_Lights_ECU_________________________________________
 struct Frame2Bitfield {
     unsigned hazard:1;
@@ -118,7 +117,7 @@ inline void Frame2::write(class Frame2 input) {
 
 //____Frame3_Velocity_Manipulation_ECU__________________________
 struct Frame3Bitfield {
-    unsigned handBrk:1;
+    unsigned hand_brake:1;
     unsigned abs:1;
     unsigned unusedFlag2:1;
     unsigned unusedFlag3:1;
@@ -181,7 +180,7 @@ class Frame4  : public Frame {
         Frame4() : Frame(4){}
         ~Frame4() = default;
         struct FrameData {
-            uint8_t gearReq = 0; // 0-4 (P,R,N,D,NoReq)
+            uint8_t gearReq = 0; // 0-4 (P, R, N, D, NoReq)
             uint8_t unusedByte1 = 0;
             uint8_t unusedByte2 = 0;
             uint8_t unusedByte3 = 0;

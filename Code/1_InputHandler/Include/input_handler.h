@@ -10,9 +10,13 @@ class InputHandler{
 public:
     InputHandler();
     ~InputHandler(){reader.stop();}//no need
-    bool run(int cycleTime);
+    bool run();
     KeyboardReader reader;
-    CanInput data;
+    // CanInput data;
+    Frame1 frame1; // StartBtn, QuitEmul & Battery telltale
+    Frame2 frame2; // Hazard, blinkers & high_beam telltale
+    Frame3 frame3; // BrkPdl, AccPdl, hand_brake & ABS telltale
+    Frame4 frame4; // GearReq, seat_belts, door_open telltale
     CANIO canIO;
 };
 

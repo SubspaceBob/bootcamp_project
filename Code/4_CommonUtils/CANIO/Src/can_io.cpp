@@ -2,6 +2,7 @@
 #include "can_io.h"
 #include "../../SharedMemory/Include/shared_memory.h"
 #include "socketcan_cpp.h"
+#include "database.h"
 // https://github.com/siposcsaba89/socketcan-cpp
 
 struct Bitfield{
@@ -76,6 +77,28 @@ bool CANIO::readCANWriteToMemory(SharedMemory<CanInput> *canInMem) {
         std::cout << "CANReader read STATUS not OK!!" << std::endl;
     }
     return (retval);
+}
+
+void CANIO::frameToBus(const Frame &frame) {
+    scpp::CanFrame cf_to_write;
+
+    // Set Frame ID   
+    cf_to_write.id = frame.id;
+    cf_to_write.len = 8;
+    // Output signal value...
+    cf_to_write.data[0] = frame.data.Byte0;
+    cf_to_write.data[1] = frame.data.Byte1;
+    cf_to_write.data[2] = frame.data.Byte2;
+    cf_to_write.data[3] = frame.data.Byte3;
+    cf_to_write.data[4] = frame.data.Byte4;
+    cf_to_write.data[5] = frame.data.Byte5;
+    cf_to_write.data[6] = frame.data.Byte6;
+    cf_to_write.data[7] = frame.data.Byte7;
+
+    auto write_sc_status = sockat_can.write(cf_to_write);
+
+    if (write_sc_status != scpp::STATUS_OK)
+        printf("something went wrong on socket write (Frame type), error code : %d \n", int32_t(write_sc_status));
 }
 
 // Frame with 1 uint8 signal...

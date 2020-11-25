@@ -3,6 +3,7 @@
 #include <iostream>
 #include "socketcan_cpp.h"
 #include "../../SharedMemory/Include/shared_memory.h"
+#include "database.h"
 
 struct bitpattern1 {
         unsigned hazard:1;
@@ -72,6 +73,7 @@ public:
     CanInput canIn; // persistent object needed for readCANWriteToMemory
     bool start_can();
     bool readCANWriteToMemory(SharedMemory<CanInput> *CanInput);
+    void frameToBus(const Frame &frame);
     void frameToBus(uint8_t frameNo, uint8_t signalValue);
     void frameToBus(uint8_t frameNo, uint8_t signal1Value, uint8_t signal2Value);
     void frameToBus(uint8_t frameNo, uint8_t signal1Value, uint16_t signal2Value, uint8_t signal3Value);
