@@ -6,24 +6,24 @@
 #include "shared_memory.h"
 #include "engine.h"
 #include "gearbox.h"
+#include "database.h"
 
 std::atomic<bool> exitFlag;
-
 // Add possible to configure size and CanIn/CanOut from elsewhere (database parser)
 // possible to add map for easy access to specific frame number
 std::vector<SharedMemory<Frame>> SharedFrameMemoryVector(6); 
-uint8_t CanInFrames[] = {0, 1, 2, 3, 4};
-uint8_t CanOutFrames[] = {5, 6};
+CANDatabaseInfo dbInfo;
 
 void runCANIO()
 {
+    
     CANIO canIO;
     canIO.start_can();
     Frame5 can5Send;
     Frame6 can6Send;
 
     while(true) {
-        bool read_ok = canIO.readCANWriteToMemory(SharedFrameMemoryVector, CanInFrames); 
+        bool read_ok = canIO.readCANWriteToMemory(SharedFrameMemoryVector, dbInfo); 
 
 
         /*can5Send=frame5->read();
@@ -48,7 +48,7 @@ void runCANIO()
 }
 
 void runVehicle() {
-    std::vector<Frame> frames (6); // Configure from same place as SharedMemory!
+    std::vector<Frame> frames (7); // Configure from same place as SharedMemory!
     Engine engine;
     Gearbox gearbox;
 
@@ -56,16 +56,16 @@ void runVehicle() {
 
     while(true) {
         // Fetch CAN Inputs from shared memory   
-        for(const int &index : CanInFrames)
-            frames[index] = SharedFrameMemoryVector[index].read();
+        for(Frame frame : dbInfo.canInFrames)
+            frame = std::move(SharedFrameMemoryVector[frame.id].read());
             
         // Run engine and gearbox simulation with CANIn and CANOut
-        engine.run(frames, timeStepSize);
-        gearbox.run(frames, engine.getEngTrq(), engine.getEngSts(),timeStepSize);
+        engine.run(dbInfo, timeStepSize);
+        gearbox.run(dbInfo, engine.getEngTrq(), engine.getEngSts(),timeStepSize);
 
         // Push CAN Output values to shared memory
-        for(const int &index : CanOutFrames)
-            SharedFrameMemoryVector[index].write(frames[index]);
+        for(const Frame frame : dbInfo.canOutFrames)
+            SharedFrameMemoryVector[frame.id].write(frame);
 
         // Shutdown condition
         //if (cframe1.data.quitEmul==1)
@@ -80,12 +80,11 @@ void runVehicle() {
     }
 }
 
-
-
-
 int main()
 {    
     exitFlag = false;
+    dbInfo = CANDatabaseInfo();
+    dbInfo.hardcodedSetup();
   
     std::thread t3(runCANIO);
     std::thread t4(runVehicle);

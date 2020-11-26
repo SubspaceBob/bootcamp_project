@@ -11,7 +11,7 @@ TEST(KeyReaderTests, NormalUsecase)
     std::cout << "starting!" << std::endl;
     reader.start();
     
-    int key;
+    int key{};
     // TODO: define proper QUIT and NoInput values
     while (key != 0x09)
         key = reader.getKey(); 

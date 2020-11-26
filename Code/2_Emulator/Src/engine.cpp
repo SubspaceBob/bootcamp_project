@@ -7,12 +7,12 @@ Engine::Engine()
    engTrq = 0;
 }
 
-void Engine::run(const std::vector<Frame> &frames, const int &timeStepSize)
+void Engine::run(CANDatabaseInfo &dbInfo, const int &timeStepSize)
 {
    // Move Stop/Start code to separate function?
 
    // Using last cycle for debouncing
-   if(engSts == EngSts::Off && frame1.data.startBtn == 1 
+   /*if(engSts == EngSts::Off && static_cast<Frame1>(frames[0]).data.startBtn == 1 
       && debounce == 0 && frame3->data.brkPdl == 100) {
       // Engine off and first press = Turn on
       std::cout << "Starting engine" << std::endl;
@@ -48,7 +48,7 @@ void Engine::run(const std::vector<Frame> &frames, const int &timeStepSize)
    
    std::cout <<" EngineStatus: "    << engSts         << 
                " EngTrq: "          << engTrq         << std::endl;
-   //            " EngSpeed[RPM]: "   << engineSpeed*60 << std::endl;
+   //            " EngSpeed[RPM]: "   << engineSpeed*60 << std::endl;*/
 }
 
 /*void Engine::run(CanInput &inputVal, CanOutput &canOut, float engineSpeed, int timeStep, int gearStick)
@@ -92,13 +92,14 @@ void Engine::run(const std::vector<Frame> &frames, const int &timeStepSize)
    std::cout <<" EngineStatus: "    << engSts         << 
                " EngTrq: "          << engTrq         << 
                " EngSpeed[RPM]: "   << engineSpeed*60 << std::endl;
-}*/
+}
 
 void Engine::setEngTrqFromAccPdl(const Frame3 *frame3)
 {
    // read AcclPdl value from CAN
    // read engineRPS from gearbox(calculated in previous loop)
    // Calculate new Trq
+   /*
    if(frame3->data.accPdl && this->engSts== On)
    {
       engTrq = VEHICLE::MAX_TORQUE; // Pedal to the metal
@@ -107,4 +108,5 @@ void Engine::setEngTrqFromAccPdl(const Frame3 *frame3)
       engTrq = VEHICLE::IDLE_TORQUE;   // Engine always produces torque if running
    else
       engTrq = 0;
-}
+      
+}*/

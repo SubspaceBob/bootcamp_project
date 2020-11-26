@@ -1,11 +1,11 @@
 #include <iostream>
+#include <cstring>
 #include <algorithm>
-#include <find>
-#include <move>
 #include <vector>
 #include "can_io.h"
 #include "../../SharedMemory/Include/shared_memory.h"
 #include "socketcan_cpp.h"
+#include "../../DataBase/Include/database.h"
 // https://github.com/siposcsaba89/socketcan-cpp
 
 
@@ -43,27 +43,33 @@ bool CANIO::start_can(){
     
 }
 
+
+// No need of member function pointer, but here the code is ;)
+// typedef Frame (CANDatabaseInfo::* getInFrame)(uint32_t id);
+
+
 //generalize to get only data pointer
-bool CANIO::readCANWriteToMemory(std::vector<SharedMemory<Frame>> &SharedFrameMemoryVector, uint8_t CanInFrames[]) {
+bool CANIO::readCANWriteToMemory(std::vector<SharedMemory<Frame>> &sharedFrameMemoryVector, CANDatabaseInfo &dbInfo) {
     bool retval=false;
     scpp::CanFrame fr;
     if (sockat_can.read(fr) == scpp::STATUS_OK) {
 
-        // using std::begin/end instead of size of array as argument
-        // if fr.id is any_of CanInFrames
-        if (std::any_of(std::begin(CanInFrames), std::end(CanInFrames), [&](int fr.id))) 
-        {
+        
+        // No need of member function pointer, but here the code is ;)
+        // getInFrame id = &CANDatabaseInfo::getInFrame;
+        // Frame frame = (dbInfo.*id)(fr.id)
+
+
+        Frame* frame = dbInfo.getInFrame(fr.id);
+        if (frame != nullptr){
             // Set the data according to frame
 
-            canIn.id = fr.id;
-            canIn.data = fr.data;
+            frame->id = fr.id;
+            memcpy(&frame->data, &(fr.data), sizeof(fr.data));
             
             // Ẃrite it to memory
-            SharedFrameMemoryVector[fr.id]->write(canIn);
-
-            // TODO: Not actually used clean up
-            // And set bool return according to q btn.
-            retval = true;
+            auto f = *frame;
+            sharedFrameMemoryVector[fr.id].write(f);
         }
     }
     else

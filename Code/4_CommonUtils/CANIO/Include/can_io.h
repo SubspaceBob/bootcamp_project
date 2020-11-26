@@ -1,9 +1,11 @@
 #ifndef CANIO_H
 #define CANIO_H
 #include <iostream>
+#include <vector>
 #include "database.h"
 #include "socketcan_cpp.h"
 #include "../../SharedMemory/Include/shared_memory.h"
+#include "../../DataBase/Include/database.h"
 
 struct bitpattern1 {
         unsigned hazard:1;
@@ -73,8 +75,8 @@ public:
     Frame canIn; // persistent object needed for readCANWriteToMemory
     //CanInput canIn; // persistent object needed for readCANWriteToMemory
     bool start_can();
-    bool readCANWriteToMemory(std::vector<SharedMemory<Frame>> &SharedFrameMemoryVector, uint8_t CanInFrames[]); // CanInFrames is an array = pointer ;)
-    //bool readCANWriteToMemory(SharedMemory<CanInput> *CanInput);
+    bool readCANWriteToMemory(std::vector<SharedMemory<Frame>> &SharedFrameMemoryVector, CANDatabaseInfo &dbInfo); // CanInFrames is an array = pointer ;)
+    
     void frameToBus(SharedMemory<Frame> *frame);
     void frameToBus(uint8_t frameNo, uint8_t signalValue);
     void frameToBus(uint8_t frameNo, uint8_t signal1Value, uint8_t signal2Value);

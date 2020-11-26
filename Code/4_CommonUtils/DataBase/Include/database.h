@@ -1,6 +1,8 @@
 #ifndef DATABASE_H
 #define DATABASE_H
 #include <string>
+#include <vector>
+
 
 class Frame{
     public:
@@ -49,35 +51,6 @@ union Flag1Byte{
         uint8_t byte7 = 0;
         Frame1Bitfield flags;
 };
-class Frame1 : public Frame {    
-    public:
-        Frame1() = default;
-        ~Frame1() = default;
-        struct FrameData{
-            uint8_t startBtn = 0; // 0/1 (Off/On)
-            uint8_t quitEmul = 0; // 0/1 (KeepRunning/ShutDown)
-            uint8_t unusedByte2 =0;
-            uint8_t unusedByte3 = 0;
-            uint8_t unusedByte4 = 0;
-            uint8_t unusedByte5 = 0;
-            uint8_t unusedByte6 = 0;
-            Flag1Byte flagByte; // Battery
-        };
-        uint8_t id = 1;
-        FrameData data;
-        /*inline FrameData read() {
-            data.startBtn = Frame::data.Byte0;
-            data.quitEmul = Frame::data.Byte1;
-            data.unusedByte2 = Frame::data.Byte2;
-            data.unusedByte3 = Frame::data.Byte3;
-            data.unusedByte4 = Frame::data.Byte4;
-            data.unusedByte5 = Frame::data.Byte5;
-            data.unusedByte6 = Frame::data.Byte6;
-            data.flagByte = Frame::data.Byte7;
-            return data;
-        }*/
-};
-
 
 
 //____Frame2_Lights_ECU_________________________________________
@@ -95,23 +68,7 @@ union Flag2Byte{
         uint8_t byte7 = 0;
         Frame2Bitfield flags;
 };
-class Frame2  : public Frame {
-    public:
-        Frame2() = default;
-        ~Frame2() = default;
-        struct FrameData {
-            uint8_t unusedByte0 = 0;
-            uint8_t unusedByte1 = 0;
-            uint8_t unusedByte2 = 0;
-            uint8_t unusedByte3 = 0;
-            uint8_t unusedByte4 = 0;
-            uint8_t unusedByte5 = 0;
-            uint8_t unusedByte6 = 0;
-            Flag2Byte flagByte; // hazard, right_blinker, left_blinker, high_beam
-        };
-        uint8_t id = 2;
-        FrameData data;
-};
+
 
 //____Frame3_Velocity_Manipulation_ECU__________________________
 struct Frame3Bitfield {
@@ -128,23 +85,7 @@ union Flag3Byte{
         uint8_t byte7 = 0;
         Frame3Bitfield flags;
 };
-class Frame3  : public Frame {
-    public:
-        Frame3() = default;
-        ~Frame3() = default;
-        struct FrameData {
-            uint8_t brkPdl = 0; //0-100%
-            uint8_t accPdl = 0; //0-100%
-            uint8_t unusedByte2 = 0;
-            uint8_t unusedByte3 = 0;
-            uint8_t unusedByte4 = 0;
-            uint8_t unusedByte5 = 0;
-            uint8_t unusedByte6 = 0;
-            Flag3Byte flagByte; // handBrk, abs
-        };
-        uint8_t id = 3;
-        FrameData data;
-};
+
 
 //____Frame4_Rest_of_vehicle___________________________________
 struct Frame4Bitfield {
@@ -161,23 +102,7 @@ union Flag4Byte{
         uint8_t byte7 = 0;
         Frame4Bitfield flags;
 };
-class Frame4  : public Frame { 
-    public:
-        Frame4() = default;
-        ~Frame4() = default;
-        struct FrameData {
-            uint8_t gearReq = 0; // 0-4 (P,R,N,D,NoReq)
-            uint8_t unusedByte1 = 0;
-            uint8_t unusedByte2 = 0;
-            uint8_t unusedByte3 = 0;
-            uint8_t unusedByte4 = 0;
-            uint8_t unusedByte5 = 0;
-            uint8_t unusedByte6 = 0;
-            Flag4Byte flagByte; // seat_belt, doors_open
-        };
-        uint8_t id = 4;
-        FrameData data;
-};
+
 
 //_Oututs______________________________________________________
 //____Frame5_Engine_ECU________________________________________
@@ -195,23 +120,7 @@ union Flag5Byte{
         uint8_t byte7 = 0;
         Frame5Bitfield flags;
 };
-class Frame5 : public Frame { 
-    public:
-        Frame5() = default;
-        ~Frame5() = default;
-        struct FrameData {
-            uint8_t engSts = 0; // 0-450
-            uint8_t unusedByte1 = 0;
-            uint8_t unusedByte2 = 0;
-            uint8_t unusedByte3 = 0;
-            uint8_t unusedByte4 = 0;
-            uint8_t unusedByte5 = 0;
-            uint8_t unusedByte6 = 0;
-            Flag5Byte flagByte; // engine_check, oil_check
-        };
-        uint8_t id = 5;
-        FrameData data;
-};
+
 //____Frame6_Gearbox_ECU______________________________________
 struct Bitfield{
     uint8_t rpmLSB;
@@ -221,21 +130,82 @@ union RPM{
     uint16_t RPMsignal = 0;
     Bitfield bytes;
 };
-class Frame6 : public Frame { 
-    public:
-        Frame6() = default;
-        ~Frame6() = default;
-        struct FrameData {
-            uint8_t gearStick = 0; // 0-3 (P/R/N/D)
-            RPM rpm; // uint16_t 0-10000 divided in MSB-LSB
-            uint8_t engagedGear = 0;
-            uint8_t unusedByte4 = 0;
-            uint8_t unusedByte5 = 0;
-            uint8_t unusedByte6 = 0;
-            uint8_t unusedByte7 = 0;
-        };
-        uint8_t id = 6;
-        FrameData data;
+
+
+struct CANDatabaseInfo{
+    CANDatabaseInfo () = default;
+    ~CANDatabaseInfo() = default;
+    // signals should be pointers and length, not uint8_t!
+    std::map<std::string, uint8_t> signals;
+    std::map<std::string, Frame> frames;
+
+    // FrameGroups
+    std::vector<Frame> iHCanTXFrames;   // Frames are only used by sending/recieveing CAN and read/write memory
+    std::vector<Frame> emuCanRXFrames;  // Frames are not used by "application", 
+    std::vector<Frame> emuCanTXFrames;  // different FrameGroups share frames (ecu1_1_RX = ecu2_2_TX = ecu_3_1_TX)
+    std::vector<Frame> guiCanRXFrames;
+
+    Frame *getFrame(std::vector<Frame> *FrameGroup, const uint32_t &id)
+    {
+        for(Frame &elem: FrameGroup)
+        {
+            if (elem.id == id)
+            {
+                return &elem;
+            }
+            else
+            {
+                return nullptr;
+            }
+        }
+    }
+
+    void hardcodedSetup()
+    {
+        // This information should be generated by a dbc-parser.
+        frames["ih_1"] = Frame();   // set frame ID in constructor!
+        frames["ih_2"] = Frame();   // name is defined by sender
+        frames["ih_3"] = Frame();
+        frames["ih_4"] = Frame();
+        frames["ih_5"] = Frame();
+        frames["ih_6"] = Frame();
+        frames["emu_1"] = Frame();
+        frames["emu_2"] = Frame();
+
+        signals["startBtn"] = frames["ih_1"]->data.Byte0;
+        signals["quitEmul"] = frames["ih_1"]->data.Byte1;
+        signals["handBrk"]  = frames["ih_2"]->data.Byte0;
+        signals["abs"]      = frames["ih_2"]->data.Byte1;
+        signals["brkPdl"]   = frames["ih_3"]->data.Byte0;
+        signals["accPdl"]   = frames["ih_3"]->data.Byte1;
+        signals["gearReq"]  = frames["ih_4"]->data.Byte0;
+        signals["engSts"]   = frames["emu_1"]->data.Byte0;
+
+
+        // Add pointer to frames to different groups
+        iHCanTXFrames.push_back(frames["ih_1"]);
+        iHCanTXFrames.push_back(frames["ih_2"]); 
+        iHCanTXFrames.push_back(frames["ih_3"]); 
+        iHCanTXFrames.push_back(frames["ih_4"]);
+        iHCanTXFrames.push_back(frames["ih_5"]); 
+        iHCanTXFrames.push_back(frames["ih_6"]);
+
+        emuCanRXFrames.push_back(frames["ih_1"]);
+        emuCanRXFrames.push_back(frames["ih_2"]); 
+        emuCanRXFrames.push_back(frames["ih_3"]); 
+        emuCanRXFrames.push_back(frames["ih_4"]); 
+
+        emuCanTXFrames.push_back(frames["emu_1"]);
+        emuCanTXFrames.push_back(frames["emu_2"]);
+
+        guiCanRXFrames.push_back(frames["ih_5"]);
+        guiCanRXFrames.push_back(frames["ih_6"]);
+
+
+
+        //gearStick
+        //engagedGear
+    }
 };
 
 #endif

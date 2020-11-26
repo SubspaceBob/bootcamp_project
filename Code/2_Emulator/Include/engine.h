@@ -17,7 +17,7 @@ class Engine{
         // and current EngineSpeed from gearbox. run method is its main method.
         Engine();
         ~Engine()= default;
-        void run(const std::vector<Frame> &frames, const int &timeStepSize);
+        void run(CANDatabaseInfo &dbInfo, const int &timeStepSize);
         //void run(CanInput &inputVal, CanOutput &CANOut, float engineSpeed, int timeStep, int gearStick);
 
         // Getters

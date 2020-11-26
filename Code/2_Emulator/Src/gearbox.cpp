@@ -109,7 +109,7 @@ Trq Gearbox::calculateBrakeTorque(int8_t brakePdl)
     Trq BrkTrq = VEHICLE::MAX_BRAKETORQUE * brakePdl / 100;
 }
 
-void Gearbox::run(const std::vector<Frame> &frames, Trq engTrq, EngSts engSts, int timeStep){
+void Gearbox::run(CANDatabaseInfo &dbInfo, Trq engTrq, EngSts engSts, int timeStep){
     /*
     Basic physics/mechanics:
     Torque from engine is used to calculate the vehicle acceleration, which is integrated into vehicle speed.
@@ -128,7 +128,7 @@ void Gearbox::run(const std::vector<Frame> &frames, Trq engTrq, EngSts engSts, i
     */
 
     // Set the GearStick position
-    setGearStick(input.gearReq, input.brkPdl);
+    //setGearStick(input.gearReq, input.brkPdl);
 
     // Get the current gear ratio
     float currentGearRatio = getGearRatio(engineRPS, gearStickPosition);
@@ -141,7 +141,7 @@ void Gearbox::run(const std::vector<Frame> &frames, Trq engTrq, EngSts engSts, i
     }
 
     // Calculate brake torque and rolling resistance
-    Trq BrakeTrq = calculateBrakeTorque(input.brkPdl);
+    /*Trq BrakeTrq = calculateBrakeTorque(input.brkPdl);
     auto RollingResistance = vhlSpeed * VEHICLE::ROLLINGRESISTANCE; //Exponential
 
     // Calculate acceleration and vehicle speed
@@ -173,8 +173,8 @@ void Gearbox::run(const std::vector<Frame> &frames, Trq engTrq, EngSts engSts, i
     canOut.RPM          = static_cast<uint16_t>(engineRPS * 60);
     canOut.vhlSpeed     = static_cast<uint8_t> (vhlSpeed * 3.6);
     canOut.engagedGear  = static_cast<uint8_t> (engagedGear);
-    
-    std::cout <<//" EngTrq: "             << engTrq                                   << 
+    */    
+    /*std::cout <<//" EngTrq: "             << engTrq                                   << 
                 " Engaged Gear: "       << static_cast<int> (engagedGear)           << 
                 " GearStickPosition: "  << static_cast<int> (gearStickPosition)     << 
                 " GearRatio: "          << currentGearRatio                         << 
@@ -183,5 +183,6 @@ void Gearbox::run(const std::vector<Frame> &frames, Trq engTrq, EngSts engSts, i
                 " VehicleSpeed[km/h]: " << vhlSpeed * 3.6                           << 
 
                 //" RollingResistance : " << RollingResistance  <<
-                std::endl; 
+                std::endl;
+                */ 
 }

@@ -37,7 +37,7 @@ class Gearbox
     float getRPS();
     GearPattern getGearStick();
     int8_t getEngagedGear();
-    void run(const std::vector<Frame> &frames, Trq engTrq, EngSts engSts, int timeStep);
+    void run(CANDatabaseInfo &dbInfo, Trq engTrq, EngSts engSts, int timeStep);
 };
 
 #endif
