@@ -25,7 +25,12 @@ void yourStuff::YouHaveJustRecievedACANFrame(const canfd_frame * const _frame) {
             rpm =rpm+_frame->data[2];
             this->InstrumentCluster.setGearPindle_int(_frame->data[0]);
             this->InstrumentCluster.setRPM(rpm);
-            this->InstrumentCluster.setGear(static_cast<const char &> (_frame->data[3]));
+            // IF D or R gear start on gear1
+            if (static_cast<int> (_frame->data[0]) == 3 || static_cast<int> (_frame->data[0]) == 1) 
+                {this->InstrumentCluster.setGear(static_cast<const char &> (_frame->data[3] +1));}
+            // IF N or P gear lock on gear0
+            else 
+                {this->InstrumentCluster.setGear(static_cast<const char &> (_frame->data[3]));}
             break;
         }
 
