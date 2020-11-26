@@ -16,3 +16,10 @@ cd ../6_TestReports
 sleep 1
 xunit-viewer -r .
 sensible-browser --new-tab index.html
+cd ..
+cppcheck --enable=all .
+cd 7_ScanBuild
+scan-build cmake ..
+scan-build -o scanbuild/ make
+
+

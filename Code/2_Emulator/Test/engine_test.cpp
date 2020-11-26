@@ -16,7 +16,7 @@ TEST(engineTest, constructor) {
 //__TestFixture_EngineRun_starts_here_____________________
 class EngineRun : public ::testing::Test {
 public:
-    void SetUp(uint8_t brkPdl, uint8_t accPdl, bool startBtn, int gearStick) {
+    void SetUp(uint8_t brkPdl, uint8_t accPdl, bool startBtn, int gearStickIn) {
         //Set up stuff here
         // Engine currently don't care about some signals 
         inputVal.accPdl = accPdl;
@@ -24,10 +24,8 @@ public:
         inputVal.gearReq = 0;
         inputVal.quitEmul = 0;
         inputVal.startBtn = startBtn;
-        gearStick = gearStick;
+        gearStick = gearStickIn;
     }
-
-    void TearDown() override {/*Tear down stuff here*/}
 
     // Declare needed parts for test
     Engine engine;

@@ -10,6 +10,11 @@ Inputs:
     Frame3:
         Byte1:  startBtn    uint8_t     0/1 = notPrsd/Prsd  init = notPrsd
         Byte2:  quitEmul    uint8_t     0/1 = Off/On        init = off
+    Frame6:
+   	    Byte1: telltales1	uint8_t                         init = 0
+            hazard, right_blinker, left_blinker, engine_check, oil_check, abs, battery, seat_belt
+        Byte2: telltales2   uint8_t                         init = 0
+            doors_open, high_beam, hand_break
 Outputs:
     Frame4:
         Byte1:  vhlSpeed    uint8_t     0-255 km/h          init = 0

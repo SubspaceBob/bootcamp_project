@@ -53,11 +53,10 @@ bool InputHandler::run(int cycleTime){
             else data.gearReq = 4;   
             break;
     
-        // Frame 3 Enter = Start button
-        case 36: data.startBtn = key.second; break;
-        case 24: //Q = quitbutton
-            data.quitEmul = key.second; break;
-            break;
+        // Frame 3 
+        case 36: data.startBtn = key.second; break; //Enter = Start button
+        case 24: data.quitEmul = key.second; break; //Q = quitbutton
+        // Frame 6
         case 10: //btn 1 = hazard button
             if (data.ttByte1.telltales1.hazard==1 && key.second==1)
                 data.ttByte1.telltales1.hazard=0;
