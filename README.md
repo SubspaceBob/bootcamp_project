@@ -40,13 +40,13 @@ runVehicle is the actual vehicle emulation. It is split into an engine and a gea
 <p>as mentioned there is a bash file that compiles, builds and starts all the binaries. In order to it simply open a terminal window on the proper level and write ./magic_start. Once they're up and running press alt+tab to make sure that the little window that actually registers keypresses is the one active.</p>
 <ul>
 <li>To start the engine push the brake and start button (down arrow + enter). Once the engine is started it will eventually output our idle rpm (roughly 800). </li>
-<li>To change gear press the brake once again and this time chose P, R, N or D (down arrow + Letter P/ Letter R/Letter N/ LeterD)<li>
+<li>To change gear press the brake once again and this time chose P, R, N or D (down arrow + Letter P/ Letter R/Letter N/ LeterD)</li>
 <li>To accelerate press up arrow. (Only works in D and R)</li>
 <li>To decelerate press down arrow. (Only works in D and R)</li>
 <li>To light up various telltales press buttons 1-+.</li>
 <li>Turn off engine press the start button (enter) while in gear P.</li>
 <li>To turn off the Emulator binary press q.</li>
-<li>To turn off the inputhandler press esc. (Note turn off the binary first.)<li></ul>
+<li>To turn off the inputhandler press esc. (Note turn off the binary first.)</li></ul>
 
 <h2>STILL TO DO</h2>
 <p>There are a number of things we would like to improve on our project.<br>
