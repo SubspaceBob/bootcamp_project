@@ -1,7 +1,7 @@
 @startuml
 start
 :Driver Changes GearStickRequest;
-if (Is vehicle standing still) then (No)
+if (Is vehicle speed <1 and brake pedal pressed) then (No)
     stop
 else (Yes)
     :Change GearStick;
