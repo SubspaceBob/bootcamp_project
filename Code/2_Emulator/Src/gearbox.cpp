@@ -141,6 +141,8 @@ void Gearbox::run(CANDatabaseInfo &dbInfo, Trq engTrq, EngSts engSts, int timeSt
     }
 
     // Calculate brake torque and rolling resistance
+
+    dbInfo.signals["brakepedal"]
     /*Trq BrakeTrq = calculateBrakeTorque(input.brkPdl);
     auto RollingResistance = vhlSpeed * VEHICLE::ROLLINGRESISTANCE; //Exponential
 

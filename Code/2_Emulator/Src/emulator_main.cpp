@@ -56,7 +56,7 @@ void runVehicle() {
 
     while(true) {
         // Fetch CAN Inputs from shared memory   
-        for(Frame frame : dbInfo.canInFrames)
+        for(Frame frame : dbInfo.emuCanRXFrames)
             frame = std::move(SharedFrameMemoryVector[frame.id].read());
             
         // Run engine and gearbox simulation with CANIn and CANOut
@@ -64,7 +64,7 @@ void runVehicle() {
         gearbox.run(dbInfo, engine.getEngTrq(), engine.getEngSts(),timeStepSize);
 
         // Push CAN Output values to shared memory
-        for(const Frame frame : dbInfo.canOutFrames)
+        for(const Frame frame : dbInfo.emuCanTXFrames)
             SharedFrameMemoryVector[frame.id].write(frame);
 
         // Shutdown condition

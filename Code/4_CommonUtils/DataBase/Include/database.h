@@ -139,7 +139,7 @@ struct CANDatabaseInfo{
     std::map<std::string, uint8_t> signals;
     std::map<std::string, Frame> frames;
 
-    // FrameGroups
+    // FrameGroups (FrameGroups should be in map, if dbc contains different amounts of "ECU's")
     std::vector<Frame> iHCanTXFrames;   // Frames are only used by sending/recieveing CAN and read/write memory
     std::vector<Frame> emuCanRXFrames;  // Frames are not used by "application", 
     std::vector<Frame> emuCanTXFrames;  // different FrameGroups share frames (ecu1_1_RX = ecu2_2_TX = ecu_3_1_TX)
@@ -173,7 +173,7 @@ struct CANDatabaseInfo{
         frames["emu_1"] = Frame();
         frames["emu_2"] = Frame();
 
-        // Define signals, used by applications
+        // Define signals, used by application
         signals["startBtn"]     = frames["ih_1"]->data.Byte0;
         signals["quitEmul"]     = frames["ih_1"]->data.Byte1;
         signals["handBrk"]      = frames["ih_2"]->data.Byte0;

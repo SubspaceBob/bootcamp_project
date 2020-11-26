@@ -60,7 +60,7 @@ bool CANIO::readCANWriteToMemory(std::vector<SharedMemory<Frame>> &sharedFrameMe
         // Frame frame = (dbInfo.*id)(fr.id)
 
 
-        Frame* frame = dbInfo.getInFrame(fr.id);
+        Frame* frame = dbInfo.getFrame(dbInfo.emuCanRXFrames, fr.id);
         if (frame != nullptr){
             // Set the data according to frame
 
