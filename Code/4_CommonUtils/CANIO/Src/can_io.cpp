@@ -64,7 +64,7 @@ bool CANIO::readCANWriteToMemory(std::vector<SharedMemory<Frame>> &sharedFrameMe
         if (frame != nullptr){
             // Set the data according to frame
 
-            frame->id = fr.id;
+ 
             memcpy(&frame->data, &(fr.data), sizeof(fr.data));
             
             // Ẃrite it to memory
