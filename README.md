@@ -1,7 +1,7 @@
 # bootcamp_project
 BACKGROUND
-This project was written by Robert Gothäll, Rasmus Källum and Jessica Green as a part of a C++ bootcamp carried out during the autumn 2020. The bootcamp started with 2 weeks od lectures and individual assignments and ended with a 4 week group assignment with the goal to create car driveline. We were initially asked to have  two binaries. 
-The first one an Inputhandler taking driver input and outputting it on CAN. 
+This project was written by Robert Gothäll, Rasmus Källum and Jessica Green as a part of a C++ bootcamp carried out during the autumn 2020. The bootcamp started with 2 weeks of lectures and individual assignments and ended with a 4 week group assignment with the goal to create car driveline simulation. We were initially asked to have two binaries. 
+The first binary is Inputhandler taking driver input and outputting it on CAN. 
 The second binary, the Emulator should have two threads the first thread running a CANreader taking in the frames from the inputHandler the second thread running the asked for driveline which should output a number of signals on the same CAN bus.
 Later on we also added a third binary giving us the possibility to display the output in an instrumentcluster. 
 
@@ -20,7 +20,8 @@ gearbox of a car.
 For inputs/outputs see CanFrameMessages.txt"
 
 THE "FINISHED" PRODUCT
-At the end of the bootcamp we have three binaries, the relation between them and what they're doing can be seen in the picture /Docs/ComponentDiagram.png 
+At the end of the bootcamp we have three binaries, the relation between them and what they're doing can be seen in this picture: 
+<img src="https://github.com/SubspaceBob/bootcamp_project/blob/main/Docs/ComponentDiagram.png"> 
 
 The InputHandler is designed to take in keybordpresses and translate them to a canframe that can be sent out. The SW is based on provided SW that aids in the two tasks and to controll these we have written code to use the provide API according to our demands (i.e. connect our chosen key with the proper CAN frame and byte).
 
