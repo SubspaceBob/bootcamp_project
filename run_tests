@@ -4,7 +4,9 @@
 # folder before Initializing all test cases in separate
 # windows for readaility. 
 
-cd 5_Build
+cd Code/5_Build
+rm -R -- */
+rm *
 cmake ..
 make
 ./2_Emulator/EngineTest --gtest_output=xml:../6_TestReports/EngineTestReport.xml

@@ -5,7 +5,7 @@
 # terminal window and thereafter starting the input handler
 # in the first terminal window. 
 
-cd 5_Build
+cd Code/5_Build
 rm -R -- */
 rm *
 cmake ..

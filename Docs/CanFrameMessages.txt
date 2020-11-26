@@ -19,6 +19,12 @@ Outputs:
         Byte3:  LSB of RPM  uint16_t    0-10000 rpm         init = 0
         Byte4:  engagedGear uint8_t     0-7                 init = 0
         
-   Frame6:
-   	byte1: telltales1	ttbyte1	
+    Frame6:
+   	    Byte1: telltales1	uint8_t                         init = 0
+            hazard, right_blinker, left_blinker, engine_check, oil_check, abs, battery, seat_belt
+        Byte2: telltales2   uint8_t                         init = 0
+            doors_open, high_beam, hand_break
+    Frame7:
+        Byte1: engSts       uint8_t     0/1 = Off/On        init = 0
+
 
