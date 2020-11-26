@@ -7,11 +7,13 @@ package "InputHandler" {
 }
 
 package "Emulator"{
+    package "thread runCANIO" {
     [Emulator::CANIO]
-    package "runVehicle" {
+    }
+    package "thread runVehicle" {
         [Engine] <-> [Gearbox]
     }  
-    cloud "Memory"{
+    cloud "Shared Memory"{
     [CanIn]
     [CanOut]
     }  

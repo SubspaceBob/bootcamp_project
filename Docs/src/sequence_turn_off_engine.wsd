@@ -1,17 +1,14 @@
 @startuml
 title Turn off engine
 database Input
-participant EngineControl
 participant Engine
 participant Gearbox
-participant Vehicle
 participant Output
-Input -> EngineControl : StartButtonPressed()
-EngineControl -> Engine : IsEngineOn()
-EngineControl <- Engine : EngineState
-EngineControl -> Vehicle : GetvehicleSpeed()
-EngineControl <- Vehicle : vehicleSpeed
-EngineControl -> Gearbox : GetgearStickPosition()
-EngineControl <- Gearbox : gearStickPosition
-EngineControl <- EngineControl : Decelerate()
+Input -> Engine : StartButtonPressed()
+Engine <- Engine : EngineState
+Engine -> Gearbox : GetEngineRPS()
+Engine <- Gearbox : EngineRPS
+Engine -> Gearbox : GetGearStickPosition()
+Engine <- Gearbox : gearStickPosition
+Engine <- Engine : Decelerate()
 @enduml

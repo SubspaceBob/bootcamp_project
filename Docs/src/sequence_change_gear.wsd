@@ -3,11 +3,9 @@ title Change gearStickPosition
 participant Input
 participant Engine
 participant Gearbox
-participant Vehicle
 participant Output
-Input -> Gearbox : ChangegearStickPosition(PRND)
-Gearbox -> Vehicle : GetvehicleSpeed()
-Gearbox <- Vehicle : vehicleSpeed
-Gearbox -> Gearbox : SetgearStickPosition()
+Input -> Gearbox : setGearStickPosition(PRND)
+Gearbox -> Gearbox : vehicleSpeed
+Gearbox -> Gearbox : brakePedal
 
 @enduml

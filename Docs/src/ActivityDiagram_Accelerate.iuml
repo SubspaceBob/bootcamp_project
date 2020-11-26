@@ -4,11 +4,7 @@ start
 :gaspedal pressed;
 if (Is engine on?) then (yes)
     if (Is gear in D or R?) then (yes)
-        if (Is break pedal pressed) then (no)
         :increase speed;
-else (yes)
-stop
-endif
 else (no)
 stop 
 endif
