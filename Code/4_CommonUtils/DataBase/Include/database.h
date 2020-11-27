@@ -145,6 +145,18 @@ struct CANDatabaseInfo{
     std::vector<Frame> emuCanTXFrames;  // different FrameGroups share frames (ecu1_1_RX = ecu2_2_TX = ecu_3_1_TX)
     std::vector<Frame> guiCanRXFrames;
 
+    uint8_t *getSignal(const char *signalname)
+    {
+        if (frames.find(signalname) == frames.end() ) 
+        {
+            return signals[signalname];
+        } 
+        else 
+        {
+        // found
+        }
+    }
+
     Frame *getFrame(std::vector<Frame> *FrameGroup, const uint32_t &id)
     {
         for(Frame &elem: (*FrameGroup))
